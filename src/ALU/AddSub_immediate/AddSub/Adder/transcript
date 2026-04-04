@@ -1,0 +1,101 @@
+# //  Questa Sim-64
+# //  Version 2025.1_2 linux_x86_64 Apr  7 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+vcom -reportprogress 300 -work work /home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU/AddSub_immediate/AddSub/Adder/two_input_and.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 20:46:45 on Mar 11,2026
+# vcom -reportprogress 300 -work work /home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU/AddSub_immediate/AddSub/Adder/two_input_and.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity two_input_and
+# -- Compiling architecture dataflow of two_input_and
+# End time: 20:46:45 on Mar 11,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+vcom -reportprogress 300 -work work /home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU/AddSub_immediate/AddSub/Adder/three_input_xor.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 20:46:45 on Mar 11,2026
+# vcom -reportprogress 300 -work work /home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU/AddSub_immediate/AddSub/Adder/three_input_xor.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity three_input_xor
+# -- Compiling architecture structural of three_input_xor
+# End time: 20:46:46 on Mar 11,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+vcom -reportprogress 300 -work work /home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU/AddSub_immediate/AddSub/Adder/three_input_xor.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 20:46:46 on Mar 11,2026
+# vcom -reportprogress 300 -work work /home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU/AddSub_immediate/AddSub/Adder/three_input_xor.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity three_input_xor
+# -- Compiling architecture structural of three_input_xor
+# End time: 20:46:46 on Mar 11,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+vcom -reportprogress 300 -work work /home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU/AddSub_immediate/AddSub/Adder/three_input_or.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 20:46:46 on Mar 11,2026
+# vcom -reportprogress 300 -work work /home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU/AddSub_immediate/AddSub/Adder/three_input_or.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity three_input_or
+# -- Compiling architecture structural of three_input_or
+# End time: 20:46:46 on Mar 11,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+vcom -2008 *.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 20:46:55 on Mar 11,2026
+# vcom -reportprogress 300 -2008 full_adder.vhd not_gate.vhd ripple_carry_N_bit_adder.vhd stimulus_driver_ripple_carry.vhd tb_ripple_carry_N_bit_adder.vhd three_input_or.vhd three_input_xor.vhd two_input_and.vhd two_input_or.vhd two_input_xor.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity full_adder
+# -- Compiling architecture structural of full_adder
+# -- Compiling entity not_gate
+# -- Compiling architecture dataflow of not_gate
+# -- Compiling entity ripple_carry_N_bit_adder
+# -- Compiling architecture structural of ripple_carry_N_bit_adder
+# -- Loading package NUMERIC_STD
+# -- Loading package MATH_REAL
+# -- Compiling entity stimulus_driver
+# -- Compiling architecture behavior of stimulus_driver
+# -- Compiling entity tb_ripple_carry_N_bit_adder
+# -- Compiling architecture structural_testbench of tb_ripple_carry_N_bit_adder
+# -- Compiling entity three_input_or
+# -- Compiling architecture structural of three_input_or
+# -- Compiling entity three_input_xor
+# -- Compiling architecture structural of three_input_xor
+# -- Compiling entity two_input_and
+# -- Compiling architecture dataflow of two_input_and
+# -- Compiling entity two_input_or
+# -- Compiling architecture dataflow of two_input_or
+# -- Compiling entity two_input_xor
+# -- Compiling architecture dataflow of two_input_xor
+# End time: 20:46:55 on Mar 11,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+vsim work.tb_ripple_carry_n_bit_adder
+# vsim work.tb_ripple_carry_n_bit_adder 
+# Start time: 20:47:07 on Mar 11,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: tb_ripple_carry_N_bit_adder.vhd(41): (vopt-1251) Generic "N" of entity "ripple_carry_N_bit_adder" is not in the component being instantiated.
+# ** Error: ripple_carry_N_bit_adder.vhd(8): (vopt-2293) The parameter 'N' in the instance ('/tb_ripple_carry_N_bit_adder/DUT') of ('ripple_carry_N_bit_adder') is declared without a value,
+# and the instantiation does not provide a value for this parameter.
+# Optimization failed
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=1, Warnings=1.
+# Error loading design
+# End time: 20:47:08 on Mar 11,2026, Elapsed time: 0:00:01
+# Errors: 1, Warnings: 1

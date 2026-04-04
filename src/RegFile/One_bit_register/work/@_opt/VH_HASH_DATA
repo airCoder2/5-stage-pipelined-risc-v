@@ -1,0 +1,33 @@
+[N
+4
+2
+19 tb_one_bit_register
+3
+8 behavior
+4
+9 gCLK_HPER
+1
+74 /home/umhaihl/cpre_381/Labs/lab2/lab_folders/RegFile/One_bit_register/work
+]
+[G
+1
+2
+3
+1
+4
+0
+0
+0
+0
+8 8
+-128
+-16
+-6
+2
+0
+0
+0
+0
+0
+0
+]

@@ -1,0 +1,52 @@
+m255
+K4
+z2
+!s11e MIXED_VERSIONS
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU_control_unit
+Ealu_control_unit
+Z1 w1772870436
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 4
+R0
+Z4 8ALU_control_unit.vhd
+Z5 FALU_control_unit.vhd
+l0
+L10 1
+VlB:o4>kkZmN;F=k^c`kCQ3
+!s100 TYSV[LJ=S_E9ejAjbV2PL0
+Z6 OL;C;2025.1_2;82
+33
+Z7 !s110 1772870439
+!i10b 1
+Z8 !s108 1772870439.000000
+Z9 !s90 -reportprogress|300|-2008|ALU_control_unit.vhd|
+!s107 ALU_control_unit.vhd|
+!i113 0
+Z10 o-2008
+Z11 tExplicit 1 CvgOpt 0
+Abehavioral
+R2
+R3
+DEx4 work 16 alu_control_unit 0 22 lB:o4>kkZmN;F=k^c`kCQ3
+!i122 4
+l39
+L24 37
+V:GF7Tck_k6Lj3PEBg5`RD2
+!s100 4Oa7lRb@?Ea>DG^_PAN7]1
+R6
+33
+R7
+!i10b 1
+R8
+R9
+Z12 !s107 ALU_control_unit.vhd|
+!i113 0
+R10
+R11

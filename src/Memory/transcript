@@ -1,0 +1,1491 @@
+# //  Questa Sim-64
+# //  Version 2025.1_2 linux_x86_64 Apr  7 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# ** Error: could not find wave window
+# Error in macro ./do_mem.do line 5
+# could not find wave window
+#     while executing
+# "delete wave *"
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 21:22:57 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 21:22:57 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 21:22:57 on Feb 22,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+# ** Fatal: (vsim-3421) Value 0 is out of range 1 to 10.
+#    Time: 202 ns  Iteration: 0  Process: /tb_dmem/P_STIMULI File: tb_dmem.vhd Line: 77
+# Fatal error in ForLoop loop at tb_dmem.vhd line 77
+# 
+# HDL call sequence:
+# Stopped at tb_dmem.vhd 77 ForLoop loop
+# 
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 21:25:42 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 21:25:43 on Feb 22,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# End time: 21:25:43 on Feb 22,2026, Elapsed time: 0:02:46
+# Errors: 1, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 21:25:43 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+restart -f
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt1
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 21:30:53 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# ** Error: tb_dmem.vhd(70): near "type": syntax error
+# ** Note: tb_dmem.vhd(84): VHDL Compiler exiting
+# End time: 21:30:53 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_mem.do line 7
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom -2008 *.vhd"
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 21:31:24 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# ** Error: tb_dmem.vhd(70): near "type": syntax error
+# ** Note: tb_dmem.vhd(84): VHDL Compiler exiting
+# End time: 21:31:24 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_mem.do line 7
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom -2008 *.vhd"
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 21:41:30 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 21:41:30 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 21:41:32 on Feb 22,2026, Elapsed time: 0:15:49
+# Errors: 2, Warnings: 1
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 21:41:32 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+# ** Note: Message -1
+#    Time: 2 ns  Iteration: 1  Instance: /tb_dmem
+# ** Note: Message -1
+#    Time: 12 ns  Iteration: 1  Instance: /tb_dmem
+# ** Note: Message -2
+#    Time: 22 ns  Iteration: 1  Instance: /tb_dmem
+# ** Note: Message -3
+#    Time: 32 ns  Iteration: 1  Instance: /tb_dmem
+# ** Note: Message -4
+#    Time: 42 ns  Iteration: 1  Instance: /tb_dmem
+# ** Note: Message -5
+#    Time: 52 ns  Iteration: 1  Instance: /tb_dmem
+# ** Note: Message -6
+#    Time: 62 ns  Iteration: 1  Instance: /tb_dmem
+# ** Note: Message -7
+#    Time: 72 ns  Iteration: 1  Instance: /tb_dmem
+# ** Note: Message -8
+#    Time: 82 ns  Iteration: 1  Instance: /tb_dmem
+# ** Note: Message -9
+#    Time: 92 ns  Iteration: 1  Instance: /tb_dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 21:42:20 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 21:42:20 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 21:42:21 on Feb 22,2026, Elapsed time: 0:00:49
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 21:42:21 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 21:46:32 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 21:46:32 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 21:46:33 on Feb 22,2026, Elapsed time: 0:04:12
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 21:46:33 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 21:53:25 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 21:53:25 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 21:53:27 on Feb 22,2026, Elapsed time: 0:06:54
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 21:53:27 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 21:57:09 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 21:57:09 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 21:57:10 on Feb 22,2026, Elapsed time: 0:03:43
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 21:57:10 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+# ** Note: Message -1
+#    Time: 2 ns  Iteration: 0  Instance: /tb_dmem
+# ** Note: Message -1
+#    Time: 12 ns  Iteration: 0  Instance: /tb_dmem
+# ** Note: Message -2
+#    Time: 22 ns  Iteration: 0  Instance: /tb_dmem
+# ** Note: Message -3
+#    Time: 32 ns  Iteration: 0  Instance: /tb_dmem
+# ** Note: Message -4
+#    Time: 42 ns  Iteration: 0  Instance: /tb_dmem
+# ** Note: Message -5
+#    Time: 52 ns  Iteration: 0  Instance: /tb_dmem
+# ** Note: Message -6
+#    Time: 62 ns  Iteration: 0  Instance: /tb_dmem
+# ** Note: Message -7
+#    Time: 72 ns  Iteration: 0  Instance: /tb_dmem
+# ** Note: Message -8
+#    Time: 82 ns  Iteration: 0  Instance: /tb_dmem
+# ** Note: Message -9
+#    Time: 92 ns  Iteration: 0  Instance: /tb_dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:03:06 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:03:06 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:03:12 on Feb 22,2026, Elapsed time: 0:06:02
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:03:12 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+add wave -position end  sim:/tb_dmem/s_int_mem_vals
+add wave -position end  sim:/tb_dmem/s_i
+add wave -position end  sim:/tb_dmem/s_j
+reset
+# c]104[!p[?3;4l[4l>[?69l
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt1
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 2 ns  Iteration: 0  Instance: /tb_dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 12 ns  Iteration: 0  Instance: /tb_dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 22 ns  Iteration: 0  Instance: /tb_dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 32 ns  Iteration: 0  Instance: /tb_dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 42 ns  Iteration: 0  Instance: /tb_dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 52 ns  Iteration: 0  Instance: /tb_dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 62 ns  Iteration: 0  Instance: /tb_dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 72 ns  Iteration: 0  Instance: /tb_dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 82 ns  Iteration: 0  Instance: /tb_dmem
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 92 ns  Iteration: 0  Instance: /tb_dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:08:40 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:08:40 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:08:40 on Feb 22,2026, Elapsed time: 0:05:28
+# Errors: 0, Warnings: 12
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:08:40 on Feb 22,2026
+# ** Note: (vsim-8009) Loading existing optimized design _opt1
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+run 1000
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:12:18 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:12:18 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:12:20 on Feb 22,2026, Elapsed time: 0:03:40
+# Errors: 0, Warnings: 1
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:12:20 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:17:39 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:17:39 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:17:41 on Feb 22,2026, Elapsed time: 0:05:21
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:17:41 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:22:19 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# ** Error: tb_dmem.vhd(75): near "0.00000001": (vcom-1576) expecting ';'.
+# ** Note: tb_dmem.vhd(93): VHDL Compiler exiting
+# End time: 22:22:19 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_mem.do line 7
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom -2008 *.vhd"
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:22:32 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:22:32 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:22:34 on Feb 22,2026, Elapsed time: 0:04:53
+# Errors: 1, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:22:34 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:23:09 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:23:09 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:23:10 on Feb 22,2026, Elapsed time: 0:00:36
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:23:10 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:23:47 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:23:47 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:23:49 on Feb 22,2026, Elapsed time: 0:00:39
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:23:49 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:24:03 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:24:03 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:24:04 on Feb 22,2026, Elapsed time: 0:00:15
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:24:04 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:24:22 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:24:22 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:24:25 on Feb 22,2026, Elapsed time: 0:00:21
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:24:25 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:24:46 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:24:46 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:24:49 on Feb 22,2026, Elapsed time: 0:00:24
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:24:49 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:25:00 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:25:00 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:25:02 on Feb 22,2026, Elapsed time: 0:00:13
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:25:02 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:25:16 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:25:16 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:25:19 on Feb 22,2026, Elapsed time: 0:00:17
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:25:19 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:27:46 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:27:46 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:27:48 on Feb 22,2026, Elapsed time: 0:02:29
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:27:48 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:28:09 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:28:09 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:28:11 on Feb 22,2026, Elapsed time: 0:00:23
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:28:11 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:28:21 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:28:21 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:28:23 on Feb 22,2026, Elapsed time: 0:00:12
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:28:23 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:28:35 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:28:35 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:28:36 on Feb 22,2026, Elapsed time: 0:00:13
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:28:36 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:28:46 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:28:47 on Feb 22,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# End time: 22:28:48 on Feb 22,2026, Elapsed time: 0:00:12
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:28:48 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:28:56 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:28:56 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:28:57 on Feb 22,2026, Elapsed time: 0:00:09
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:28:57 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 22:29:24 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 22:29:24 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 22:29:26 on Feb 22,2026, Elapsed time: 0:00:29
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 22:29:26 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 23:48:04 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 23:48:04 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 23:48:05 on Feb 22,2026, Elapsed time: 1:18:39
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 23:48:05 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 23:50:00 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 23:50:00 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 23:50:01 on Feb 22,2026, Elapsed time: 0:01:56
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 23:50:01 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 23:51:00 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# ** Error: tb_dmem.vhd(72): Illegal target for signal assignment.
+# ** Error: tb_dmem.vhd(72): (vcom-1136) Unknown identifier "s_int_mem_vals".
+# ** Note: tb_dmem.vhd(87): VHDL Compiler exiting
+# End time: 23:51:01 on Feb 22,2026, Elapsed time: 0:00:01
+# Errors: 2, Warnings: 0
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_mem.do line 7
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom -2008 *.vhd"
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 23:51:40 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 23:51:40 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 23:51:40 on Feb 22,2026, Elapsed time: 0:01:39
+# Errors: 1, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 23:51:40 on Feb 22,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_dmem/s_i'.
+# Error in macro ./do_mem.do line 13
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_dmem/s_i'.
+#     while executing
+# "add wave sim:/tb_dmem/dmem/clk"
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 23:52:11 on Feb 22,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 23:52:11 on Feb 22,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 23:52:11 on Feb 22,2026, Elapsed time: 0:00:31
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 23:52:11 on Feb 22,2026
+# ** Note: (vsim-8009) Loading existing optimized design _opt1
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+mem save -o output.hex -f mti -data hex -addr hex tb_dmem/dmem/ram
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 00:03:36 on Feb 23,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 00:03:36 on Feb 23,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 00:03:36 on Feb 23,2026, Elapsed time: 0:11:25
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 00:03:36 on Feb 23,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 00:04:27 on Feb 23,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 00:04:27 on Feb 23,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 00:04:28 on Feb 23,2026, Elapsed time: 0:00:52
+# Errors: 0, Warnings: 3
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 00:04:28 on Feb 23,2026
+# ** Note: (vsim-8009) Loading existing optimized design _opt1
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+do do_mem.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt1".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 00:05:01 on Feb 23,2026
+# vcom -reportprogress 300 -2008 mem.vhd tb_dmem.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity mem
+# -- Compiling architecture rtl of mem
+# -- Compiling entity tb_dmem
+# -- Compiling architecture behaviour of tb_dmem
+# End time: 00:05:01 on Feb 23,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 00:05:02 on Feb 23,2026, Elapsed time: 0:00:34
+# Errors: 0, Warnings: 2
+# vsim work.tb_dmem -voptargs="+acc" 
+# Start time: 00:05:02 on Feb 23,2026
+# ** Note: (vsim-8009) Loading existing optimized design _opt1
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_dmem(behaviour)#1
+# Loading work.mem(rtl)#1
+# ** Warning: (vsim-3479) Time unit 'ps' is less than the simulator resolution (1ns).
+#    Time: 0 ns  Iteration: 0  Root: /
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /tb_dmem/dmem
+# ** Error: License connection lost and unable to reconnect after multiple attempts.
+# End time: 01:04:22 on Feb 23,2026, Elapsed time: 0:59:20
+# Errors: 0, Warnings: 2

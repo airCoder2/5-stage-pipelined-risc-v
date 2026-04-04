@@ -1,0 +1,54 @@
+-- Date        : March 23, 2026
+-- File        : Mux_32_to_1.vhd     
+-- Designer    : Salah Nasriddinov
+-- Description : This file implements a testbench for a shifter 
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+USE ieee.numeric_std.ALL;
+
+entity tb_Shifter is
+end entity tb_Shifter;
+
+
+architecture tb of tb_Shifter is
+
+    component Shifter is
+        port(
+             i_data : in std_logic_vector(31 downto 0);
+             i_shift_amount : in std_logic_vector(4 downto 0);
+             is_sra    : in std_logic;
+             o_shifted_data : out std_logic_vector(31 downto 0)
+            );
+    end component Shifter;
+
+    signal s_data : std_logic_vector(31 downto 0);
+    signal s_shamt : std_logic_vector(4 downto 0);
+    signal s_out : std_logic_vector(31 downto 0);
+
+begin
+
+    DUT: Shifter port map(
+                          i_data => s_data,
+                          i_shift_amount => s_shamt,
+                          is_sra => '0',
+                          o_shifted_data => s_out
+                         );
+    process
+    begin
+        s_data <= 32x"FFFFFFFF";
+        s_shamt <= 5b"11111";
+        wait for 10 ns;
+
+        s_data <= 32x"FFFFFFFF";
+        s_shamt <= 5b"00001";
+        wait for 10 ns;
+
+        wait;
+    end process;
+
+
+end architecture tb;
+
+
+

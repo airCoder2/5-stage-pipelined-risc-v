@@ -1,0 +1,159 @@
+# //  Questa Sim-64
+# //  Version 2025.1_2 linux_x86_64 Apr  7 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+do do
+# Cannot open macro file: do
+vcom -2008 *.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:57:50 on Mar 07,2026
+# vcom -reportprogress 300 -2008 ALU_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity alu_control_unit
+# -- Compiling architecture behavioral of ALU_control_unit
+# ** Error: ALU_control_unit.vhd(47): (vcom-1136) Unknown identifier "funct3".
+# ** Error: ALU_control_unit.vhd(47): (vcom-1136) Unknown identifier "funct7_5".
+# ** Error: ALU_control_unit.vhd(47): (vcom-1590) Bad expression in left operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(47): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(47): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(48): (vcom-1136) Unknown identifier "funct3".
+# ** Error: ALU_control_unit.vhd(48): (vcom-1136) Unknown identifier "funct7_5".
+# ** Error: ALU_control_unit.vhd(48): (vcom-1590) Bad expression in left operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(48): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(48): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(49): (vcom-1136) Unknown identifier "funct3".
+# ** Error: ALU_control_unit.vhd(49): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(50): (vcom-1136) Unknown identifier "ALU_SLT".
+# ** Error: ALU_control_unit.vhd(50): (vcom-1136) Unknown identifier "funct3".
+# ** Error: ALU_control_unit.vhd(50): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(51): (vcom-1136) Unknown identifier "funct3".
+# ** Error: ALU_control_unit.vhd(51): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(52): (vcom-1136) Unknown identifier "funct3".
+# ** Error: ALU_control_unit.vhd(52): (vcom-1136) Unknown identifier "funct7_5".
+# ** Error: ALU_control_unit.vhd(52): (vcom-1590) Bad expression in left operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(52): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(52): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(53): (vcom-1136) Unknown identifier "funct3".
+# ** Error: ALU_control_unit.vhd(53): (vcom-1136) Unknown identifier "funct7_5".
+# ** Error: ALU_control_unit.vhd(53): (vcom-1590) Bad expression in left operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(53): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(53): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(54): (vcom-1136) Unknown identifier "funct3".
+# ** Error: ALU_control_unit.vhd(54): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(55): (vcom-1136) Unknown identifier "funct3".
+# ** Error: ALU_control_unit.vhd(55): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Note: ALU_control_unit.vhd(60): VHDL Compiler exiting
+# End time: 01:57:50 on Mar 07,2026, Elapsed time: 0:00:00
+# Errors: 31, Warnings: 0
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+vcom -2008 *.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:58:58 on Mar 07,2026
+# vcom -reportprogress 300 -2008 ALU_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity ALU_control_unit
+# -- Compiling architecture behavioral of ALU_control_unit
+# ** Error: ALU_control_unit.vhd(47): (vcom-1136) Unknown identifier "i_funct3".
+# ** Error: ALU_control_unit.vhd(47): (vcom-1136) Unknown identifier "i_funct7_5".
+# ** Error: ALU_control_unit.vhd(47): (vcom-1590) Bad expression in left operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(47): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(47): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(48): (vcom-1136) Unknown identifier "i_funct3".
+# ** Error: ALU_control_unit.vhd(48): (vcom-1136) Unknown identifier "i_funct7_5".
+# ** Error: ALU_control_unit.vhd(48): (vcom-1590) Bad expression in left operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(48): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(48): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(49): (vcom-1136) Unknown identifier "i_funct3".
+# ** Error: ALU_control_unit.vhd(49): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(50): (vcom-1136) Unknown identifier "ALU_SLT".
+# ** Error: ALU_control_unit.vhd(50): (vcom-1136) Unknown identifier "i_funct3".
+# ** Error: ALU_control_unit.vhd(50): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(51): (vcom-1136) Unknown identifier "i_funct3".
+# ** Error: ALU_control_unit.vhd(51): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(52): (vcom-1136) Unknown identifier "i_funct3".
+# ** Error: ALU_control_unit.vhd(52): (vcom-1136) Unknown identifier "i_funct7_5".
+# ** Error: ALU_control_unit.vhd(52): (vcom-1590) Bad expression in left operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(52): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(52): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(53): (vcom-1136) Unknown identifier "i_funct3".
+# ** Error: ALU_control_unit.vhd(53): (vcom-1136) Unknown identifier "i_funct7_5".
+# ** Error: ALU_control_unit.vhd(53): (vcom-1590) Bad expression in left operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(53): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(53): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(54): (vcom-1136) Unknown identifier "i_funct3".
+# ** Error: ALU_control_unit.vhd(54): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(55): (vcom-1136) Unknown identifier "i_funct3".
+# ** Error: ALU_control_unit.vhd(55): Type error resolving infix expression "=" as type std.STANDARD.BOOLEAN.
+# ** Note: ALU_control_unit.vhd(60): VHDL Compiler exiting
+# End time: 01:58:58 on Mar 07,2026, Elapsed time: 0:00:00
+# Errors: 31, Warnings: 0
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+:w
+# invalid command name ":w"
+do do
+# Cannot open macro file: do
+vcom -2008 *.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:59:29 on Mar 07,2026
+# vcom -reportprogress 300 -2008 ALU_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity ALU_control_unit
+# -- Compiling architecture behavioral of ALU_control_unit
+# ** Error: ALU_control_unit.vhd(47): (vcom-1136) Unknown identifier "i_funct_5".
+# ** Error: ALU_control_unit.vhd(47): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(47): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(48): (vcom-1136) Unknown identifier "i_funct_5".
+# ** Error: ALU_control_unit.vhd(48): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(48): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(50): (vcom-1136) Unknown identifier "ALU_SLT".
+# ** Error: ALU_control_unit.vhd(52): (vcom-1136) Unknown identifier "i_funct_5".
+# ** Error: ALU_control_unit.vhd(52): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(52): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Error: ALU_control_unit.vhd(53): (vcom-1136) Unknown identifier "i_funct_5".
+# ** Error: ALU_control_unit.vhd(53): (vcom-1590) Bad expression in right operand of infix expression 'and'.
+# ** Error: ALU_control_unit.vhd(53): Type error resolving infix expression "and" as type std.STANDARD.BOOLEAN.
+# ** Note: ALU_control_unit.vhd(60): VHDL Compiler exiting
+# End time: 01:59:29 on Mar 07,2026, Elapsed time: 0:00:00
+# Errors: 13, Warnings: 0
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+vcom -2008 *.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:59:57 on Mar 07,2026
+# vcom -reportprogress 300 -2008 ALU_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity ALU_control_unit
+# -- Compiling architecture behavioral of ALU_control_unit
+# ** Error: ALU_control_unit.vhd(50): (vcom-1136) Unknown identifier "ALU_SLT".
+# ** Note: ALU_control_unit.vhd(60): VHDL Compiler exiting
+# End time: 01:59:57 on Mar 07,2026, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+vcom -2008 *.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 02:00:39 on Mar 07,2026
+# vcom -reportprogress 300 -2008 ALU_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity ALU_control_unit
+# -- Compiling architecture behavioral of ALU_control_unit
+# End time: 02:00:39 on Mar 07,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0

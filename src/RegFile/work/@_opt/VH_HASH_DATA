@@ -1,0 +1,93 @@
+[N
+10
+4
+10 ITERATIONS
+1
+57 /home/umhaihl/cpre_381/Labs/lab2/lab_folders/RegFile/work
+8
+1 N
+2
+29 stimulus_driver_register_file
+10
+8 behavior
+9
+16 tb_register_file
+5
+10 CLK_PERIOD
+3
+10 behavioral
+6
+14 n_bit_register
+7
+10 structural
+]
+[G
+1
+2
+3
+1
+5
+0
+2
+0
+0
+0 0
+0
+0
+]
+[G
+1
+9
+10
+1
+4
+0
+0
+31
+0
+0 0
+0
+0
+]
+[G
+1
+2
+3
+1
+4
+0
+0
+31
+0
+0 0
+0
+0
+]
+[G
+1
+6
+7
+1
+8
+1
+0
+32
+0
+0 0
+0
+0
+]
+[G
+1
+9
+10
+1
+5
+0
+2
+0
+0
+0 0
+0
+0
+]

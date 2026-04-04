@@ -1,0 +1,65 @@
+[N
+6
+5
+10 ADDR_WIDTH
+6
+10 CLK_PERIOD
+1
+56 /home/umhaihl/cpre_381/Labs/lab2/lab_folders/Memory/work
+4
+10 DATA_WIDTH
+2
+7 tb_dmem
+3
+9 behaviour
+]
+[G
+1
+2
+3
+1
+4
+1
+0
+32
+0
+0 0
+0
+0
+]
+[G
+1
+2
+3
+1
+6
+0
+0
+0
+0
+8 8
+-128
+-106
+-104
+0
+0
+0
+0
+0
+0
+0
+]
+[G
+1
+2
+3
+1
+5
+1
+0
+10
+0
+0 0
+0
+0
+]

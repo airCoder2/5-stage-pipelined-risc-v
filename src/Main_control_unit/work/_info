@@ -1,0 +1,115 @@
+m255
+K4
+z2
+Z0 !s12c _opt
+Z1 !s99 nomlopt
+R0
+R1
+!s11e vcom 2025.1_2 2025.04, Apr  7 2025
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z2 d/home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/Main_control_unit
+T_opt
+Z3 !s110 1772781893
+Vl1jOz@BL^i4U:_ME<3:9d2
+04 20 10 work tb_main_control_unit behavioral 1
+=1-000ae431a4f1-69aa8145-7c582-f68d
+R1
+!s12f OEM100
+!s12b OEM100
+!s124 OEM100
+!s135 nogc
+o-quiet -auto_acc_if_foreign -work work +acc
+tCvgOpt 0
+n@_opt
+OL;O;2025.1_2;82
+Emain_control_unit
+Z4 w1772781057
+Z5 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z6 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z7 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 0
+R2
+Z8 8Main_control_unit.vhd
+Z9 FMain_control_unit.vhd
+l0
+Z10 L10 1
+VESD?o1b?el@U?I^g@GSYj0
+!s100 ?6@TG`I84OBnh11H`goi>0
+Z11 OL;C;2025.1_2;82
+33
+R3
+!i10b 1
+Z12 !s108 1772781893.000000
+Z13 !s90 -reportprogress|300|-2008|Main_control_unit.vhd|tb_Main_control_unit.vhd|
+Z14 !s107 tb_Main_control_unit.vhd|Main_control_unit.vhd|
+!i113 0
+Z15 o-2008
+Z16 tExplicit 1 CvgOpt 0
+Abehavioral
+R5
+R6
+R7
+DEx4 work 17 main_control_unit 0 22 ESD?o1b?el@U?I^g@GSYj0
+!i122 0
+l38
+L25 66
+VNKK?Nk9nOh1`I[?T;KWIF0
+!s100 B^7JK^kO8;4lXl;J8n1W^1
+R11
+33
+R3
+!i10b 1
+R12
+R13
+R14
+!i113 0
+R15
+R16
+Etb_main_control_unit
+Z17 w1772781889
+R5
+R6
+R7
+!i122 0
+R2
+Z18 8tb_Main_control_unit.vhd
+Z19 Ftb_Main_control_unit.vhd
+l0
+R10
+VK274Z]?]2:cmJH^jZ@GH<0
+!s100 ?5PK<Hlafndh<akY6mTOU2
+R11
+33
+R3
+!i10b 1
+R12
+R13
+R14
+!i113 0
+R15
+R16
+Abehavioral
+R5
+R6
+R7
+DEx4 work 20 tb_main_control_unit 0 22 K274Z]?]2:cmJH^jZ@GH<0
+!i122 0
+l46
+L13 91
+V=1LHzh6dfMOG2`28=j_7^3
+!s100 2?M9oiOBS7M?:jUYD6GBf1
+R11
+33
+R3
+!i10b 1
+R12
+R13
+R14
+!i113 0
+R15
+R16

@@ -1,0 +1,233 @@
+# //  Questa Sim-64
+# //  Version 2025.1_2 linux_x86_64 Apr  7 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+:do do_Decoder_5_to_32.do
+# invalid command name ":do"
+do do_Decoder_5_to_32.do
+# 20
+# 10 ns
+# 10 
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 19:56:58 on Feb 09,2026
+# vcom -reportprogress 300 -2008 Decoder_5_to_32.vhd stimulus_driver_Decoder_5_to_32.vhd tb_Decoder_5_to_32.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity Decoder_5_to_32
+# -- Compiling architecture behavioral of Decoder_5_to_32
+# -- Loading package NUMERIC_STD
+# -- Loading package MATH_REAL
+# -- Compiling entity stimulus_driver_Decoder_5_to_32
+# -- Compiling architecture behavioral of stimulus_driver_Decoder_5_to_32
+# -- Compiling entity tb_Decoder_5_to_32
+# -- Compiling architecture behavior of tb_Decoder_5_to_32
+# End time: 19:56:58 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim work.tb_Decoder_5_to_32 -voptargs="+acc" -gITERATIONS=20 -gWAIT_TIME=10 ns 
+# Start time: 19:56:58 on Feb 09,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.tb_decoder_5_to_32(behavior)#1
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading work.stimulus_driver_decoder_5_to_32(behavioral)#1
+# Loading work.decoder_5_to_32(behavioral)#1
+do do_Decoder_5_to_32.do
+# 20
+# 10 ns
+# 10 
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co1313-07.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 19:57:52 on Feb 09,2026
+# vcom -reportprogress 300 -2008 Decoder_5_to_32.vhd stimulus_driver_Decoder_5_to_32.vhd tb_Decoder_5_to_32.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity Decoder_5_to_32
+# -- Compiling architecture behavioral of Decoder_5_to_32
+# -- Loading package NUMERIC_STD
+# -- Loading package MATH_REAL
+# -- Compiling entity stimulus_driver_Decoder_5_to_32
+# -- Compiling architecture behavioral of stimulus_driver_Decoder_5_to_32
+# -- Compiling entity tb_Decoder_5_to_32
+# -- Compiling architecture behavior of tb_Decoder_5_to_32
+# End time: 19:57:52 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 19:57:52 on Feb 09,2026, Elapsed time: 0:00:54
+# Errors: 0, Warnings: 1
+# vsim work.tb_Decoder_5_to_32 -voptargs="+acc" -gITERATIONS=20 -gWAIT_TIME=10 ns 
+# Start time: 19:57:52 on Feb 09,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.tb_decoder_5_to_32(behavior)#1
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading work.stimulus_driver_decoder_5_to_32(behavioral)#1
+# Loading work.decoder_5_to_32(behavioral)#1
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+do do_Decoder_5_to_32.do
+# 20
+# 10 ns
+# 10 
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co1313-07.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 19:58:22 on Feb 09,2026
+# vcom -reportprogress 300 -2008 Decoder_5_to_32.vhd stimulus_driver_Decoder_5_to_32.vhd tb_Decoder_5_to_32.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity Decoder_5_to_32
+# -- Compiling architecture behavioral of Decoder_5_to_32
+# -- Loading package NUMERIC_STD
+# -- Loading package MATH_REAL
+# -- Compiling entity stimulus_driver_Decoder_5_to_32
+# -- Compiling architecture behavioral of stimulus_driver_Decoder_5_to_32
+# -- Compiling entity tb_Decoder_5_to_32
+# -- Compiling architecture behavior of tb_Decoder_5_to_32
+# End time: 19:58:22 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 19:58:22 on Feb 09,2026, Elapsed time: 0:00:30
+# Errors: 0, Warnings: 1
+# vsim work.tb_Decoder_5_to_32 -voptargs="+acc" -gITERATIONS=20 -gWAIT_TIME=10 ns 
+# Start time: 19:58:22 on Feb 09,2026
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.tb_decoder_5_to_32(behavior)#1
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading work.stimulus_driver_decoder_5_to_32(behavioral)#1
+# Loading work.decoder_5_to_32(behavioral)#1
+vmap -del work
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap -del work 
+# Removing reference to logical library work
+# Modifying modelsim.ini
+vdel -all -lib work
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co1313-07.ece.iastate.edu.
+vdel -all -lib work
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co1313-07.ece.iastate.edu.
+do do_Decoder_5_to_32.do
+# 20
+# 10 ns
+# 10 
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co1313-07.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 19:59:29 on Feb 09,2026
+# vcom -reportprogress 300 -2008 Decoder_5_to_32.vhd stimulus_driver_Decoder_5_to_32.vhd tb_Decoder_5_to_32.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity Decoder_5_to_32
+# -- Compiling architecture behavioral of Decoder_5_to_32
+# -- Loading package NUMERIC_STD
+# -- Loading package MATH_REAL
+# -- Compiling entity stimulus_driver_Decoder_5_to_32
+# -- Compiling architecture behavioral of stimulus_driver_Decoder_5_to_32
+# -- Compiling entity tb_Decoder_5_to_32
+# -- Compiling architecture behavior of tb_Decoder_5_to_32
+# End time: 19:59:29 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 19:59:29 on Feb 09,2026, Elapsed time: 0:01:07
+# Errors: 0, Warnings: 0
+# vsim work.tb_Decoder_5_to_32 -voptargs="+acc" -gITERATIONS=20 -gWAIT_TIME=10 ns 
+# Start time: 19:59:29 on Feb 09,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.tb_decoder_5_to_32(behavior)#1
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading work.stimulus_driver_decoder_5_to_32(behavioral)#1
+# Loading work.decoder_5_to_32(behavioral)#1
+vcd file test_file.vcd
+vcd add /tb_Decoder_5_to_32/*
+run 200
+vcd file test_file.vcd
+# ** UI-Msg (Error): (vsim-3400) The default VCD output file "test_file.vcd" is already opened. Use the 'vcd files' command to create multiple VCD files.
+# 
+vcd flush
+vcd close
+# ** UI-Msg (Error): (vsim-4002) Invalid keyword 'close'. Expected 'add', 'checkpoint', 'comment', 'dumpports', 'dumpportsall', 'dumpportsflush', 'dumpportslimit', 'dumpportsoff', 'dumpportson', 'file', 'files', 'flush', 'limit', 'off', or 'on'.
+# Usage:
+#   vcd add <arguments>
+#   vcd checkpoint <arguments>
+#   vcd comment <arguments>
+#   vcd dumpports <arguments>
+#   vcd dumpportsall <arguments>
+#   vcd dumpportsflush <arguments>
+#   vcd dumpportslimit <arguments>
+#   vcd dumpportsoff <arguments>
+#   vcd dumpportson <arguments>
+#   vcd file <arguments>
+#   vcd files <arguments>
+#   vcd flush <arguments>
+#   vcd limit <arguments>
+#   vcd off <arguments>
+#   vcd on <arguments>
+clear
+# [H[2J[3J
+rm test_file.vcd
+l
+# ambiguous command name "l": label labelframe langOf laoem25_edition lappend lassign lattice_edition layout lcompare lconcat ldelete lecho left library_image light_green_class_image lindex linsert linux_edition list listbox live_item_image llength lmap lmember load loadTreeClassBindings loadValueClassBindings local log logDebug logError logFatal logStuff logTiming logTrace logWarng log_diagnostic_msg log_nlview lost_file_image lower lrange lremove lrepeat lreplace lreverse lrmdups lrmdups2 ls lscopecompare lsearch lset lshift lsort lsublist ltTime lteTime luniq
+ls
+# Decoder_5_to_32.vhd
+# Decoder_5_to_32.vhd.bak
+# do_Decoder_5_to_32.do
+# modelsim.ini
+# stimulus_driver_Decoder_5_to_32.vhd
+# tb_Decoder_5_to_32.vhd
+# tb_Decoder_5_to_32.vhd.bak
+# transcript
+# vsim.wlf
+# work
+# End time: 20:47:10 on Feb 09,2026, Elapsed time: 0:47:41
+# Errors: 0, Warnings: 1

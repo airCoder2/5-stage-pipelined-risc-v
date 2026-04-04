@@ -1,0 +1,64 @@
+
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+
+
+entity tb_another_test is
+end entity;
+
+architecture tb of tb_another_test is
+
+    component Adder_Subtractor is
+        generic (N : integer := 8);
+        port( A  	   : in std_logic_vector(N-1 downto 0);
+              B        : in std_logic_vector(N-1 downto 0);
+              nAdd_Sub : in std_logic;
+              sum      : out std_logic_vector(N-1 downto 0); -- outputs is +1 of inputs
+              c_out    : out std_logic;
+              overflow : out std_logic);
+    end component Adder_Subtractor;
+
+    signal s_A : std_logic_vector(31 downto 0);
+    signal s_B : std_logic_vector(31 downto 0);
+    signal s_sum : std_logic_vector(31 downto 0);
+    signal s_nAdd_Sub : std_logic;
+
+    signal s_trash : std_logic;
+    signal s_bin : std_logic;
+
+begin
+
+    Adde_S: Adder_Subtractor
+        generic map(N => 32)
+        port map(
+                 A => s_A,
+                 B => s_B,
+                 sum => s_sum,
+                 nAdd_Sub => s_nAdd_Sub,
+                 c_out => s_trash,
+                 overflow => s_bin
+                );
+
+    test: process
+    begin
+
+        wait for 10 ns;
+        
+        s_A <= 32x"0000_0001";
+        s_B <= 32x"0000_0002";
+
+        s_nAdd_Sub <= '0';
+
+        wait;
+
+
+    end process test;
+
+
+
+end architecture;
+
+
+

@@ -1,0 +1,207 @@
+m255
+K4
+z2
+Z0 !s12c _opt1
+Z1 !s99 nomlopt
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+Z2 !s12c _opt
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+!s11e vcom 2025.1_2 2025.04, Apr  7 2025
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z3 d/home/umhaihl/cpre_381/Labs/lab2/lab_folders/Memory
+T_opt
+!s110 1771804257
+V><M`XnK:5O7NUdHVIJf5N0
+Z4 04 7 9 work tb_dmem behaviour 1
+=1-000ae431a4f1-699b9661-3f7c5-88f4
+R1
+Z5 !s12f OEM100
+Z6 !s12b OEM100
+Z7 !s124 OEM100
+Z8 !s135 nogc
+Z9 o-quiet -auto_acc_if_foreign -work work +acc
+Z10 tCvgOpt 0
+n@_opt
+Z11 OL;O;2025.1_2;82
+R3
+T_opt1
+!s110 1771826616
+V@`01>I=nng]]jPG1nPBLV0
+R4
+=1-000ae431a4f1-699bedb8-8c976-ec88
+R1
+R5
+R6
+R7
+R8
+R9
+R10
+n@_opt1
+R11
+R3
+Emem
+Z12 w1771802064
+Z13 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z14 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z15 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 0
+R3
+Z16 8mem.vhd
+Z17 Fmem.vhd
+l0
+L8 1
+VaoJB_N6OAnXe8TMfSVSiB1
+!s100 7[hDmkRVN5;9iob_eMb3]3
+Z18 OL;C;2025.1_2;82
+33
+Z19 !s110 1771826701
+!i10b 1
+Z20 !s108 1771826701.000000
+Z21 !s90 -reportprogress|300|-2008|mem.vhd|tb_dmem.vhd|
+!s107 tb_dmem.vhd|mem.vhd|
+!i113 0
+Z22 o-2008
+Z23 tExplicit 1 CvgOpt 0
+Artl
+R13
+R14
+R15
+DEx4 work 3 mem 0 22 aoJB_N6OAnXe8TMfSVSiB1
+!i122 0
+l37
+L27 24
+VXj7mW;<5cQI@[m;YTYn250
+!s100 OI8_3><BhDkT3l3n8`OXd3
+R18
+33
+R19
+!i10b 1
+R20
+R21
+Z24 !s107 tb_dmem.vhd|mem.vhd|
+!i113 0
+R22
+R23
+Etb_dmem
+Z25 w1771826610
+R13
+R14
+R15
+!i122 0
+R3
+Z26 8tb_dmem.vhd
+Z27 Ftb_dmem.vhd
+l0
+L11 1
+V]P;UWb_6oPNYTMIfF]eD>1
+!s100 48G[_40f]F93e4>Ra?IH61
+R18
+33
+R19
+!i10b 1
+R20
+R21
+R24
+!i113 0
+R22
+R23
+Abehaviour
+R13
+R14
+R15
+DEx4 work 7 tb_dmem 0 22 ]P;UWb_6oPNYTMIfF]eD>1
+!i122 0
+l42
+L19 68
+V:GfNRAH>gWBbB8b1K07Zj3
+!s100 mRM>==Z10_?d]2UdKESRh3
+R18
+33
+R19
+!i10b 1
+R20
+R21
+R24
+!i113 0
+R22
+R23

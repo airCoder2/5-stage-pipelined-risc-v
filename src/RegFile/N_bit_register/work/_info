@@ -1,0 +1,483 @@
+m255
+K4
+z2
+!s12c _opt
+Z0 !s99 nomlopt
+!s11e vcom 2025.1_2 2025.04, Apr  7 2025
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z1 d/home/umhaihl/cpre_381/Labs/lab2/lab_folders/RegFile/N_bit_register
+T_opt
+Z2 !s110 1770661231
+VW_QcJn4A=kkohY_FX<NTJ1
+04 17 8 work tb_n_bit_register behavior 1
+=1-000ae431a4f1-698a256f-b3a6a-6a13
+R0
+!s12f OEM100
+!s12b OEM100
+!s124 OEM100
+!s135 nogc
+o-quiet -auto_acc_if_foreign -work work -g N=32 -g ITERATIONS=20 -g gCLK_HPER=50ns +acc
+tCvgOpt 0
+n@_opt
+OL;O;2025.1_2;82
+R1
+Ed_flip_flop
+Z3 w1770574851
+Z4 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z5 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 1
+R1
+Z6 8../One_bit_register/d_filp_flop.vhd
+Z7 F../One_bit_register/d_filp_flop.vhd
+l0
+L9 1
+V:BLOW@2[77z7HaKhh?ZJJ3
+!s100 LBb]c9dPC8RVTz17[2XN:3
+Z8 OL;C;2025.1_2;82
+33
+R2
+!i10b 1
+Z9 !s108 1770661231.000000
+Z10 !s90 -reportprogress|300|-2008|../One_bit_register/d_filp_flop.vhd|../One_bit_register/one_bit_register.vhd|../One_bit_register/tb_one_bit_register.vhd|
+Z11 !s107 ../One_bit_register/tb_one_bit_register.vhd|../One_bit_register/one_bit_register.vhd|../One_bit_register/d_filp_flop.vhd|
+!i113 0
+Z12 o-2008
+Z13 tExplicit 1 CvgOpt 0
+Abehavioral
+R4
+R5
+DEx4 work 11 d_flip_flop 0 22 :BLOW@2[77z7HaKhh?ZJJ3
+!i122 1
+l20
+L16 18
+VXU[FWb;;l8C^bWSOz>f==3
+!s100 ^U_i9P9YL@Kd>aI`m@:X_2
+R8
+33
+R2
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Emux2t1_structural
+Z14 w1770234041
+R4
+R5
+!i122 0
+R1
+Z15 8../Structural_mux/mux2t1_structural.vhd
+Z16 F../Structural_mux/mux2t1_structural.vhd
+l0
+L16 1
+V7=Cj7anl8I>SWFWK2dHo]0
+!s100 ;?52f4`hoLNiWYdGNC`f;1
+R8
+33
+R2
+!i10b 1
+R9
+Z17 !s90 -reportprogress|300|-2008|../Structural_mux/mux2t1_structural.vhd|../Structural_mux/not_gate.vhd|../Structural_mux/tb_mux2t1_structural.vhd|../Structural_mux/two_input_and.vhd|../Structural_mux/two_input_or.vhd|
+Z18 !s107 ../Structural_mux/two_input_or.vhd|../Structural_mux/two_input_and.vhd|../Structural_mux/tb_mux2t1_structural.vhd|../Structural_mux/not_gate.vhd|../Structural_mux/mux2t1_structural.vhd|
+!i113 0
+R12
+R13
+Astructural
+R4
+R5
+DEx4 work 17 mux2t1_structural 0 22 7=Cj7anl8I>SWFWK2dHo]0
+!i122 0
+l44
+L24 36
+V;0QjHgLleLh?Sk7YHXYfZ1
+!s100 G4@zG8DAg`XHTC:]@48^z1
+R8
+33
+R2
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13
+En_bit_register
+Z19 w1770779125
+R4
+R5
+!i122 4
+R1
+Z20 8N_bit_register.vhd
+Z21 FN_bit_register.vhd
+l0
+L9 1
+V<2Mnb<0]aZdcCQo1P3VF;2
+!s100 L45MI`fOngTJVgeaZi6Yc2
+R8
+33
+Z22 !s110 1770781350
+!i10b 1
+Z23 !s108 1770781350.000000
+Z24 !s90 -reportprogress|300|-2008|N_bit_register.vhd|stimulus_driver_N_bit_register.vhd|tb_N_bit_register.vhd|
+Z25 !s107 tb_N_bit_register.vhd|stimulus_driver_N_bit_register.vhd|N_bit_register.vhd|
+!i113 0
+R12
+R13
+Astructural
+R4
+R5
+Z26 DEx4 work 14 n_bit_register 0 22 <2Mnb<0]aZdcCQo1P3VF;2
+!i122 4
+l29
+Z27 L18 22
+Z28 VmIb4SNl[zQPIAnn=52H>U2
+Z29 !s100 Vl^0YX0C4z[b8VeL_=a0H0
+R8
+33
+R22
+!i10b 1
+R23
+R24
+R25
+!i113 0
+R12
+R13
+Enot_gate
+Z30 w1770231491
+R4
+R5
+!i122 0
+R1
+Z31 8../Structural_mux/not_gate.vhd
+Z32 F../Structural_mux/not_gate.vhd
+l0
+L7 1
+V[45TGj66>RPmQ2lETF7941
+!s100 8Eg?eA2Uf<NdkaX=Z7F]W0
+R8
+33
+R2
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13
+Adataflow
+R4
+R5
+DEx4 work 8 not_gate 0 22 [45TGj66>RPmQ2lETF7941
+!i122 0
+l13
+L12 4
+VRI8VALf3fnm6n>N>R=>9O1
+!s100 Ek@o1_H^LjN>Y58cYWBg@3
+R8
+33
+R2
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13
+Eone_bit_register
+Z33 w1770575150
+R4
+R5
+!i122 1
+R1
+Z34 8../One_bit_register/one_bit_register.vhd
+Z35 F../One_bit_register/one_bit_register.vhd
+l0
+L10 1
+V:D_4AoaCYeEz_1<GYFT?K1
+!s100 CBS5TG]z[4]STzbTTaAM=2
+R8
+33
+R2
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Astructural
+R4
+R5
+DEx4 work 16 one_bit_register 0 22 :D_4AoaCYeEz_1<GYFT?K1
+!i122 1
+l36
+L19 32
+VVfWV8h^`WAi61PbPhf82V1
+!s100 @9AQAmjCWV;c=]ii?XBNe2
+R8
+33
+R2
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Estimulus_driver_n_bit_register
+Z36 w1770661208
+Z37 DPx4 ieee 9 math_real 0 22 gNk<PdFJ<XNPcfef`f?Z81
+Z38 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+R4
+R5
+!i122 4
+R1
+Z39 8stimulus_driver_N_bit_register.vhd
+Z40 Fstimulus_driver_N_bit_register.vhd
+l0
+L11 1
+V>4B4ZKB8Q10kJ3^6aUCS63
+!s100 X8lJ]M4UZBjMNlX=a9Lda1
+R8
+33
+R22
+!i10b 1
+R23
+R24
+R25
+!i113 0
+R12
+R13
+Abehavioral
+R37
+R38
+R4
+R5
+Z41 DEx4 work 30 stimulus_driver_n_bit_register 0 22 >4B4ZKB8Q10kJ3^6aUCS63
+!i122 4
+l21
+Z42 L20 41
+Z43 VNXjcBeK5laT4UeTB`Y[W<3
+Z44 !s100 H:m=N7Xi6UFCK3nRib<>;3
+R8
+33
+R22
+!i10b 1
+R23
+R24
+R25
+!i113 0
+R12
+R13
+Etb_mux2t1_structural
+R30
+R4
+R5
+!i122 0
+R1
+Z45 8../Structural_mux/tb_mux2t1_structural.vhd
+Z46 F../Structural_mux/tb_mux2t1_structural.vhd
+l0
+L14 1
+VL;P@E3kO]om^3XQ>YR[7>1
+!s100 LKgePdJcCM1JW2QFC[=]`3
+R8
+33
+R2
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13
+Atestbench
+R4
+R5
+DEx4 work 20 tb_mux2t1_structural 0 22 L;P@E3kO]om^3XQ>YR[7>1
+!i122 0
+l30
+L19 47
+VNSam9Bc7?SAKCnVJcN<8^1
+!s100 XV@RHSX7N5S`lAQJ0Yfm>1
+R8
+33
+R2
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13
+Etb_n_bit_register
+Z47 w1770594885
+R4
+R5
+!i122 4
+R1
+Z48 8tb_N_bit_register.vhd
+Z49 Ftb_N_bit_register.vhd
+l0
+L9 1
+V073BHDM=KHU?[7Z16_VKO2
+!s100 `HS2aZ<]W5;YdB8J^1m_30
+R8
+33
+R22
+!i10b 1
+R23
+R24
+R25
+!i113 0
+R12
+R13
+Abehavior
+R4
+R5
+Z50 DEx4 work 17 tb_n_bit_register 0 22 073BHDM=KHU?[7Z16_VKO2
+!i122 4
+l43
+Z51 L16 58
+Z52 V>[`ESMGP0PLXck<Oh78`m2
+Z53 !s100 NfEojDh;i:o4[?;3I^E6K1
+R8
+33
+R22
+!i10b 1
+R23
+R24
+R25
+!i113 0
+R12
+R13
+Etb_one_bit_register
+Z54 w1770587736
+R4
+R5
+!i122 1
+R1
+Z55 8../One_bit_register/tb_one_bit_register.vhd
+Z56 F../One_bit_register/tb_one_bit_register.vhd
+l0
+L9 1
+VPm=4>dM<FP_oGNM`h6LaN0
+!s100 7a^zmC<0I=JzRYIjMGTLG1
+R8
+33
+R2
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Abehavior
+R4
+R5
+DEx4 work 19 tb_one_bit_register 0 22 Pm=4>dM<FP_oGNM`h6LaN0
+!i122 1
+l30
+L13 74
+V>YWUAL1_2zFQ<OV7gSooO0
+!s100 hf7705HM58Oj44VJT[0BK1
+R8
+33
+R2
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Etwo_input_and
+R30
+R4
+R5
+!i122 0
+R1
+Z57 8../Structural_mux/two_input_and.vhd
+Z58 F../Structural_mux/two_input_and.vhd
+l0
+L9 1
+VNY1WFz7[;K0PC@HlE]h9J3
+!s100 Tg@fe;I:K8DonFE=AJgFW0
+R8
+33
+R2
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13
+Adataflow
+R4
+R5
+DEx4 work 13 two_input_and 0 22 NY1WFz7[;K0PC@HlE]h9J3
+!i122 0
+l16
+L15 4
+VFHTjO<I1;3zjOARWGZVE[2
+!s100 3QOM`lzgcFJRG6F7HTQLb3
+R8
+33
+R2
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13
+Etwo_input_or
+R30
+R4
+R5
+!i122 0
+R1
+Z59 8../Structural_mux/two_input_or.vhd
+Z60 F../Structural_mux/two_input_or.vhd
+l0
+L8 1
+Ve2`=a@1]T3=>5Z=DlLdDP0
+!s100 zC@MNf<c]^[U<HIWDYT5H3
+R8
+33
+R2
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13
+Adataflow
+R4
+R5
+DEx4 work 12 two_input_or 0 22 e2`=a@1]T3=>5Z=DlLdDP0
+!i122 0
+l15
+L14 4
+V72fjkB2`9c>1@?6mnB@=R0
+!s100 18I6Qiem>VIelAiHP<0Y^2
+R8
+33
+R2
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13

@@ -1,0 +1,208 @@
+# //  Questa Sim-64
+# //  Version 2025.1_2 linux_x86_64 Apr  7 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+ls
+# N_bit_register.vhd
+# do_N_bit_register.do
+# modelsim.ini
+# stimulus_driver_N_bit_register.vhd
+# tb_N_bit_register.vhd
+# tb_N_bit_register.vhd.bak
+# transcript
+# vsim.wlf
+# work
+do do_N_bit_register.do
+# 32
+# 20
+# 50ns
+# 50
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 12:03:04 on Feb 09,2026
+# vcom -reportprogress 300 -2008 ../Structural_mux/mux2t1_structural.vhd ../Structural_mux/not_gate.vhd ../Structural_mux/tb_mux2t1_structural.vhd ../Structural_mux/two_input_and.vhd ../Structural_mux/two_input_or.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity mux2t1_structural
+# -- Compiling architecture structural of mux2t1_structural
+# -- Compiling entity not_gate
+# -- Compiling architecture dataflow of not_gate
+# -- Compiling entity tb_mux2t1_structural
+# -- Compiling architecture testbench of tb_mux2t1_structural
+# -- Compiling entity two_input_and
+# -- Compiling architecture dataflow of two_input_and
+# -- Compiling entity two_input_or
+# -- Compiling architecture dataflow of two_input_or
+# End time: 12:03:04 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 12:03:04 on Feb 09,2026
+# vcom -reportprogress 300 -2008 ../One_bit_register/d_filp_flop.vhd ../One_bit_register/one_bit_register.vhd ../One_bit_register/tb_one_bit_register.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity d_flip_flop
+# -- Compiling architecture behavioral of d_flip_flop
+# -- Compiling entity one_bit_register
+# -- Compiling architecture structural of one_bit_register
+# -- Compiling entity tb_one_bit_register
+# -- Compiling architecture behavior of tb_one_bit_register
+# End time: 12:03:04 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 12:03:04 on Feb 09,2026
+# vcom -reportprogress 300 -2008 N_bit_register.vhd stimulus_driver_N_bit_register.vhd tb_N_bit_register.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity N_bit_register
+# -- Compiling architecture structural of N_bit_register
+# -- Loading package NUMERIC_STD
+# -- Loading package MATH_REAL
+# ** Error: stimulus_driver_N_bit_register.vhd(10): (vcom-1598) Library "osvvm" not found.
+# ** Error: stimulus_driver_N_bit_register.vhd(11): (vcom-1136) Unknown identifier "osvvm".
+# ** Note: stimulus_driver_N_bit_register.vhd(13): VHDL Compiler exiting
+# End time: 12:03:04 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 2, Warnings: 0
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_N_bit_register.do line 13
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom -2008 *.vhd"
+ls
+# N_bit_register.vhd
+# do_N_bit_register.do
+# modelsim.ini
+# stimulus_driver_N_bit_register.vhd
+# tb_N_bit_register.vhd
+# tb_N_bit_register.vhd.bak
+# transcript
+# vsim.wlf
+# work
+vlib osvvm
+vcom ../../OSVVM/*.vhd
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 12:10:18 on Feb 09,2026
+# vcom -reportprogress 300 ../../OSVVM/AlertLogPkg.vhd ../../OSVVM/ClockResetPkg.vhd ../../OSVVM/CoveragePkg.vhd ../../OSVVM/CoverageVendorApiPkg_Aldec.vhd ../../OSVVM/CoverageVendorApiPkg_NVC.vhd ../../OSVVM/CoverageVendorApiPkg_default.vhd ../../OSVVM/DelayCoveragePkg.vhd ../../OSVVM/FileLinePathPkg.vhd ../../OSVVM/FileUtilPkg.vhd ../../OSVVM/IfElsePkg.vhd ../../OSVVM/LanguageSupport2019Pkg.vhd ../../OSVVM/MemoryGenericPkg.vhd ../../OSVVM/MemoryPkg.vhd ../../OSVVM/MemorySupportPkg.vhd ../../OSVVM/MessageListPkg.vhd ../../OSVVM/MessagePkg.vhd ../../OSVVM/NamePkg.vhd ../../OSVVM/NameStorePkg.vhd ../../OSVVM/OsvvmContext.vhd ../../OSVVM/OsvvmGlobalPkg.vhd ../../OSVVM/OsvvmScriptSettingsPkg.vhd ../../OSVVM/OsvvmScriptSettingsPkg_default.vhd ../../OSVVM/OsvvmSettingsPkg.vhd ../../OSVVM/OsvvmSettingsPkg_default.vhd ../../OSVVM/OsvvmTypesPkg.vhd ../../OSVVM/RandomBasePkg.vhd ../../OSVVM/RandomPkg.vhd ../../OSVVM/RandomPkg2019.vhd ../../OSVVM/RandomProcedurePkg.vhd ../../OSVVM/ReportPkg.vhd ../../OSVVM/ResizePkg.vhd ../../OSVVM/ResolutionPkg.vhd ../../OSVVM/ScoreboardGenericPkg.vhd ../../OSVVM/ScoreboardPkg_IntV.vhd ../../OSVVM/ScoreboardPkg_int.vhd ../../OSVVM/ScoreboardPkg_signed.vhd ../../OSVVM/ScoreboardPkg_slv.vhd ../../OSVVM/ScoreboardPkg_unsigned.vhd ../../OSVVM/SortListPkg_int.vhd ../../OSVVM/TbUtilPkg.vhd ../../OSVVM/TextUtilPkg.vhd ../../OSVVM/TranscriptPkg.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# ** Error: (vcom-11) Could not find work.ifelsepkg.
+# ** Error (suppressible): ../../OSVVM/AlertLogPkg.vhd(118): (vcom-1195) Cannot find expanded name "work.IfElsePkg".
+# ** Error: ../../OSVVM/AlertLogPkg.vhd(118): Unknown expanded name.
+# ** Error: (vcom-11) Could not find work.osvvmscriptsettingspkg.
+# ** Error (suppressible): ../../OSVVM/AlertLogPkg.vhd(119): (vcom-1195) Cannot find expanded name "work.OsvvmScriptSettingsPkg".
+# ** Error: ../../OSVVM/AlertLogPkg.vhd(119): Unknown expanded name.
+# ** Error: (vcom-11) Could not find work.osvvmglobalpkg.
+# ** Error (suppressible): ../../OSVVM/AlertLogPkg.vhd(120): (vcom-1195) Cannot find expanded name "work.OsvvmGlobalPkg".
+# ** Error: ../../OSVVM/AlertLogPkg.vhd(120): Unknown expanded name.
+# ** Error: (vcom-11) Could not find work.transcriptpkg.
+# ** Error (suppressible): ../../OSVVM/AlertLogPkg.vhd(121): (vcom-1195) Cannot find expanded name "work.TranscriptPkg".
+# ** Error: ../../OSVVM/AlertLogPkg.vhd(121): Unknown expanded name.
+# ** Error: (vcom-11) Could not find work.textutilpkg.
+# ** Error (suppressible): ../../OSVVM/AlertLogPkg.vhd(122): (vcom-1195) Cannot find expanded name "work.TextUtilPkg".
+# ** Error: ../../OSVVM/AlertLogPkg.vhd(122): Unknown expanded name.
+# ** Error: (vcom-11) Could not find work.fileutilpkg.
+# ** Error (suppressible): ../../OSVVM/AlertLogPkg.vhd(123): (vcom-1195) Cannot find expanded name "work.FileUtilPkg".
+# ** Error: ../../OSVVM/AlertLogPkg.vhd(123): Unknown expanded name.
+# ** Error: (vcom-11) Could not find work.osvvmsettingspkg.
+# ** Error (suppressible): ../../OSVVM/AlertLogPkg.vhd(124): (vcom-1195) Cannot find expanded name "work.OsvvmSettingsPkg".
+# ** Error: ../../OSVVM/AlertLogPkg.vhd(124): Unknown expanded name.
+# ** Error: (vcom-11) Could not find work.languagesupport2019pkg.
+# ** Error (suppressible): ../../OSVVM/AlertLogPkg.vhd(125): (vcom-1195) Cannot find expanded name "work.LanguageSupport2019Pkg".
+# ** Error: ../../OSVVM/AlertLogPkg.vhd(125): Unknown expanded name.
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# ** Note: ../../OSVVM/AlertLogPkg.vhd(134): VHDL Compiler exiting
+# End time: 12:10:18 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 24, Warnings: 0
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+do do_N_bit_register.do
+# 32
+# 20
+# 50ns
+# 50
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 12:20:31 on Feb 09,2026
+# vcom -reportprogress 300 -2008 ../Structural_mux/mux2t1_structural.vhd ../Structural_mux/not_gate.vhd ../Structural_mux/tb_mux2t1_structural.vhd ../Structural_mux/two_input_and.vhd ../Structural_mux/two_input_or.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity mux2t1_structural
+# -- Compiling architecture structural of mux2t1_structural
+# -- Compiling entity not_gate
+# -- Compiling architecture dataflow of not_gate
+# -- Compiling entity tb_mux2t1_structural
+# -- Compiling architecture testbench of tb_mux2t1_structural
+# -- Compiling entity two_input_and
+# -- Compiling architecture dataflow of two_input_and
+# -- Compiling entity two_input_or
+# -- Compiling architecture dataflow of two_input_or
+# End time: 12:20:31 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 12:20:31 on Feb 09,2026
+# vcom -reportprogress 300 -2008 ../One_bit_register/d_filp_flop.vhd ../One_bit_register/one_bit_register.vhd ../One_bit_register/tb_one_bit_register.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity d_flip_flop
+# -- Compiling architecture behavioral of d_flip_flop
+# -- Compiling entity one_bit_register
+# -- Compiling architecture structural of one_bit_register
+# -- Compiling entity tb_one_bit_register
+# -- Compiling architecture behavior of tb_one_bit_register
+# End time: 12:20:31 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 12:20:31 on Feb 09,2026
+# vcom -reportprogress 300 -2008 N_bit_register.vhd stimulus_driver_N_bit_register.vhd tb_N_bit_register.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity N_bit_register
+# -- Compiling architecture structural of N_bit_register
+# -- Loading package NUMERIC_STD
+# -- Loading package MATH_REAL
+# -- Compiling entity stimulus_driver_N_bit_register
+# -- Compiling architecture behavioral of stimulus_driver_N_bit_register
+# -- Compiling entity tb_N_bit_register
+# -- Compiling architecture behavior of tb_N_bit_register
+# End time: 12:20:31 on Feb 09,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim work.tb_N_bit_register -voptargs="+acc" -gN=32 -gITERATIONS=20 -ggCLK_HPER=50ns 
+# Start time: 12:20:31 on Feb 09,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.tb_n_bit_register(behavior)#1
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading work.stimulus_driver_n_bit_register(behavioral)#1
+# Loading work.n_bit_register(structural)#1
+# Loading work.one_bit_register(structural)#1
+# Loading work.mux2t1_structural(structural)#1
+# Loading work.not_gate(dataflow)#1
+# Loading work.two_input_and(dataflow)#1
+# Loading work.two_input_or(dataflow)#1
+# Loading work.d_flip_flop(behavioral)#1

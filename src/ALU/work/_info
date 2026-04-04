@@ -1,0 +1,476 @@
+m255
+K4
+z2
+!s11e vcom 2025.1_2 2025.04, Apr  7 2025
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/umhaihl/cpre_381/Labs/lab3/cpre3810-toolflow/proj/src/ALU
+Eadder_subtractor_immediate
+Z1 w1773288680
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 70
+R0
+Z4 8AddSub_immediate/AddSub_immediate.vhd
+Z5 FAddSub_immediate/AddSub_immediate.vhd
+l0
+Z6 L10 1
+Vh[jeFRA]NjVmmV=lV62:n3
+!s100 T2U5T7iLSCP@z8G1aC9^63
+Z7 OL;C;2025.1_2;82
+33
+Z8 !s110 1773302309
+!i10b 1
+Z9 !s108 1773302309.000000
+Z10 !s90 -reportprogress|300|-2008|AddSub_immediate/AddSub_immediate.vhd|AddSub_immediate/tb_another_test.vhd|
+Z11 !s107 AddSub_immediate/tb_another_test.vhd|AddSub_immediate/AddSub_immediate.vhd|
+!i113 0
+Z12 o-2008
+Z13 tExplicit 1 CvgOpt 0
+Astructural
+R2
+R3
+DEx4 work 26 adder_subtractor_immediate 0 22 h[jeFRA]NjVmmV=lV62:n3
+!i122 70
+l45
+L20 52
+V4WXi7?YW0i8KeNJ0GJ[ma0
+!s100 RiFJL:75ThYKW@KZZaBG:3
+R7
+33
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Ealu
+Z14 w1773302306
+Z15 DPx4 work 11 riscv_types 0 22 l<^RRE@P3[Q`]9HEiooAC3
+R2
+R3
+!i122 73
+R0
+Z16 8ALU.vhd
+Z17 FALU.vhd
+l0
+Z18 L11 1
+V2[ok^P@GaR2^m68bkY^XN3
+!s100 FZQDI>2bGf9JhWmW3jRka3
+R7
+33
+Z19 !s110 1773302310
+!i10b 1
+Z20 !s108 1773302310.000000
+Z21 !s90 -reportprogress|300|-2008|ALU.vhd|
+Z22 !s107 ALU.vhd|
+!i113 0
+R12
+R13
+Astructural
+R15
+R2
+R3
+Z23 DEx4 work 3 alu 0 22 2[ok^P@GaR2^m68bkY^XN3
+!i122 73
+l53
+L20 60
+V`b>PbcVb>1Ek?Zh0Pf?>f0
+!s100 Q_CAU:?_miHC[N023^k621
+R7
+33
+R19
+!i10b 1
+R20
+R21
+R22
+!i113 0
+R12
+R13
+Ebus_32_bit_mux_16_to_1
+Z24 w1772960271
+R15
+R2
+R3
+!i122 71
+R0
+Z25 8Bus_Mux_32bit_16_to_1/Bus_Mux_32bit_16_to_1.vhd
+Z26 FBus_Mux_32bit_16_to_1/Bus_Mux_32bit_16_to_1.vhd
+l0
+R6
+V=^dkY`Ok3HNc2YRBN6oAE0
+!s100 8Y?1?LTlDRRXS5O^]>LjZ0
+R7
+33
+R19
+!i10b 1
+R9
+Z27 !s90 -reportprogress|300|-2008|Bus_Mux_32bit_16_to_1/Bus_Mux_32bit_16_to_1.vhd|Bus_Mux_32bit_16_to_1/Mux_16_to_1.vhd|Bus_Mux_32bit_16_to_1/stimulus_driver_Mux_16_to_1.vhd|Bus_Mux_32bit_16_to_1/tb_Mux_32_to_16.vhd|
+Z28 !s107 Bus_Mux_32bit_16_to_1/tb_Mux_32_to_16.vhd|Bus_Mux_32bit_16_to_1/stimulus_driver_Mux_16_to_1.vhd|Bus_Mux_32bit_16_to_1/Mux_16_to_1.vhd|Bus_Mux_32bit_16_to_1/Bus_Mux_32bit_16_to_1.vhd|
+!i113 0
+R12
+R13
+Astructural
+R15
+R2
+R3
+DEx4 work 22 bus_32_bit_mux_16_to_1 0 22 =^dkY`Ok3HNc2YRBN6oAE0
+!i122 71
+l26
+L18 36
+V39VQ9[Igc27b7bo?M9@m`2
+!s100 HeQk9V2ARlabS5[FcjW3;0
+R7
+33
+R19
+!i10b 1
+R9
+R27
+R28
+!i113 0
+R12
+R13
+Edecoder_4_to_16
+Z29 w1772869730
+R2
+R3
+!i122 72
+R0
+Z30 8Decoder_4_to_16/Decoder_4_to_16.vhd
+Z31 FDecoder_4_to_16/Decoder_4_to_16.vhd
+l0
+R6
+VX?QOSR?Y`I0XY@6TQ5Udo1
+!s100 iUY0dMcSab]=T7INg6;YN3
+R7
+33
+R19
+!i10b 1
+R20
+Z32 !s90 -reportprogress|300|-2008|Decoder_4_to_16/Decoder_4_to_16.vhd|Decoder_4_to_16/stimulus_driver_Decoder_4_to_16.vhd|Decoder_4_to_16/tb_Decoder_4_to_16.vhd|
+Z33 !s107 Decoder_4_to_16/tb_Decoder_4_to_16.vhd|Decoder_4_to_16/stimulus_driver_Decoder_4_to_16.vhd|Decoder_4_to_16/Decoder_4_to_16.vhd|
+!i113 0
+R12
+R13
+Abehavioral
+R2
+R3
+DEx4 work 15 decoder_4_to_16 0 22 X?QOSR?Y`I0XY@6TQ5Udo1
+!i122 72
+l17
+L16 30
+V7aRmfIaGVH_JeX`>k<z<k0
+!s100 =P:21^hGfM_3j?8aaZDoJ3
+R7
+33
+R19
+!i10b 1
+R20
+R32
+R33
+!i113 0
+R12
+R13
+Emux_16_to_1
+Z34 w1772960273
+Z35 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+R2
+R3
+!i122 71
+R0
+Z36 8Bus_Mux_32bit_16_to_1/Mux_16_to_1.vhd
+Z37 FBus_Mux_32bit_16_to_1/Mux_16_to_1.vhd
+l0
+R6
+V:[E7`6M=To8h5LcgQ`FKR1
+!s100 4A0QoQPoT;1MM43KH<fj33
+R7
+33
+R19
+!i10b 1
+R9
+R27
+R28
+!i113 0
+R12
+R13
+Adataflow
+R35
+R2
+R3
+DEx4 work 11 mux_16_to_1 0 22 :[E7`6M=To8h5LcgQ`FKR1
+!i122 71
+l18
+L17 21
+Voi7Z[gQ5bh@TO7UKUlie@3
+!s100 FEc^M_n3cP3=NHRU?BENz1
+R7
+33
+R19
+!i10b 1
+R9
+R27
+R28
+!i113 0
+R12
+R13
+Priscv_types
+R2
+R3
+!i122 69
+Z38 w1772882613
+R0
+Z39 8../RISCV_types.vhd
+Z40 F../RISCV_types.vhd
+l0
+L16 10
+Vl<^RRE@P3[Q`]9HEiooAC3
+!s100 BCag^bgI8a9U3cMJj;o]R1
+R7
+33
+R8
+!i10b 1
+R9
+Z41 !s90 -reportprogress|300|-2008|../RISCV_types.vhd|
+Z42 !s107 ../RISCV_types.vhd|
+!i113 0
+R12
+R13
+Bbody
+R15
+R2
+R3
+!i122 69
+l0
+L27 3
+VR>45;B07UA=_`8gVd];8[0
+!s100 _^RD?eb`z;5OSim@LWo?V3
+R7
+33
+R8
+!i10b 1
+R9
+R41
+R42
+!i113 0
+R12
+R13
+Estimulus_driver_decoder_4_to_16
+Z43 w1772870024
+Z44 DPx4 ieee 9 math_real 0 22 gNk<PdFJ<XNPcfef`f?Z81
+R35
+R2
+R3
+!i122 72
+R0
+Z45 8Decoder_4_to_16/stimulus_driver_Decoder_4_to_16.vhd
+Z46 FDecoder_4_to_16/stimulus_driver_Decoder_4_to_16.vhd
+l0
+R18
+VUV:ool>X;B@PcAJGDMIJF3
+!s100 XjMT4hbPagWJ3_^j5WK`<3
+R7
+33
+R19
+!i10b 1
+R20
+R32
+R33
+!i113 0
+R12
+R13
+Abehavioral
+R44
+R35
+R2
+R3
+DEx4 work 31 stimulus_driver_decoder_4_to_16 0 22 UV:ool>X;B@PcAJGDMIJF3
+!i122 72
+l19
+L18 33
+VW^B;Y8:W2HnVW5@JS7>Kg3
+!s100 FTX8AJ]=E4Z7WJ]PO8ffK2
+R7
+33
+R19
+!i10b 1
+R20
+R32
+R33
+!i113 0
+R12
+R13
+Estimulus_driver_mux_16_to_1
+Z47 w1772868183
+R44
+R35
+R2
+R3
+!i122 71
+R0
+Z48 8Bus_Mux_32bit_16_to_1/stimulus_driver_Mux_16_to_1.vhd
+Z49 FBus_Mux_32bit_16_to_1/stimulus_driver_Mux_16_to_1.vhd
+l0
+R18
+V:U60HWooFh:hceZ>4oe7:1
+!s100 >zZBS]BeB3dUnzOSc72CK0
+R7
+33
+R19
+!i10b 1
+R9
+R27
+R28
+!i113 0
+R12
+R13
+Abehavioral
+R44
+R35
+R2
+R3
+DEx4 work 27 stimulus_driver_mux_16_to_1 0 22 :U60HWooFh:hceZ>4oe7:1
+!i122 71
+l19
+L18 41
+Vc90UlS@ZzhN3A3^GZ]EbV2
+!s100 U]JGjL:Q6jkQ1EK1:OeFe2
+R7
+33
+R19
+!i10b 1
+R9
+R27
+R28
+!i113 0
+R12
+R13
+Etb_another_test_addsub_imm
+Z50 w1773289268
+R2
+R3
+!i122 70
+R0
+Z51 8AddSub_immediate/tb_another_test.vhd
+Z52 FAddSub_immediate/tb_another_test.vhd
+l0
+L5 1
+V9ca3o9himiJUMABNXY>li1
+!s100 YY@9;QSNU^no_SmP7[^TV2
+R7
+33
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Atb
+R2
+R3
+DEx4 work 26 tb_another_test_addsub_imm 0 22 9ca3o9himiJUMABNXY>li1
+!i122 70
+l28
+L8 58
+VFbNnC2o3]6fLBK5;B1[W:2
+!s100 O2YB3FQF1@55c9ID]^eb:0
+R7
+33
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Etb_decoder_4_to_16
+Z53 w1772869914
+R2
+R3
+!i122 72
+R0
+Z54 8Decoder_4_to_16/tb_Decoder_4_to_16.vhd
+Z55 FDecoder_4_to_16/tb_Decoder_4_to_16.vhd
+l0
+L9 1
+V2_M^NbePOo`Zh8V3QZ[4:0
+!s100 bL84Rh>6VaUGm09hHfi<d1
+R7
+33
+R19
+!i10b 1
+R20
+R32
+R33
+!i113 0
+R12
+R13
+Abehavior
+R2
+R3
+DEx4 work 18 tb_decoder_4_to_16 0 22 2_M^NbePOo`Zh8V3QZ[4:0
+!i122 72
+l37
+L16 37
+V;40k54Dahhc`_LAN4k;::2
+!s100 BZ7[zQWf]Pm5k=VfcX3CY1
+R7
+33
+R19
+!i10b 1
+R20
+R32
+R33
+!i113 0
+R12
+R13
+Etb_mux_16_to_1
+Z56 w1772867937
+R2
+R3
+!i122 71
+R0
+Z57 8Bus_Mux_32bit_16_to_1/tb_Mux_32_to_16.vhd
+Z58 FBus_Mux_32bit_16_to_1/tb_Mux_32_to_16.vhd
+l0
+L9 1
+VT:RjfDWiQFz70l7cmM3_o1
+!s100 c5gTC=[R_@kT_O_IoSP^b2
+R7
+33
+R19
+!i10b 1
+R9
+R27
+R28
+!i113 0
+R12
+R13
+Abehavior
+R2
+R3
+DEx4 work 14 tb_mux_16_to_1 0 22 T:RjfDWiQFz70l7cmM3_o1
+!i122 71
+l37
+L16 36
+V?VA8g3lBejO42DjPJW@Fe3
+!s100 1@bCchmgDJQUESOi5bZhQ3
+R7
+33
+R19
+!i10b 1
+R9
+R27
+R28
+!i113 0
+R12
+R13

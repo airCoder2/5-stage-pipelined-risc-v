@@ -1,0 +1,221 @@
+# //  Questa Sim-64
+# //  Version 2025.1_2 linux_x86_64 Apr  7 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+do do_Main_control_unit.do
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:09:29 on Mar 06,2026
+# vcom -reportprogress 300 Main_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity Main_control_unit
+# ** Error: Main_control_unit.vhd(21): (vcom-1576) Invalid ';' before ')'.
+# ** Note: Main_control_unit.vhd(21): VHDL Compiler exiting
+# End time: 01:09:29 on Mar 06,2026, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_Main_control_unit.do line 6
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom *.vhd"
+do do_Main_control_unit.do
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:09:49 on Mar 06,2026
+# vcom -reportprogress 300 Main_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity Main_control_unit
+# -- Compiling architecture structural of Main_control_unit
+# ** Error: Main_control_unit.vhd(41): Length field for bit string literal is not defined until VHDL 2008.
+# ** Error: Main_control_unit.vhd(42): Length field for bit string literal is not defined until VHDL 2008.
+# ** Error: Main_control_unit.vhd(43): Length field for bit string literal is not defined until VHDL 2008.
+# ** Error: Main_control_unit.vhd(44): Length field for bit string literal is not defined until VHDL 2008.
+# ** Warning: Main_control_unit.vhd(45): (vcom-1207) An abstract literal and an identifier must have a separator between them.
+# ** Error: Main_control_unit.vhd(45): near "00": syntax error
+# ** Error: Main_control_unit.vhd(95): Labels do not match: 'structural' and 'behavioral'.
+# ** Note: Main_control_unit.vhd(95): VHDL Compiler exiting
+# End time: 01:09:49 on Mar 06,2026, Elapsed time: 0:00:00
+# Errors: 6, Warnings: 1
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_Main_control_unit.do line 6
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom *.vhd"
+do do_Main_control_unit.do
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:10:15 on Mar 06,2026
+# vcom -reportprogress 300 -2008 Main_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity Main_control_unit
+# -- Compiling architecture structural of Main_control_unit
+# ** Warning: Main_control_unit.vhd(45): (vcom-1207) An abstract literal and an identifier must have a separator between them.
+# ** Error: Main_control_unit.vhd(45): near "00": syntax error
+# ** Error: Main_control_unit.vhd(95): Labels do not match: 'structural' and 'behavioral'.
+# ** Note: Main_control_unit.vhd(95): VHDL Compiler exiting
+# End time: 01:10:15 on Mar 06,2026, Elapsed time: 0:00:00
+# Errors: 2, Warnings: 1
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_Main_control_unit.do line 6
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom -2008 *.vhd"
+do do_Main_control_unit.do
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:10:30 on Mar 06,2026
+# vcom -reportprogress 300 -2008 Main_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity Main_control_unit
+# -- Compiling architecture structural of Main_control_unit
+# ** Warning: Main_control_unit.vhd(45): (vcom-1207) An abstract literal and an identifier must have a separator between them.
+# ** Error: Main_control_unit.vhd(45): near "00": syntax error
+# ** Error: Main_control_unit.vhd(95): Labels do not match: 'structural' and 'behavioral'.
+# ** Note: Main_control_unit.vhd(95): VHDL Compiler exiting
+# End time: 01:10:30 on Mar 06,2026, Elapsed time: 0:00:00
+# Errors: 2, Warnings: 1
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_Main_control_unit.do line 6
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom -2008 *.vhd"
+do do_Main_control_unit.do
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:10:38 on Mar 06,2026
+# vcom -reportprogress 300 -2008 Main_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity Main_control_unit
+# -- Compiling architecture structural of Main_control_unit
+# ** Error: Main_control_unit.vhd(95): Labels do not match: 'structural' and 'behavioral'.
+# ** Note: Main_control_unit.vhd(95): VHDL Compiler exiting
+# End time: 01:10:38 on Mar 06,2026, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+# ** Error: /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+# Error in macro ./do_Main_control_unit.do line 6
+# /usr/local/mentor/questasim/linux_x86_64/vcom failed.
+#     while executing
+# "vcom -2008 *.vhd"
+do do_Main_control_unit.do
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:10:59 on Mar 06,2026
+# vcom -reportprogress 300 -2008 Main_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity Main_control_unit
+# -- Compiling architecture behavioral of Main_control_unit
+# End time: 01:10:59 on Mar 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+do do_Main_control_unit.do
+# 0
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:23:16 on Mar 06,2026
+# vcom -reportprogress 300 -2008 Main_control_unit.vhd tb_Main_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity Main_control_unit
+# -- Compiling architecture behavioral of Main_control_unit
+# -- Compiling entity tb_Main_control_unit
+# -- Compiling architecture behavioral of tb_Main_control_unit
+# End time: 01:23:16 on Mar 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+vsim work.tb_main_control_unit -voptargs=+acc
+# vsim work.tb_main_control_unit -voptargs="+acc" 
+# Start time: 01:23:31 on Mar 06,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_main_control_unit(behavioral)#1
+# Loading work.main_control_unit(behavioral)#1
+add wave sim:/tb_main_control_unit/*
+do do_Main_control_unit.do
+# ** Warning: (vdel-134) Unable to remove locked optimized design "_opt".  Locker is umhaihl@co2050-18.ece.iastate.edu.
+# 0
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vmap 2025.1_2 Lib Mapping Utility 2025.04 Apr  7 2025
+# vmap work work 
+# Modifying modelsim.ini
+# QuestaSim-64 vcom 2025.1_2 Compiler 2025.04 Apr  7 2025
+# Start time: 01:24:53 on Mar 06,2026
+# vcom -reportprogress 300 -2008 Main_control_unit.vhd tb_Main_control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity Main_control_unit
+# -- Compiling architecture behavioral of Main_control_unit
+# -- Compiling entity tb_Main_control_unit
+# -- Compiling architecture behavioral of tb_Main_control_unit
+# End time: 01:24:53 on Mar 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 01:24:53 on Mar 06,2026, Elapsed time: 0:01:22
+# Errors: 0, Warnings: 1
+# vsim work.tb_main_control_unit -voptargs="+acc" 
+# Start time: 01:24:53 on Mar 06,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_main_control_unit(behavioral)#1
+# Loading work.main_control_unit(behavioral)#1
+# End time: 01:29:19 on Mar 06,2026, Elapsed time: 0:04:26
+# Errors: 0, Warnings: 1

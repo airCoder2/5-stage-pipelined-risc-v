@@ -1,0 +1,81 @@
+-- Date        : March 23, 2026
+-- File        : Mux_32_to_1.vhd     
+-- Designer    : Salah Nasriddinov
+-- Description : This file implements a shifter 
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+USE ieee.numeric_std.ALL;
+
+
+entity Shifter is
+    port(
+         i_data : in std_logic_vector(31 downto 0);
+         i_shift_amount : in std_logic_vector(4 downto 0);
+         is_sra    : in std_logic;
+         o_shifted_data : out std_logic_vector(31 downto 0)
+        );
+end entity Shifter;
+
+
+architecture structural of Shifter is
+    component Mux_32_to_1 is
+        port(DATA_IN   : in std_logic_vector(31 downto 0);
+             SELECT_IN : in std_logic_vector(4 downto 0);
+             MUX_OUT   : out std_logic);
+    end component Mux_32_to_1;
+
+    signal s_extended_data : std_logic_vector(63 downto 0);
+
+    signal s_data_to_mux : std_logic_vector(31 downto 0);
+
+
+begin 
+    s_extended_data <= 0x00000000 & i_data;
+
+    
+Shifter_Mux: for i in 0 to 31 generate
+    MUXI: Mux_32_to_1 port map(
+        DATA_IN => (
+    
+            31 => (s_extended_data(31) when (i > 0 and is_sra = '1') else s_extended_data(31 + i)),
+            30 => (s_extended_data(31) when (i > 1 and is_sra = '1') else s_extended_data(30 + i)),
+            29 => (s_extended_data(31) when (i > 2 and is_sra = '1') else s_extended_data(29 + i)),
+            28 => (s_extended_data(31) when (i > 3 and is_sra = '1') else s_extended_data(28 + i)),
+            27 => (s_extended_data(31) when (i > 4 and is_sra = '1') else s_extended_data(27 + i)),
+            26 => (s_extended_data(31) when (i > 5 and is_sra = '1') else s_extended_data(26 + i)),
+            25 => (s_extended_data(31) when (i > 6 and is_sra = '1') else s_extended_data(25 + i)),
+            24 => (s_extended_data(31) when (i > 7 and is_sra = '1') else s_extended_data(24 + i)),
+            23 => (s_extended_data(31) when (i > 8 and is_sra = '1') else s_extended_data(23 + i)),
+            22 => (s_extended_data(31) when (i > 9 and is_sra = '1') else s_extended_data(22 + i)),
+            21 => (s_extended_data(31) when (i > 10 and is_sra = '1') else s_extended_data(21 + i)),
+            20 => (s_extended_data(31) when (i > 11 and is_sra = '1') else s_extended_data(20 + i)),
+            19 => (s_extended_data(31) when (i > 12 and is_sra = '1') else s_extended_data(19 + i)),
+            18 => (s_extended_data(31) when (i > 13 and is_sra = '1') else s_extended_data(18 + i)),
+            17 => (s_extended_data(31) when (i > 14 and is_sra = '1') else s_extended_data(17 + i)),
+            16 => (s_extended_data(31) when (i > 15 and is_sra = '1') else s_extended_data(16 + i)),
+            15 => (s_extended_data(31) when (i > 16 and is_sra = '1') else s_extended_data(15 + i)),
+            14 => (s_extended_data(31) when (i > 17 and is_sra = '1') else s_extended_data(14 + i)),
+            13 => (s_extended_data(31) when (i > 18 and is_sra = '1') else s_extended_data(13 + i)),
+            12 => (s_extended_data(31) when (i > 19 and is_sra = '1') else s_extended_data(12 + i)),
+            11 => (s_extended_data(31) when (i > 20 and is_sra = '1') else s_extended_data(11 + i)),
+            10 => (s_extended_data(31) when (i > 21 and is_sra = '1') else s_extended_data(10 + i)),
+            9  => (s_extended_data(31) when (i > 22 and is_sra = '1') else s_extended_data(9 + i)),
+            8  => (s_extended_data(31) when (i > 23 and is_sra = '1') else s_extended_data(8 + i)),
+            7  => (s_extended_data(31) when (i > 24 and is_sra = '1') else s_extended_data(7 + i)),
+            6  => (s_extended_data(31) when (i > 25 and is_sra = '1') else s_extended_data(6 + i)),
+            5  => (s_extended_data(31) when (i > 26 and is_sra = '1') else s_extended_data(5 + i)),
+            4  => (s_extended_data(31) when (i > 27 and is_sra = '1') else s_extended_data(4 + i)),
+            3  => (s_extended_data(31) when (i > 28 and is_sra = '1') else s_extended_data(3 + i)),
+            2  => (s_extended_data(31) when (i > 29 and is_sra = '1') else s_extended_data(2 + i)),
+            1  => (s_extended_data(31) when (i > 30 and is_sra = '1') else s_extended_data(1 + i)),
+            0  => (s_extended_data(31) when (i > 31 and is_sra = '1') else s_extended_data(0 + i))
+    
+    ),
+        SELECT_IN => i_shift_amount,
+        MUX_OUT   => o_shifted_data(i)
+    );
+end generate Shifter_Mux;
+end architecture structural;
+
+

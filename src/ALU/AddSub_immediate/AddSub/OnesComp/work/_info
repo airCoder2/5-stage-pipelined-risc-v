@@ -1,0 +1,199 @@
+m255
+K4
+z2
+Z0 !s12c _opt
+Z1 !s99 nomlopt
+R0
+R1
+R0
+R1
+!s11e vcom 2025.1_2 2025.04, Apr  7 2025
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z2 d/home/umhaihl/cpre_381/lab1/lab_folders/Lab1/OnesComp
+T_opt
+!s110 1769833248
+V;1US;iUHYaRI:3`iC@<@P2
+04 20 20 work tb_ones_complimentor structural_testbench 1
+=1-000ae431a4f1-697d8320-468a2-3d58
+R1
+!s12f OEM100
+!s12b OEM100
+!s124 OEM100
+!s135 nogc
+o-quiet -auto_acc_if_foreign -work work +acc
+tCvgOpt 0
+n@_opt
+OL;O;2025.1_2;82
+Enot_gate
+Z3 w1769818933
+Z4 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z5 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 2
+R2
+Z6 8not_gate.vhd
+Z7 Fnot_gate.vhd
+l0
+L7 1
+V[45TGj66>RPmQ2lETF7941
+!s100 8Eg?eA2Uf<NdkaX=Z7F]W0
+Z8 OL;C;2025.1_2;82
+33
+Z9 !s110 1769833246
+!i10b 1
+Z10 !s108 1769833246.000000
+Z11 !s90 -reportprogress|300|-2008|not_gate.vhd|ones_complimentor.vhd|stimulus_driver.vhd|tb_ones_complimentor.vhd|
+Z12 !s107 tb_ones_complimentor.vhd|stimulus_driver.vhd|ones_complimentor.vhd|not_gate.vhd|
+!i113 0
+Z13 o-2008
+Z14 tExplicit 1 CvgOpt 0
+Adataflow
+R4
+R5
+DEx4 work 8 not_gate 0 22 [45TGj66>RPmQ2lETF7941
+!i122 2
+l13
+L12 4
+VRI8VALf3fnm6n>N>R=>9O1
+!s100 Ek@o1_H^LjN>Y58cYWBg@3
+R8
+33
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 0
+R13
+R14
+Eones_complimentor
+Z15 w1769832018
+R4
+R5
+!i122 2
+R2
+Z16 8ones_complimentor.vhd
+Z17 Fones_complimentor.vhd
+l0
+L8 1
+Vn^U_C:oSSLlL1nR>o68iE0
+!s100 i]K3<9Zjo_1Jbj3IYBW=^0
+R8
+33
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 0
+R13
+R14
+Astructural
+R4
+R5
+DEx4 work 17 ones_complimentor 0 22 n^U_C:oSSLlL1nR>o68iE0
+!i122 2
+l20
+L15 11
+VoS1oZR4C?agzfALHKCHeZ3
+!s100 M`E]_4E2P@;D`K3k96hK`2
+R8
+33
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 0
+R13
+R14
+Estimulus_driver
+Z18 w1769833243
+Z19 DPx4 ieee 9 math_real 0 22 gNk<PdFJ<XNPcfef`f?Z81
+Z20 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+R4
+R5
+!i122 2
+R2
+Z21 8stimulus_driver.vhd
+Z22 Fstimulus_driver.vhd
+l0
+L9 1
+VHclA^F=cJP>5HKB6:?`k[3
+!s100 4iD1WLha=g5MzhOAEN<bE2
+R8
+33
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 0
+R13
+R14
+Abehavior
+R19
+R20
+R4
+R5
+DEx4 work 15 stimulus_driver 0 22 HclA^F=cJP>5HKB6:?`k[3
+!i122 2
+l15
+L14 26
+VDXf1R5?S6czWcM@:Vfb_O3
+!s100 hF19N>?fXk0b4cMX<ESN>1
+R8
+33
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 0
+R13
+R14
+Etb_ones_complimentor
+Z23 w1769833175
+R4
+R5
+!i122 2
+R2
+Z24 8tb_ones_complimentor.vhd
+Z25 Ftb_ones_complimentor.vhd
+l0
+L15 1
+VN8<fY;lTl^V<C>J@0onmc3
+!s100 kCT^iJkG1lPPGN@Ca3HTf2
+R8
+33
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 0
+R13
+R14
+Astructural_testbench
+R4
+R5
+DEx4 work 20 tb_ones_complimentor 0 22 N8<fY;lTl^V<C>J@0onmc3
+!i122 2
+l33
+L20 22
+V:DRm@jHla[bi1lTMe]iCJ0
+!s100 cH80]b6;:_RdFZ^S0aiS13
+R8
+33
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 0
+R13
+R14
