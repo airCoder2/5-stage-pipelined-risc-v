@@ -1,4 +1,4 @@
 **Alhamdulillah**
 
-This repo implements a software pipelined risc-v processor. Doesn't handle any type of hazards.
+This repo implements a pipelined risc-v processor.
 # 5-stage-pipelined-risc-v
