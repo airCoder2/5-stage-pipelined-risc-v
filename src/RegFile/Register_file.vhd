@@ -36,7 +36,7 @@ architecture structural of Register_file is
 																			  -- with 32 bit outs
 
 	component N_bit_register is -- N_bit_register that takes a generic, in this case it is 32 fixed.
-        generic(N : integer; Reset_value : std_logic_vector);
+        generic(N : integer; Reset_value : std_logic_vector; Bypass_register : boolean);
         port(i_CLK  : in std_logic;						   -- Clock input
            i_RST    : in std_logic;						   -- Reset input
            i_WE     : in std_logic;   					   -- All register connected
@@ -70,7 +70,7 @@ begin
     begin
         IF_SP: if i = 2 generate
             a_32bit_register_SP: N_bit_register 
-            generic map(N => 32, Reset_value => 32x"7FFFEFFC") -- specify how many bits a register is
+            generic map(N => 32, Reset_value => 32x"7FFFEFFC", Bypass_register => true) -- specify how many bits a register is
                 port map(
                 i_CLK => CLOCK_IN,	-- clock
                 i_RST => REG_RST_IN, -- reset that resets all the register values
@@ -82,7 +82,7 @@ begin
 
         IF_OTHER: if i /= 2 generate
             a_32bit_register_I: N_bit_register 
-            generic map(N => 32, Reset_value => 32x"00000000") -- specify how many bits a register is
+            generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true) -- specify how many bits a register is
                 port map(
                 i_CLK => CLOCK_IN,	-- clock
                 i_RST => REG_RST_IN, -- reset that resets all the register values

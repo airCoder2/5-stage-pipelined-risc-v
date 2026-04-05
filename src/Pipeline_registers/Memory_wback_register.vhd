@@ -18,7 +18,7 @@ end entity Memory_wback_register;
 architecture structural of Memory_wback_register is
 
     component N_bit_register is
-        generic(N : integer; Reset_value : std_logic_vector);
+        generic(N : integer; Reset_value : std_logic_vector; Bypass_register : boolean);
         port(i_CLK  : in std_logic;						   -- Clock input
            i_RST    : in std_logic;						   -- Reset input
            i_WE     : in std_logic;   					   -- All register connected
@@ -46,7 +46,7 @@ begin
     s_Memory_wback_data_in(71)           <= i_memory_wback_register.halt;
 
     Memory_wback_register_inst: N_bit_register
-        generic map(N => 72, Reset_value => (71 downto 0 => '0'))
+        generic map(N => 72, Reset_value => (71 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                 -- reset the pipeline to 0

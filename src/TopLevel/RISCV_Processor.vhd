@@ -237,6 +237,15 @@ architecture structure of RISCV_Processor is
     signal s_should_branch_mem         : std_logic;                             -- the output of the branch decision box (MEM stage)
     signal s_reg_file_data_to_write_wb : std_logic_vector(31 downto 0);         -- data to write back in register file (WB stage)
 
+    signal s_jal_id  : std_logic;
+    signal s_jalr_id : std_logic;
+    signal s_read1_id : std_logic_vector(31 downto 0);
+    signal s_ALU_src_id   : std_logic;
+    signal s_ALU_A_src_id : std_logic;
+    signal s_ALU_op_id       : std_logic_vector(1 downto 0);
+    signal s_lui_id     : std_logic;
+     
+
 
 
     -- Pipeline Register input outputs--
@@ -320,7 +329,7 @@ begin
     Mux2t1_pc_source_inst:  mux2t1_N_dataflow
             generic map(N => 32)
             port map(
-                     i_S  => s_should_branch_mem or s_EX_MEM_output.jal or s_EX_MEM_output.jalr,
+                     i_S  => s_should_branch_mem or s_EX_MEM_output.jal_or_jalr,
                      i_D0 => s_pc_plus_4_if,            -- current pc + 4
                      i_D1 => s_EX_MEM_output.branch_PC, -- calculated branch/jump PC
                      o_O  => s_Next_pc_if               -- selected next PC
@@ -360,17 +369,17 @@ begin
     Main_control_inst: Main_control_unit 
         port map(
                  i_Opcode      => s_IF_ID_output.Inst(6 downto 0),
-                 o_ALU_op      => s_ID_EX_input.ALU_op,
+                 o_ALU_op      => s_ALU_op_id,
                  o_Imm_select  => s_Imm_select_id,
-                 o_ALU_A_src   => s_ID_EX_input.ALU_A_src, 
-                 o_ALU_src     => s_ID_EX_input.ALU_src,
+                 o_ALU_A_src   => s_ALU_A_src_id, 
+                 o_ALU_src     => s_ALU_src_id,
                  o_mem_WE      => s_ID_EX_input.mem_WE,
                  o_ALU_mem     => s_ID_EX_input.ALU_mem,
                  o_reg_file_WE => s_ID_EX_input.reg_WE,
-                 o_lui         => s_ID_EX_input.lui, 
+                 o_lui         => s_lui_id, 
                  o_branch      => s_ID_EX_input.branch, 
-                 o_jal         => s_ID_EX_input.jal, 
-                 o_jalr        => s_ID_EX_input.jalr,
+                 o_jal         => s_jal_id, 
+                 o_jalr        => s_jalr_id,
                  o_halt        => s_ID_EX_input.halt
             );
 
@@ -384,9 +393,40 @@ begin
                  WRITE_SEL_IN      => s_MEM_WB_output.reg_write_sel,
                  READ_SEL1_IN      => s_IF_ID_output.Inst(19 downto 15),
                  READ_SEL2_IN      => s_IF_ID_output.Inst(24 downto 20),
-                 DATA_TO_READ1_OUT => s_ID_EX_input.reg_data_1,
+                 DATA_TO_READ1_OUT => s_read1_id,
                  DATA_TO_READ2_OUT => s_ID_EX_input.reg_data_2
              );
+
+
+    -- pass current pc or reg1 to be added with immediate(jalr adds imm + reg_out)
+    Mux2t1_jalr_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_jalr_id,
+                     i_D0 => s_IF_ID_output.PC,
+                     i_D1 => s_read1_id,
+                     o_O  => s_ID_EX_input.branch_adder_A
+            );
+
+    -- select either rs1 or PC
+    Mux2t1_ALU_A_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_ALU_A_src_id,
+                     i_D0 => s_read1_id,
+                     i_D1 => s_IF_ID_output.PC,
+                     o_O  => s_ID_EX_input.ALU_A
+            ); 
+
+    -- select either rs2 or extended imm
+    Mux2t1_ALU_B_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_ALU_src_id,
+                     i_D0 => s_ID_EX_input.reg_data_2,
+                     i_D1 => s_ID_EX_input.Extended_imm,
+                     o_O  => s_ID_EX_input.ALU_B
+            ); 
 
     -- Externders, 5 type of different extenders
     Extenders_inst: Extenders_wrapper
@@ -396,65 +436,44 @@ begin
                      o_extended_imm => s_ID_EX_input.Extended_imm
                  );
 
-    s_ID_EX_input.PC            <= s_IF_ID_output.PC;
+    -- ALU control unit
+    ALU_control_unit_inst: ALU_control_unit 
+        port map(
+                 i_alu_op      => s_ALU_op_id,
+                 i_func3       => s_IF_ID_output.Inst(14 downto 12),
+                 i_func7_5     => s_IF_ID_output.Inst(30),
+                 i_lui         => s_lui_id,
+                 o_alu_select  => s_ID_EX_input.ALU_mux_select,
+                 o_nAdd_sub    => s_ID_EX_input.ALU_nAdd_sub,
+                 o_logcl_arith => s_ID_EX_input.ALU_logcl_arith,
+                 o_right_left  => s_ID_EX_input.ALU_right_left
+        );
+
     s_ID_EX_input.reg_write_sel <= s_IF_ID_output.Inst(11 downto 7); -- rd
     s_ID_EX_input.func3         <= s_IF_ID_output.Inst(14 downto 12);
-    s_ID_EX_input.func7_5       <= s_IF_ID_output.Inst(30);
+    s_ID_EX_input.jal_or_jalr   <= s_jal_id or s_jalr_id;
 
-
-    -- pass current pc or reg1 to be added with immediate(jalr adds imm + reg_out)
-    Mux2t1_jalr_inst:  mux2t1_N_dataflow
-            generic map(N => 32)
-            port map(
-                     i_S  => s_ID_EX_output.jalr,
-                     i_D0 => s_ID_EX_output.PC,
-                     i_D1 => s_ID_EX_output.reg_data_1,
-                     o_O  => s_branch_pc_addr_input_A_ex
-            );
 
     -- for calculating final address
     Branch_adder_inst: ripple_carry_N_bit_adder
         generic map(N => 32)
-        port map(x    => s_branch_pc_addr_input_A_ex,
+        port map(x    => s_ID_EX_output.branch_adder_A,
                  y    => s_ID_EX_output.Extended_imm,
                  c_in => '0',
                  sum  => s_EX_MEM_input.branch_PC
         );
 
 
-
-
-    -- select either rs1 or extended PC
-    Mux2t1_ALU_A_inst:  mux2t1_N_dataflow
-            generic map(N => 32)
-            port map(
-                     i_S  => s_ID_EX_output.ALU_A_src,
-                     i_D0 => s_ID_EX_output.reg_data_1,
-                     i_D1 => s_ID_EX_output.PC,
-                     o_O  => s_ALU_A_ex
-            ); 
-
-    -- select either rs2 or extended imm
-    Mux2t1_ALU_B_inst:  mux2t1_N_dataflow
-            generic map(N => 32)
-            port map(
-                     i_S  => s_ID_EX_output.ALU_src,
-                     i_D0 => s_ID_EX_output.reg_data_2,
-                     i_D1 => s_ID_EX_output.Extended_imm,
-                     o_O  => s_ALU_B_ex
-            ); 
-
-
     -- ALU
     ALU_inst: ALU
         port map( 
-                 i_A            => s_ALU_A_ex,
-                 i_B            => s_ALU_B_ex,
-                 i_ALU_select   => s_ALU_select_ex,
-                 i_ALU_nAdd_sub => s_ALU_nAdd_sub_ex,
-                 i_logcl_arith  => s_logcl_arith_ex,
-                 i_right_left   => s_right_left_ex,
-                 i_jal_or_jalr  => s_ID_EX_output.jal or s_ID_EX_output.jalr,
+                 i_A            => s_ID_EX_output.ALU_A,
+                 i_B            => s_ID_EX_output.ALU_B,
+                 i_ALU_select   => s_ID_EX_output.ALU_mux_select,
+                 i_ALU_nAdd_sub => s_ID_EX_output.ALU_nAdd_sub,
+                 i_logcl_arith  => s_ID_EX_output.ALU_logcl_arith,
+                 i_right_left   => s_ID_EX_output.ALU_right_left,
+                 i_jal_or_jalr  => s_ID_EX_output.jal_or_jalr,
                  o_eq           => s_EX_MEM_input.Alu_eq, 
                  o_lt           => s_EX_MEM_input.Alu_lt, 
                  o_ltu          => s_EX_MEM_input.Alu_ltu,
@@ -465,23 +484,10 @@ begin
 
 
 
-    -- ALU control unit
-    ALU_control_unit_inst: ALU_control_unit 
-        port map(
-                 i_alu_op      => s_ID_EX_output.ALU_op,
-                 i_func3       => s_ID_EX_output.func3,
-                 i_func7_5     => s_ID_EX_output.func7_5,
-                 i_lui         => s_ID_EX_output.lui,
-                 o_alu_select  => s_ALU_select_ex,
-                 o_nAdd_sub    => s_ALU_nAdd_sub_ex,
-                 o_logcl_arith => s_logcl_arith_ex,
-                 o_right_left  => s_right_left_ex
-        );
 
     s_EX_MEM_input.reg_WE        <= s_ID_EX_output.reg_WE;
     s_EX_MEM_input.branch        <= s_ID_EX_output.branch;
-    s_EX_MEM_input.jal           <= s_ID_EX_output.jal;
-    s_EX_MEM_input.jalr          <= s_ID_EX_output.jalr;
+    s_EX_MEM_input.jal_or_jalr   <= s_ID_EX_output.jal_or_jalr;
     s_EX_MEM_input.mem_WE        <= s_ID_EX_output.mem_WE;
     s_EX_MEM_input.reg_data_2    <= s_ID_EX_output.reg_data_2;
     s_EX_MEM_input.ALU_mem       <= s_ID_EX_output.ALU_mem;

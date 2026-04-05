@@ -8,7 +8,7 @@ use IEEE.std_logic_1164.all;
 
 -- Description of the one-bit regster
 entity one_bit_register is
-    generic(Reset_value : std_logic);
+    generic(Reset_value : std_logic; Bypass_register : boolean);
 	port(i_CLK      : in std_logic;     -- Clock input
 	   i_RST        : in std_logic;     -- Reset input
 	   i_WE         : in std_logic;     -- Write enable input
@@ -38,7 +38,10 @@ architecture structural of one_bit_register is
     signal s_Q : std_logic;
 begin
 
-    s_Q <= o_Q;
+    -- by pass registers only used in register file to remove WB/ID hazards
+    with Bypass_register select
+        o_Q <= mux_out when true,
+               s_Q when others;
 
 	mux: mux2t1_structural port map(
 			I0_IN => s_Q,
@@ -52,7 +55,7 @@ begin
 			i_CLK => i_CLK,  
 			i_RST => i_RST,
 			i_D   => mux_out, -- assign the input of the dff to the output of the mux
-			o_Q   => o_Q);
+			o_Q   => s_Q);
 
 end architecture structural;
 

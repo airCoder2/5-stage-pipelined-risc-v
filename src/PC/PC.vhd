@@ -19,7 +19,7 @@ end entity PC;
 architecture structural of PC is
 
     component N_bit_register is
-        generic(N : integer; Reset_value : std_logic_vector);
+        generic(N : integer; Reset_value : std_logic_vector; Bypass_register : boolean);
         port(i_CLK  : in std_logic;						   -- Clock input
            i_RST    : in std_logic;						   -- Reset input
            i_WE     : in std_logic;   					   -- All register connected
@@ -29,7 +29,7 @@ architecture structural of PC is
 
 begin
     Reg: N_bit_register
-        generic map(N => 32, Reset_value => Reset_value)
+        generic map(N => 32, Reset_value => Reset_value, Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset, -- all the resets are connected to top level's reset

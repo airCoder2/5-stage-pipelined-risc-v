@@ -7,7 +7,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 
 entity N_bit_register is
-	generic(N : integer; Reset_value : std_logic_vector);
+	generic(N : integer; Reset_value : std_logic_vector; Bypass_register : boolean);
 	port(i_CLK  : in std_logic;						   -- Clock input
 	   i_RST    : in std_logic;						   -- Reset input
 	   i_WE     : in std_logic;   					   -- All register connected
@@ -19,7 +19,7 @@ architecture structural of N_bit_register is
 
 -- Component one-bit regster
     component one_bit_register is
-        generic(Reset_value : std_logic);
+        generic(Reset_value : std_logic; Bypass_register : boolean);
         port(i_CLK      : in std_logic;     -- Clock input
            i_RST        : in std_logic;     -- Reset input
            i_WE         : in std_logic;     -- Write enable input
@@ -30,7 +30,7 @@ architecture structural of N_bit_register is
 begin
     N_Registers: for i in 0 to N-1 generate
         register_i: one_bit_register
-            generic map(Reset_value => Reset_value(i))
+            generic map(Reset_value => Reset_value(i), Bypass_register => Bypass_register)
             port map(
                 i_CLK => i_CLK,
                 i_RST => i_RST,

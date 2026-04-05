@@ -28,31 +28,29 @@ package RISCV_types is
     end record Fetch_decode_data_t;
 
     type Decode_execute_data_t is record
-        reg_WE        : std_logic; -- reg write enable
-        branch        : std_logic;
-        jal           : std_logic;     
-        jalr          : std_logic;
-        ALU_mem       : std_logic;
-        ALU_src       : std_logic;
-        ALU_A_src     : std_logic;
-        ALU_op        : std_logic_vector(1 downto 0);
-        lui           : std_logic;                    
-        mem_WE        : std_logic; --mem write enable 
-        PC            : std_logic_vector(31 downto 0);
-        reg_write_sel : std_logic_vector(4 downto 0); -- rd
-        reg_data_1    : std_logic_vector(31 downto 0);
-        reg_data_2    : std_logic_vector(31 downto 0);
-        Extended_imm  : std_logic_vector(31 downto 0);
-        func3         : std_logic_vector(2 downto 0);
-        func7_5       : std_logic;
-        halt          : std_logic;
+        reg_WE         : std_logic; -- reg write enable
+        branch         : std_logic;
+        jal_or_jalr    : std_logic;     
+        mem_WE         : std_logic; --mem write enable 
+        ALU_mem        : std_logic;
+        ALU_nAdd_sub   : std_logic;
+        ALU_logcl_arith    : std_logic;
+        ALU_right_left     : std_logic;
+        ALU_mux_select : std_logic_vector(2 downto 0);
+        branch_adder_A : std_logic_vector(31 downto 0);
+        ALU_A          : std_logic_vector(31 downto 0);
+        ALU_B          : std_logic_vector(31 downto 0);
+        reg_write_sel  : std_logic_vector(4 downto 0); -- rd
+        reg_data_2     : std_logic_vector(31 downto 0);
+        Extended_imm   : std_logic_vector(31 downto 0);
+        func3          : std_logic_vector(2 downto 0);
+        halt           : std_logic;
     end record Decode_execute_data_t;
 
     type Execute_memory_data_t is record
         reg_WE         : std_logic;  -- reg write enabl
         branch         : std_logic;
-        jal            : std_logic;
-        jalr           : std_logic;
+        jal_or_jalr    : std_logic;     
         ALU_mem        : std_logic;
         mem_WE         : std_logic;  -- mem write enable
         Alu_eq         : std_logic; 
