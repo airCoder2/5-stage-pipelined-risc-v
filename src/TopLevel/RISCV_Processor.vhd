@@ -111,8 +111,9 @@ architecture structure of RISCV_Processor is
              i_MEM_reg_WE      : in std_logic; -- does the instruction at MEM write to reg file?
              i_WB_reg_WE       : in std_logic; -- does the instruction at WB  write to reg file?
              o_ALU_A_frwrd_sel : out std_logic_vector(1 downto 0); -- select one of the paths to ALU_A
-             o_ALU_B_frwrd_sel : out std_logic_vector(1 downto 0) -- select one of the paths to ALU_B
-         ); 
+             o_ALU_B_frwrd_sel : out std_logic_vector(1 downto 0); -- select one of the paths to ALU_B
+             o_read2_frwrd_sel : out std_logic_vector(1 downto 0) --select one of read_2 or forwarded paths
+             ); 
     end component Forwarding_unit;
 
     component Extenders_wrapper is
@@ -260,7 +261,11 @@ architecture structure of RISCV_Processor is
     signal s_memory_data_mem           : std_logic_vector(31 downto 0);         -- Selected appropraite word/half_word/byte (MEM stage)
     signal s_should_branch_mem         : std_logic;                             -- the output of the branch decision box (MEM stage)
     signal s_reg_file_data_to_write_wb : std_logic_vector(31 downto 0);         -- data to write back in register file (WB stage)
-
+    signal s_ALU_A_frwrd_sel_ex        : std_logic_vector(1 downto 0);          -- select line for ALU_A's final value. Either forward or ID/EX.A
+    signal s_ALU_B_frwrd_sel_ex        : std_logic_vector(1 downto 0);          -- select line for ALU_B's final value. Either forward or ID/EX.B
+    signal s_ALU_A_final_data_ex       : std_logic_vector(31 downto 0);         -- ALU_A's final selected value. one of (read1/pc)  / (MEM.Alu_out) / (WB.data)
+    signal s_read2_frwrd_sel_ex        : std_logic_vector(1 downto 0);
+    signal s_ALU_B_final_data_ex       : std_logic_vector(31 downto 0);         -- ALU_B's final selected value. one of (read2/imm) / (MEM.Alu_out) / (WB.data)
     signal s_jal_id  : std_logic;
     signal s_jalr_id : std_logic;
     signal s_read1_id : std_logic_vector(31 downto 0);
@@ -491,8 +496,8 @@ begin
     -- ALU
     ALU_inst: ALU
         port map( 
-                 i_A            => s_ID_EX_output.ALU_A,
-                 i_B            => s_ID_EX_output.ALU_B,
+                 i_A            => s_ALU_A_final_data_ex,
+                 i_B            => s_ALU_B_final_data_ex,
                  i_ALU_select   => s_ID_EX_output.ALU_mux_select,
                  i_ALU_nAdd_sub => s_ID_EX_output.ALU_nAdd_sub,
                  i_logcl_arith  => s_ID_EX_output.ALU_logcl_arith,
@@ -506,49 +511,56 @@ begin
                  o_ALU_out      => s_EX_MEM_input.ALU_out
              ); 
 
---    -- Mux for ALU_A's input. Controlled by the forwarding unit
---    ALU_A_forward_select_mux_inst: mux_3t1_bus
---        port map(
---                 i_x0   => , -- input 1 
---                 i_x1   => , -- input 2
---                 i_x2   => , -- input 3
---                 i_sel  => , -- select line
---                 o_out  =>
---         );
---
---    -- Mux for ALU_B's input. Controlled by the forwarding unit
---    ALU_B_forward_select_mux_inst: mux_3t1_bus
---        port map(
---                 i_x0   => , -- input 1 
---                 i_x1   => , -- input 2
---                 i_x2   => , -- input 3
---                 i_sel  => , -- select line
---                 o_out  =>
---         );
---
---    Forwarding_unit_inst: Forwarding_unit
---        port map(
---                 i_rs1             => ,        
---                 i_rs2             => ,
---                 i_ALU_A_src       => , 
---                 i_ALU_src         => ,
---                 i_MEM_rd          => ,
---                 i_WB_rd           => ,
---                 i_MEM_reg_WE      => , 
---                 i_WB_reg_WE       => ,
---                 o_ALU_A_frwrd_sel => ,
---                 o_ALU_B_frwrd_sel =>
---         ); 
+    -- Mux for ALU_A's input. Controlled by the forwarding unit
+    ALU_A_forward_select_mux_inst: mux_3t1_bus
+        port map(
+                 i_x0   => s_ID_EX_output.ALU_A,        -- (read1 / pc)
+                 i_x1   => s_EX_MEM_output.ALU_out,     -- (M.ALU_out)
+                 i_x2   => s_reg_file_data_to_write_wb, -- (WB.data)
+                 i_sel  => s_ALU_A_frwrd_sel_ex,        -- forwarding unit's control 
+                 o_out  => s_ALU_A_final_data_ex
+         );
 
+    -- Mux for ALU_B's input. Controlled by the forwarding unit
+    ALU_B_forward_select_mux_inst: mux_3t1_bus
+        port map(
+                 i_x0   => s_ID_EX_output.ALU_B,        -- (read2 / imm)
+                 i_x1   => s_EX_MEM_output.ALU_out,     -- (M.ALU_out)
+                 i_x2   => s_reg_file_data_to_write_wb, -- (WB.data)
+                 i_sel  => s_ALU_B_frwrd_sel_ex,        -- forwarding unit's control
+                 o_out  => s_ALU_B_final_data_ex
+         );
 
+    -- This is for sw(data)
+    read2_forward_select_mux_inst: mux_3t1_bus
+        port map(
+                 i_x0   => s_ID_EX_output.reg_data_2,   -- (read2)
+                 i_x1   => s_EX_MEM_output.ALU_out,     -- (M.ALU_out)
+                 i_x2   => s_reg_file_data_to_write_wb, -- (WB.data)
+                 i_sel  => s_read2_frwrd_sel_ex,        -- forwarding unit's control
+                 o_out  => s_EX_MEM_input.reg_data_2
+         );
 
-
+    Forwarding_unit_inst: Forwarding_unit
+        port map(
+                 i_rs1             => s_ID_EX_output.rs1,        
+                 i_rs2             => s_ID_EX_output.rs2,
+                 i_ALU_A_src       => s_ID_EX_output.ALU_A_src, 
+                 i_ALU_src         => s_ID_EX_output.ALU_src,
+                 i_MEM_rd          => s_EX_MEM_output.reg_write_sel,
+                 i_WB_rd           => s_MEM_WB_output.reg_write_sel,
+                 i_MEM_reg_WE      => s_EX_MEM_output.reg_WE, 
+                 i_WB_reg_WE       => s_MEM_WB_output.reg_WE,
+                 o_ALU_A_frwrd_sel => s_ALU_A_frwrd_sel_ex,
+                 o_ALU_B_frwrd_sel => s_ALU_B_frwrd_sel_ex,
+                 o_read2_frwrd_sel => s_read2_frwrd_sel_ex
+         ); 
+  
 
     s_EX_MEM_input.reg_WE        <= s_ID_EX_output.reg_WE;
     s_EX_MEM_input.branch        <= s_ID_EX_output.branch;
     s_EX_MEM_input.jal_or_jalr   <= s_ID_EX_output.jal_or_jalr;
     s_EX_MEM_input.mem_WE        <= s_ID_EX_output.mem_WE;
-    s_EX_MEM_input.reg_data_2    <= s_ID_EX_output.reg_data_2;
     s_EX_MEM_input.ALU_mem       <= s_ID_EX_output.ALU_mem;
     s_EX_MEM_input.func3         <= s_ID_EX_output.func3;
     s_EX_MEM_input.reg_write_sel <= s_ID_EX_output.reg_write_sel;

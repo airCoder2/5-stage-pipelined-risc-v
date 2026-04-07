@@ -17,6 +17,48 @@ entity Forwarding_unit is
          i_MEM_reg_WE      : in std_logic; -- does the instruction at MEM write to reg file?
          i_WB_reg_WE       : in std_logic; -- does the instruction at WB  write to reg file?
          o_ALU_A_frwrd_sel : out std_logic_vector(1 downto 0); -- select one of the paths to ALU_A
-         o_ALU_B_frwrd_sel : out std_logic_vector(1 downto 0) -- select one of the paths to ALU_B
+         o_ALU_B_frwrd_sel : out std_logic_vector(1 downto 0); -- select one of the paths to ALU_B
+         o_read2_frwrd_sel : out std_logic_vector(1 downto 0) --select one of read_2 or forwarded paths
      ); 
 end entity Forwarding_unit;
+
+architecture structural of Forwarding_unit is
+begin
+    o_ALU_A_frwrd_sel <= 
+                        2b"01" when ((i_rs1 = i_MEM_rd)      and
+                                     (i_MEM_rd /= 5x"00000") and
+                                     (i_MEM_reg_WE = '1')    and
+                                     (i_ALU_A_src = '0'))    else
+
+                        2b"10" when ((i_rs1 = i_WB_rd)       and
+                                     (i_WB_rd /= 5x"00000")  and
+                                     (i_WB_reg_WE = '1')     and
+                                     (i_ALU_A_src = '0'))    else
+
+                        2b"00";
+
+    o_ALU_B_frwrd_sel <= 
+                        2b"01" when ((i_rs2 = i_MEM_rd)      and
+                                     (i_MEM_rd /= 5x"00000") and
+                                     (i_MEM_reg_WE = '1')    and
+                                     (i_ALU_src = '0'))     else
+
+                        2b"10" when ((i_rs2 = i_WB_rd)      and
+                                     (i_WB_rd /= 5x"00000") and
+                                     (i_WB_reg_WE = '1')    and
+                                     (i_ALU_src = '0'))    else
+
+                        2b"00";
+
+    -- think about it more
+    o_read2_frwrd_sel <= 
+                        2b"01" when ((i_rs2 = i_MEM_rd)      and
+                                     (i_MEM_rd /= 5x"00000") and
+                                     (i_MEM_reg_WE = '1'))   else
+
+                        2b"10" when ((i_rs2 = i_WB_rd)      and
+                                     (i_WB_rd /= 5x"00000") and
+                                     (i_WB_reg_WE = '1'))   else
+
+                        2b"00";
+end architecture;
