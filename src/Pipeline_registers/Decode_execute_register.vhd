@@ -28,8 +28,8 @@ architecture structural of Decode_Execute_register is
 
     -- decode/execute stage register
     -- 180 bits total:
-    signal s_Decode_execute_data_in  : std_logic_vector(179 downto 0);   
-    signal s_Decode_execute_data_out : std_logic_vector(179 downto 0);   
+    signal s_Decode_execute_data_in  : std_logic_vector(191 downto 0);   
+    signal s_Decode_execute_data_out : std_logic_vector(191 downto 0);   
 begin
 
     -- Control : REG_WE                 (0)
@@ -48,7 +48,11 @@ begin
     -- DATA        : reg_data_2         (143 downto 112)
     -- DATA        : Extended_imm       (175 downto 144)
     -- DATA        : func3              (178 downto 176)
-    -- Control : halt                   (179)
+    -- Control     : ALU_src            (179)
+    -- Control     : ALU_A_src          (180)
+    -- SourceReg   : rs1                (185 downto 181)
+    -- SourceReg   : rs2                (190 downto 186)
+    -- Control     : halt               (191)
 
     s_Decode_execute_data_in(0)              <=  i_decode_execute_register.reg_WE;
     s_Decode_execute_data_in(1)              <=  i_decode_execute_register.branch;
@@ -66,10 +70,14 @@ begin
     s_Decode_execute_data_in(143 downto 112) <=  i_decode_execute_register.reg_data_2;
     s_Decode_execute_data_in(175 downto 144) <=  i_decode_execute_register.Extended_imm;
     s_Decode_execute_data_in(178 downto 176) <=  i_decode_execute_register.func3;
-    s_Decode_execute_data_in(179)            <=  i_decode_execute_register.halt;
+    s_Decode_execute_data_in(179)            <=  i_decode_execute_register.ALU_src;
+    s_Decode_execute_data_in(180)            <=  i_decode_execute_register.ALU_A_src;
+    s_Decode_execute_data_in(185 downto 181) <=  i_decode_execute_register.rs1;
+    s_Decode_execute_data_in(190 downto 186) <=  i_decode_execute_register.rs2;
+    s_Decode_execute_data_in(191)            <=  i_decode_execute_register.halt;
 
     Decode_execute_register_inst: N_bit_register
-        generic map(N => 180, Reset_value => (179 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 192, Reset_value => (191 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
@@ -79,23 +87,26 @@ begin
              );
 
     -- fill the output wires with the appropriate slices of the N_bit_register output
-    o_decode_execute_register.reg_WE         <= s_Decode_execute_data_out(0);             
-    o_decode_execute_register.branch         <= s_Decode_execute_data_out(1);              
-    o_decode_execute_register.jal_or_jalr    <= s_Decode_execute_data_out(2);                
-    o_decode_execute_register.mem_WE         <= s_Decode_execute_data_out(3);                    
-    o_decode_execute_register.ALU_mem        <= s_Decode_execute_data_out(4);             
-    o_decode_execute_register.ALU_nAdd_sub   <= s_Decode_execute_data_out(5);                      
+    o_decode_execute_register.reg_WE          <= s_Decode_execute_data_out(0);             
+    o_decode_execute_register.branch          <= s_Decode_execute_data_out(1);              
+    o_decode_execute_register.jal_or_jalr     <= s_Decode_execute_data_out(2);                
+    o_decode_execute_register.mem_WE          <= s_Decode_execute_data_out(3);                    
+    o_decode_execute_register.ALU_mem         <= s_Decode_execute_data_out(4);             
+    o_decode_execute_register.ALU_nAdd_sub    <= s_Decode_execute_data_out(5);                      
     o_decode_execute_register.ALU_logcl_arith <= s_Decode_execute_data_out(6);                         
-    o_decode_execute_register.ALU_right_left <= s_Decode_execute_data_out(7);                          
-    o_decode_execute_register.ALU_mux_select <= s_Decode_execute_data_out(10 downto 8);             
-    o_decode_execute_register.branch_adder_A <= s_Decode_execute_data_out(42 downto 11);            
-    o_decode_execute_register.ALU_A          <= s_Decode_execute_data_out(74 downto 43);            
-    o_decode_execute_register.ALU_B          <= s_Decode_execute_data_out(106 downto 75);           
-    o_decode_execute_register.reg_write_sel  <= s_Decode_execute_data_out(111 downto 107);          
-    o_decode_execute_register.reg_data_2     <= s_Decode_execute_data_out(143 downto 112);            
-    o_decode_execute_register.Extended_imm   <= s_Decode_execute_data_out(175 downto 144);           
-    o_decode_execute_register.func3          <= s_Decode_execute_data_out(178 downto 176);                
-    o_decode_execute_register.halt           <= s_Decode_execute_data_out(179);                       
-   
+    o_decode_execute_register.ALU_right_left  <= s_Decode_execute_data_out(7);                          
+    o_decode_execute_register.ALU_mux_select  <= s_Decode_execute_data_out(10 downto 8);             
+    o_decode_execute_register.branch_adder_A  <= s_Decode_execute_data_out(42 downto 11);            
+    o_decode_execute_register.ALU_A           <= s_Decode_execute_data_out(74 downto 43);            
+    o_decode_execute_register.ALU_B           <= s_Decode_execute_data_out(106 downto 75);           
+    o_decode_execute_register.reg_write_sel   <= s_Decode_execute_data_out(111 downto 107);          
+    o_decode_execute_register.reg_data_2      <= s_Decode_execute_data_out(143 downto 112);            
+    o_decode_execute_register.Extended_imm    <= s_Decode_execute_data_out(175 downto 144);           
+    o_decode_execute_register.func3           <= s_Decode_execute_data_out(178 downto 176);                
+    o_decode_execute_register.ALU_src         <= s_Decode_execute_data_out(179);              
+    o_decode_execute_register.ALU_A_src       <= s_Decode_execute_data_out(180);             
+    o_decode_execute_register.rs1             <= s_Decode_execute_data_out(185 downto 181);   
+    o_decode_execute_register.rs2             <= s_Decode_execute_data_out(190 downto 186);   
+    o_decode_execute_register.halt            <= s_Decode_execute_data_out(191);              
 
 end architecture structural;

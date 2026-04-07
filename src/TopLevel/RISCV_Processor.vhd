@@ -92,6 +92,29 @@ architecture structure of RISCV_Processor is
               o_ALU_out      : out std_logic_vector(31 downto 0)); -- output
     end component ALU;
 
+    component mux_3t1_bus is
+        port(i_x0 : in std_logic_vector(31 downto 0); -- input 1 
+             i_x1 : in std_logic_vector(31 downto 0); -- input 2
+             i_x2 : in std_logic_vector(31 downto 0); -- input 3
+             i_sel: in std_logic_vector(1 downto 0);  -- select line
+             o_out : out std_logic_vector(31 downto 0)
+         );
+    end component mux_3t1_bus;
+
+    component Forwarding_unit is
+        port(i_rs1             : in std_logic_vector(4 downto 0); -- rs1 of the instruction at EX
+             i_rs2             : in std_logic_vector(4 downto 0); -- rs2 of the instruction at EX
+             i_ALU_A_src       : in std_logic; -- are we using rs1, or maybe PC?
+             i_ALU_src         : in std_logic; -- are we using rs2, or maybe immediate?
+             i_MEM_rd          : in std_logic_vector(4 downto 0); -- rd of instruction at MEM
+             i_WB_rd           : in std_logic_vector(4 downto 0); -- rd of instruction at WB
+             i_MEM_reg_WE      : in std_logic; -- does the instruction at MEM write to reg file?
+             i_WB_reg_WE       : in std_logic; -- does the instruction at WB  write to reg file?
+             o_ALU_A_frwrd_sel : out std_logic_vector(1 downto 0); -- select one of the paths to ALU_A
+             o_ALU_B_frwrd_sel : out std_logic_vector(1 downto 0) -- select one of the paths to ALU_B
+         ); 
+    end component Forwarding_unit;
+
     component Extenders_wrapper is
         port(
              i_instruction  : in std_logic_vector(31 downto 7);
@@ -197,6 +220,7 @@ architecture structure of RISCV_Processor is
     end component Memory_wback_register;
 
 
+
     ----------------- REQUIRED SIGNALS ---------------
 
     -- Required data memory signals
@@ -240,8 +264,6 @@ architecture structure of RISCV_Processor is
     signal s_jal_id  : std_logic;
     signal s_jalr_id : std_logic;
     signal s_read1_id : std_logic_vector(31 downto 0);
-    signal s_ALU_src_id   : std_logic;
-    signal s_ALU_A_src_id : std_logic;
     signal s_ALU_op_id       : std_logic_vector(1 downto 0);
     signal s_lui_id     : std_logic;
      
@@ -371,8 +393,8 @@ begin
                  i_Opcode      => s_IF_ID_output.Inst(6 downto 0),
                  o_ALU_op      => s_ALU_op_id,
                  o_Imm_select  => s_Imm_select_id,
-                 o_ALU_A_src   => s_ALU_A_src_id, 
-                 o_ALU_src     => s_ALU_src_id,
+                 o_ALU_A_src   => s_ID_EX_input.ALU_A_src, 
+                 o_ALU_src     => s_ID_EX_input.ALU_src,
                  o_mem_WE      => s_ID_EX_input.mem_WE,
                  o_ALU_mem     => s_ID_EX_input.ALU_mem,
                  o_reg_file_WE => s_ID_EX_input.reg_WE,
@@ -391,11 +413,13 @@ begin
                  WRITE_EN_IN       => s_MEM_WB_output.reg_WE,
                  REG_RST_IN        => iRST,
                  WRITE_SEL_IN      => s_MEM_WB_output.reg_write_sel,
-                 READ_SEL1_IN      => s_IF_ID_output.Inst(19 downto 15),
-                 READ_SEL2_IN      => s_IF_ID_output.Inst(24 downto 20),
+                 READ_SEL1_IN      => s_ID_EX_input.rs1,
+                 READ_SEL2_IN      => s_ID_EX_input.rs2,
                  DATA_TO_READ1_OUT => s_read1_id,
                  DATA_TO_READ2_OUT => s_ID_EX_input.reg_data_2
              );
+    s_ID_EX_input.rs1 <= s_IF_ID_output.Inst(19 downto 15);
+    s_ID_EX_input.rs2 <= s_IF_ID_output.Inst(24 downto 20);
 
 
     -- pass current pc or reg1 to be added with immediate(jalr adds imm + reg_out)
@@ -412,7 +436,7 @@ begin
     Mux2t1_ALU_A_inst:  mux2t1_N_dataflow
             generic map(N => 32)
             port map(
-                     i_S  => s_ALU_A_src_id,
+                     i_S  => s_ID_EX_input.ALU_A_src,
                      i_D0 => s_read1_id,
                      i_D1 => s_IF_ID_output.PC,
                      o_O  => s_ID_EX_input.ALU_A
@@ -422,7 +446,7 @@ begin
     Mux2t1_ALU_B_inst:  mux2t1_N_dataflow
             generic map(N => 32)
             port map(
-                     i_S  => s_ALU_src_id,
+                     i_S  => s_ID_EX_input.ALU_src,
                      i_D0 => s_ID_EX_input.reg_data_2,
                      i_D1 => s_ID_EX_input.Extended_imm,
                      o_O  => s_ID_EX_input.ALU_B
@@ -481,6 +505,41 @@ begin
                  o_geu          => s_EX_MEM_input.Alu_geu,
                  o_ALU_out      => s_EX_MEM_input.ALU_out
              ); 
+
+--    -- Mux for ALU_A's input. Controlled by the forwarding unit
+--    ALU_A_forward_select_mux_inst: mux_3t1_bus
+--        port map(
+--                 i_x0   => , -- input 1 
+--                 i_x1   => , -- input 2
+--                 i_x2   => , -- input 3
+--                 i_sel  => , -- select line
+--                 o_out  =>
+--         );
+--
+--    -- Mux for ALU_B's input. Controlled by the forwarding unit
+--    ALU_B_forward_select_mux_inst: mux_3t1_bus
+--        port map(
+--                 i_x0   => , -- input 1 
+--                 i_x1   => , -- input 2
+--                 i_x2   => , -- input 3
+--                 i_sel  => , -- select line
+--                 o_out  =>
+--         );
+--
+--    Forwarding_unit_inst: Forwarding_unit
+--        port map(
+--                 i_rs1             => ,        
+--                 i_rs2             => ,
+--                 i_ALU_A_src       => , 
+--                 i_ALU_src         => ,
+--                 i_MEM_rd          => ,
+--                 i_WB_rd           => ,
+--                 i_MEM_reg_WE      => , 
+--                 i_WB_reg_WE       => ,
+--                 o_ALU_A_frwrd_sel => ,
+--                 o_ALU_B_frwrd_sel =>
+--         ); 
+
 
 
 

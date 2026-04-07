@@ -44,6 +44,10 @@ package RISCV_types is
         reg_data_2     : std_logic_vector(31 downto 0);
         Extended_imm   : std_logic_vector(31 downto 0);
         func3          : std_logic_vector(2 downto 0);
+        ALU_src        : std_logic;
+        ALU_A_src      : std_logic;
+        rs1            : std_logic_vector(4 downto 0);
+        rs2            : std_logic_vector(4 downto 0);
         halt           : std_logic;
     end record Decode_execute_data_t;
 
