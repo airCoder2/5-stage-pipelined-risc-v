@@ -23,12 +23,18 @@ begin
 
 	process (i_CLK)
 		begin
-		if (i_RST = '1') then
-            s_Q <= Reset_value; -- whatever passed as an argumet, assign that as reset value
-		elsif (rising_edge(i_CLK)) then
-			s_Q <= i_D; -- every rising edge, make s_Q = i_D
-		end if;
-
+--		if (i_RST = '1') then
+--            s_Q <= Reset_value; -- whatever passed as an argumet, assign that as reset value
+--		elsif (rising_edge(i_CLK)) then
+--			s_Q <= i_D; -- every rising edge, make s_Q = i_D
+--		end if;
+            if rising_edge(i_CLK) then 
+                if i_RST = '1' then 
+                    s_Q <= Reset_value;
+                else 
+                    s_Q <= i_D;
+                end if;
+            end if;
 	end process;
 
 end architecture behavioral;
