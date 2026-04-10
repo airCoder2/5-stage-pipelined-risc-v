@@ -31,18 +31,20 @@ architecture structural of Fetch_decode_register is
     signal s_Fetch_decode_data_in  : std_logic_vector(63 downto 0); -- wire conencted to the input of the N_bit_register
     signal s_Fetch_decode_data_out : std_logic_vector(63 downto 0); -- wire conencted to the output of the N_bit_register
 
+    constant RISCV_NOP : std_logic_vector(31 downto 0) := x"00000013";
+
 begin
 
     -- PC      : current PC (32 bits) (31 downto 0)
     -- Inst    : instruction (32 bits) (63 downto 32)
-    s_Fetch_decode_data_in(31 downto 0)  <= i_fetch_decode_register.PC;
+    s_Fetch_decode_data_in(31 downto 0)  <= i_fetch_decode_register.current_PC;
     s_Fetch_decode_data_in(63 downto 32) <= i_fetch_decode_register.Inst;
 
 
 
 
     Fetch_decode_register_inst: N_bit_register
-        generic map(N => 64, Reset_value => (63 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 64, Reset_value => ((63 downto 32 => '0') & RISCV_NOP), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                 -- reset the pipeline to 0
@@ -52,7 +54,7 @@ begin
              );
 
     -- fill the output wires with the appropriate slices of the N_bit_register output
-    o_fetch_decode_register.PC   <= s_Fetch_decode_data_out(31 downto 0);
+    o_fetch_decode_register.current_PC   <= s_Fetch_decode_data_out(31 downto 0);
     o_fetch_decode_register.Inst <= s_Fetch_decode_data_out(63 downto 32);
 
 end architecture structural;

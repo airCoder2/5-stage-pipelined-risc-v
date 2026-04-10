@@ -23,60 +23,52 @@ package RISCV_types is
 
 
     type Fetch_decode_data_t is record 
-        PC   : std_logic_vector(31 downto 0); -- PC value for auipc, branch, jal, jalr
+        current_PC   : std_logic_vector(31 downto 0); -- PC value for auipc, branch, jal, jalr
         Inst : std_logic_vector(31 downto 0); -- Instruction to decode
     end record Fetch_decode_data_t;
 
     type Decode_execute_data_t is record
-        reg_WE         : std_logic; -- reg write enable
-        branch         : std_logic;
-        jal_or_jalr    : std_logic;     
-        mem_WE         : std_logic; --mem write enable 
-        ALU_mem        : std_logic;
-        ALU_nAdd_sub   : std_logic;
-        ALU_logcl_arith    : std_logic;
-        ALU_right_left     : std_logic;
-        ALU_mux_select : std_logic_vector(2 downto 0);
-        branch_adder_A : std_logic_vector(31 downto 0);
-        ALU_A          : std_logic_vector(31 downto 0);
-        ALU_B          : std_logic_vector(31 downto 0);
-        reg_write_sel  : std_logic_vector(4 downto 0); -- rd
-        reg_data_2     : std_logic_vector(31 downto 0);
-        Extended_imm   : std_logic_vector(31 downto 0);
-        func3          : std_logic_vector(2 downto 0);
-        ALU_src        : std_logic;
-        ALU_A_src      : std_logic;
-        rs1            : std_logic_vector(4 downto 0);
-        rs2            : std_logic_vector(4 downto 0);
-        halt           : std_logic;
+        halt            : std_logic;
+        reg_WE          : std_logic; -- reg write enable
+        branch          : std_logic;
+        jal             : std_logic;     
+        jalr            : std_logic;
+        current_pc      : std_logic_vector(31 downto 0);
+        ALU_mem         : std_logic;
+        ALU_src         : std_logic;
+        ALU_A_src       : std_logic;
+        read1           : std_logic_vector(31 downto 0);
+        read2           : std_logic_vector(31 downto 0);
+        Extended_imm    : std_logic_vector(31 downto 0);
+        rd              : std_logic_vector(4 downto 0); -- rd
+        ALU_mux_select  : std_logic_vector(2 downto 0);
+        ALU_nAdd_sub    : std_logic;
+        ALU_logcl_arith : std_logic;
+        ALU_right_left  : std_logic;
+        func3           : std_logic_vector(2 downto 0);
+        mem_WE          : std_logic; --mem write enable 
+        rs1             : std_logic_vector(4 downto 0);
+        rs2             : std_logic_vector(4 downto 0);
     end record Decode_execute_data_t;
 
     type Execute_memory_data_t is record
-        reg_WE         : std_logic;  -- reg write enabl
-        branch         : std_logic;
-        jal_or_jalr    : std_logic;     
-        ALU_mem        : std_logic;
-        mem_WE         : std_logic;  -- mem write enable
-        Alu_eq         : std_logic; 
-        Alu_lt         : std_logic; 
-        Alu_ltu        : std_logic; 
-        Alu_ge         : std_logic; 
-        Alu_geu        : std_logic; 
-        branch_PC      : std_logic_vector(31 downto 0);
-        ALU_out        : std_logic_vector(31 downto 0);
-        reg_write_sel : std_logic_vector(4 downto 0); -- rd
-        reg_data_2     : std_logic_vector(31 downto 0);
-        func3          : std_logic_vector(2 downto 0);
-        halt          : std_logic;
+        halt       : std_logic;
+        reg_WE     : std_logic;  -- reg write enabl
+        ALU_mem    : std_logic;
+        ALU_out    : std_logic_vector(31 downto 0);
+        mem_WE     : std_logic;  -- mem write enable
+        reg_data_2 : std_logic_vector(31 downto 0);
+        rd         : std_logic_vector(4 downto 0); -- rd
+        func3      : std_logic_vector(2 downto 0);
     end record Execute_memory_data_t;
 
 
     type Memory_wback_data_t is record
-        reg_WE         : std_logic;  -- reg write enable
-        ALU_mem        : std_logic;
-        ALU_out        : std_logic_vector(31 downto 0);
-        reg_write_sel : std_logic_vector(4 downto 0); -- rd
-        dmem_out       : std_logic_vector(31 downto 0);
+        reg_WE        : std_logic;  -- reg write enable
+        ALU_mem       : std_logic;
+        ALU_out       : std_logic_vector(31 downto 0);
+        rd            : std_logic_vector(4 downto 0); -- rd
+        dmem_out      : std_logic_vector(31 downto 0);
         halt          : std_logic;
     end record Memory_wback_data_t;
 

@@ -27,57 +27,56 @@ architecture structural of Decode_Execute_register is
     end component N_bit_register;   
 
     -- decode/execute stage register
-    -- 180 bits total:
-    signal s_Decode_execute_data_in  : std_logic_vector(191 downto 0);   
-    signal s_Decode_execute_data_out : std_logic_vector(191 downto 0);   
+    -- 161 bits total:
+    signal s_Decode_execute_data_in  : std_logic_vector(160 downto 0);   
+    signal s_Decode_execute_data_out : std_logic_vector(160 downto 0);   
 begin
+    -- halt            :(0) 
+    -- reg_WE          :(1)
+    -- branch          :(2)
+    -- jal             :(3)
+    -- jalr            :(4)
+    -- ALU_mem         :(5) 
+    -- ALU_src         :(6) 
+    -- ALU_A_src       :(7) 
+    -- ALU_nAdd_sub    :(8) 
+    -- ALU_logcl_arith :(9) 
+    -- ALU_right_left  :(10) 
+    -- mem_WE          :(11) 
+    -- current_pc      :(43 downto 12)
+    -- read1           :(75 downto 44)
+    -- read2           :(107 downto 76)
+    -- Extended_imm    :(139 downto 108)
+    -- rd              :(144 downto 140) -- rd
+    -- ALU_mux_select  :(147 downto 145)
+    -- func3           :(150 downto 148)
+    -- rs1             :(155 downto 151)
+    -- rs2             :(160 downto 156)
 
-    -- Control : REG_WE                 (0)
-    -- Control : branch                 (1)
-    -- Control : jal_or_jalr            (2)
-    -- Control : mem_WE                 (3)
-    -- Control : ALU/Mem                (4)
-    -- ALU_Control : nAdd_sub           (5)
-    -- ALU_Control : logical/arith      (6)
-    -- ALU_Control : right/left         (7)
-    -- ALU_Control : ALU_mux_select     (10 downto 8)
-    -- DATA        : branch_adder_A     (42 downto 11)
-    -- DATA        : ALU_A              (74 downto 43)
-    -- DATA        : ALU_B              (106 downto 75)
-    -- Select      : reg_write_sel      (111 downto 107)
-    -- DATA        : reg_data_2         (143 downto 112)
-    -- DATA        : Extended_imm       (175 downto 144)
-    -- DATA        : func3              (178 downto 176)
-    -- Control     : ALU_src            (179)
-    -- Control     : ALU_A_src          (180)
-    -- SourceReg   : rs1                (185 downto 181)
-    -- SourceReg   : rs2                (190 downto 186)
-    -- Control     : halt               (191)
-
-    s_Decode_execute_data_in(0)              <=  i_decode_execute_register.reg_WE;
-    s_Decode_execute_data_in(1)              <=  i_decode_execute_register.branch;
-    s_Decode_execute_data_in(2)              <=  i_decode_execute_register.jal_or_jalr;
-    s_Decode_execute_data_in(3)              <=  i_decode_execute_register.mem_WE;
-    s_Decode_execute_data_in(4)              <=  i_decode_execute_register.ALU_mem;
-    s_Decode_execute_data_in(5)              <=  i_decode_execute_register.ALU_nAdd_sub;
-    s_Decode_execute_data_in(6)              <=  i_decode_execute_register.ALU_logcl_arith;  
-    s_Decode_execute_data_in(7)              <=  i_decode_execute_register.ALU_right_left;   
-    s_Decode_execute_data_in(10 downto 8)    <=  i_decode_execute_register.ALU_mux_select;
-    s_Decode_execute_data_in(42 downto 11)   <=  i_decode_execute_register.branch_adder_A;
-    s_Decode_execute_data_in(74 downto 43)   <=  i_decode_execute_register.ALU_A;
-    s_Decode_execute_data_in(106 downto 75)  <=  i_decode_execute_register.ALU_B;
-    s_Decode_execute_data_in(111 downto 107) <=  i_decode_execute_register.reg_write_sel;
-    s_Decode_execute_data_in(143 downto 112) <=  i_decode_execute_register.reg_data_2;
-    s_Decode_execute_data_in(175 downto 144) <=  i_decode_execute_register.Extended_imm;
-    s_Decode_execute_data_in(178 downto 176) <=  i_decode_execute_register.func3;
-    s_Decode_execute_data_in(179)            <=  i_decode_execute_register.ALU_src;
-    s_Decode_execute_data_in(180)            <=  i_decode_execute_register.ALU_A_src;
-    s_Decode_execute_data_in(185 downto 181) <=  i_decode_execute_register.rs1;
-    s_Decode_execute_data_in(190 downto 186) <=  i_decode_execute_register.rs2;
-    s_Decode_execute_data_in(191)            <=  i_decode_execute_register.halt;
+    s_Decode_execute_data_in(0)              <=  i_decode_execute_register.halt;           
+    s_Decode_execute_data_in(1)              <=  i_decode_execute_register.reg_WE;         
+    s_Decode_execute_data_in(2)              <=  i_decode_execute_register.branch;         
+    s_Decode_execute_data_in(3)              <=  i_decode_execute_register.jal;            
+    s_Decode_execute_data_in(4)              <=  i_decode_execute_register.jalr;           
+    s_Decode_execute_data_in(5)              <=  i_decode_execute_register.ALU_mem;        
+    s_Decode_execute_data_in(6)              <=  i_decode_execute_register.ALU_src;          
+    s_Decode_execute_data_in(7)              <=  i_decode_execute_register.ALU_A_src;         
+    s_Decode_execute_data_in(8)              <=  i_decode_execute_register.ALU_nAdd_sub;   
+    s_Decode_execute_data_in(9)              <=  i_decode_execute_register.ALU_logcl_arith;
+    s_Decode_execute_data_in(10)             <=  i_decode_execute_register.ALU_right_left; 
+    s_Decode_execute_data_in(11)             <=  i_decode_execute_register.mem_WE;         
+    s_Decode_execute_data_in(43 downto 12)   <=  i_decode_execute_register.current_pc;     
+    s_Decode_execute_data_in(75 downto 44)   <=  i_decode_execute_register.read1;          
+    s_Decode_execute_data_in(107 downto 76)  <=  i_decode_execute_register.read2;          
+    s_Decode_execute_data_in(139 downto 108) <=  i_decode_execute_register.Extended_imm;   
+    s_Decode_execute_data_in(144 downto 140) <=  i_decode_execute_register.rd;             
+    s_Decode_execute_data_in(147 downto 145) <=  i_decode_execute_register.ALU_mux_select; 
+    s_Decode_execute_data_in(150 downto 148) <=  i_decode_execute_register.func3;          
+    s_Decode_execute_data_in(155 downto 151) <=  i_decode_execute_register.rs1;            
+    s_Decode_execute_data_in(160 downto 156) <=  i_decode_execute_register.rs2;            
 
     Decode_execute_register_inst: N_bit_register
-        generic map(N => 192, Reset_value => (191 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 161, Reset_value => (160 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
@@ -87,26 +86,26 @@ begin
              );
 
     -- fill the output wires with the appropriate slices of the N_bit_register output
-    o_decode_execute_register.reg_WE          <= s_Decode_execute_data_out(0);             
-    o_decode_execute_register.branch          <= s_Decode_execute_data_out(1);              
-    o_decode_execute_register.jal_or_jalr     <= s_Decode_execute_data_out(2);                
-    o_decode_execute_register.mem_WE          <= s_Decode_execute_data_out(3);                    
-    o_decode_execute_register.ALU_mem         <= s_Decode_execute_data_out(4);             
-    o_decode_execute_register.ALU_nAdd_sub    <= s_Decode_execute_data_out(5);                      
-    o_decode_execute_register.ALU_logcl_arith <= s_Decode_execute_data_out(6);                         
-    o_decode_execute_register.ALU_right_left  <= s_Decode_execute_data_out(7);                          
-    o_decode_execute_register.ALU_mux_select  <= s_Decode_execute_data_out(10 downto 8);             
-    o_decode_execute_register.branch_adder_A  <= s_Decode_execute_data_out(42 downto 11);            
-    o_decode_execute_register.ALU_A           <= s_Decode_execute_data_out(74 downto 43);            
-    o_decode_execute_register.ALU_B           <= s_Decode_execute_data_out(106 downto 75);           
-    o_decode_execute_register.reg_write_sel   <= s_Decode_execute_data_out(111 downto 107);          
-    o_decode_execute_register.reg_data_2      <= s_Decode_execute_data_out(143 downto 112);            
-    o_decode_execute_register.Extended_imm    <= s_Decode_execute_data_out(175 downto 144);           
-    o_decode_execute_register.func3           <= s_Decode_execute_data_out(178 downto 176);                
-    o_decode_execute_register.ALU_src         <= s_Decode_execute_data_out(179);              
-    o_decode_execute_register.ALU_A_src       <= s_Decode_execute_data_out(180);             
-    o_decode_execute_register.rs1             <= s_Decode_execute_data_out(185 downto 181);   
-    o_decode_execute_register.rs2             <= s_Decode_execute_data_out(190 downto 186);   
-    o_decode_execute_register.halt            <= s_Decode_execute_data_out(191);              
+    o_decode_execute_register.halt            <= s_Decode_execute_data_out(0);             
+    o_decode_execute_register.reg_WE          <= s_Decode_execute_data_out(1);              
+    o_decode_execute_register.branch          <= s_Decode_execute_data_out(2);                
+    o_decode_execute_register.jal             <= s_Decode_execute_data_out(3);                    
+    o_decode_execute_register.jalr            <= s_Decode_execute_data_out(4);             
+    o_decode_execute_register.ALU_mem         <= s_Decode_execute_data_out(5);                      
+    o_decode_execute_register.ALU_src         <= s_Decode_execute_data_out(6);                         
+    o_decode_execute_register.ALU_A_src       <= s_Decode_execute_data_out(7);                          
+    o_decode_execute_register.ALU_nAdd_sub    <= s_Decode_execute_data_out(8);                       
+    o_decode_execute_register.ALU_logcl_arith <= s_Decode_execute_data_out(9);                       
+    o_decode_execute_register.ALU_right_left  <= s_Decode_execute_data_out(10);                      
+    o_decode_execute_register.mem_WE          <= s_Decode_execute_data_out(11);                      
+    o_decode_execute_register.current_pc      <= s_Decode_execute_data_out(43 downto 12);            
+    o_decode_execute_register.read1           <= s_Decode_execute_data_out(75 downto 44);              
+    o_decode_execute_register.read2           <= s_Decode_execute_data_out(107 downto 76);            
+    o_decode_execute_register.Extended_imm    <= s_Decode_execute_data_out(139 downto 108);                
+    o_decode_execute_register.rd              <= s_Decode_execute_data_out(144 downto 140);   
+    o_decode_execute_register.ALU_mux_select  <= s_Decode_execute_data_out(147 downto 145);  
+    o_decode_execute_register.func3           <= s_Decode_execute_data_out(150 downto 148);   
+    o_decode_execute_register.rs1             <= s_Decode_execute_data_out(155 downto 151);   
+    o_decode_execute_register.rs2             <= s_Decode_execute_data_out(160 downto 156);   
 
 end architecture structural;
