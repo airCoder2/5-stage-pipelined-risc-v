@@ -35,7 +35,7 @@ architecture structural of ALU is
         return result;
     end function;
 
-    component Adder_Subtractor is
+    component carry_lookahead_adder is
 	generic (N : integer := 32);
         port( A  	   : in std_logic_vector(N-1 downto 0);
               B        : in std_logic_vector(N-1 downto 0);
@@ -43,7 +43,7 @@ architecture structural of ALU is
               sum      : out std_logic_vector(N-1 downto 0); -- outputs is +1 of inputs
               c_out    : out std_logic;
               overflow : out std_logic);
-    end component Adder_Subtractor;
+    end component carry_lookahead_adder;
 
     component mux2t1_N_dataflow is
         generic(N : integer); -- Generic of type integer for input/output data width. Default value is 32.
@@ -104,7 +104,7 @@ architecture structural of ALU is
 begin
 
     -- adder subtract unit
-    Adder_subtractor_inst: Adder_Subtractor
+    Adder_subtractor_inst: carry_lookahead_adder
         generic map(N => 32)
         port map(A 	      => i_A, 
                  B        => s_muxed_B_out,  -- either B or 0x4 for jal, jalr 

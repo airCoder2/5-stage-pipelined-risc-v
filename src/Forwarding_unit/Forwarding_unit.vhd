@@ -12,10 +12,13 @@ entity Forwarding_unit is
              i_rs2                : in std_logic_vector(4 downto 0); -- rs2 of the instruction at EX
              i_MEM_rd             : in std_logic_vector(4 downto 0); -- rd of instruction at MEM
              i_WB_rd              : in std_logic_vector(4 downto 0); -- rd of instruction at WB
+             i_MEM_rs2            : in std_logic_vector(4 downto 0); -- rs2 of the instruction at MEM
+             i_WB_ALU_mem         : in std_logic; -- for detecting lw currently in wb, this is 1 only for lw
              i_MEM_reg_WE         : in std_logic; -- does the instruction at MEM write to reg file?
              i_WB_reg_WE          : in std_logic; -- does the instruction at WB  write to reg file?
              o_ALU_A_frwrd_sel    : out std_logic_vector(1 downto 0); -- select one of the paths to ALU_A
-             o_ALU_B_frwrd_sel    : out std_logic_vector(1 downto 0)  -- select one of the paths to ALU_B
+             o_ALU_B_frwrd_sel    : out std_logic_vector(1 downto 0);  -- select one of the paths to ALU_B
+             o_MEM_frwrd_sel      : out std_logic -- select either the data from reg2, or forward from WB (for lw sw)
              ); 
 end entity Forwarding_unit;
 
@@ -35,7 +38,7 @@ begin
                                      (i_WB_reg_WE = '1'))    else  -- if the written register is not x0 
                                                                   -- (otherwise rs1 coincidentally matching the bit fields of the immediate fields)
 
-                        -- otherwise use (reg1_data / current_pc; selected in ID, and available in EX)
+                        -- otherwise use (reg1_data. and available in EX)
                         2b"00";
 
 
@@ -53,7 +56,16 @@ begin
                                      (i_WB_rd /= 5x"00000") and
                                      (i_WB_reg_WE = '1'))   else
 
-                        -- otherwise use (reg2_data / immediate; selected in ID, and available in EX)
+                        -- otherwise use (reg2_data. available in EX)
                         2b"00";
+--------------------------------------------------------
+
+    -- no need to check if this instruction is sw, becase mem is only written in sw anyways, so it would have no effect elswhise
+    o_MEM_frwrd_sel <= 
+                      '1' when ((i_WB_rd = i_MEM_rs2)   and  -- if lw in wb loading to instruction that sw is using
+                                (i_WB_rd /= 5x"00000")  and  -- if it is now writing to x0
+                                (i_WB_ALU_mem = '1'))   else -- if the istruction in WB is lw (means automatically reg_we = 1)
+                      '0';
+
 
 end architecture;

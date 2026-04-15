@@ -12,6 +12,7 @@ entity PC is
     generic (Reset_value : std_logic_vector(31 downto 0));
     port(i_pc_in  : in  std_logic_vector(31 downto 0); -- new data to be written
          o_pc_out : out std_logic_vector(31 downto 0); -- pc output
+         i_stall  : in  std_logic; -- don't advance the counter
          i_reset  : in  std_logic; -- reset to 0
          i_clk    : in  std_logic); -- clock
 end entity PC;
@@ -33,7 +34,7 @@ begin
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset, -- all the resets are connected to top level's reset
-                 i_WE  => '1', -- always write
+                 i_WE  => not i_stall,
                  i_D   => i_pc_in,
                  o_Q   => o_pc_out);
 end architecture structural;

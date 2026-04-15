@@ -44,6 +44,7 @@ architecture structure of RISCV_Processor is
         generic(Reset_value : std_logic_vector(31 downto 0));
         port(i_pc_in  : in  std_logic_vector(31 downto 0); -- new data to be written
              o_pc_out : out std_logic_vector(31 downto 0); -- pc output
+             i_stall  : in  std_logic; -- don't advance the counter
              i_reset  : in  std_logic; -- reset to 0
              i_clk    : in  std_logic); -- clock
     end component PC;
@@ -62,6 +63,21 @@ architecture structure of RISCV_Processor is
               c_out    : out std_logic;
               overflow : out std_logic);
     end component ripple_carry_N_bit_adder;
+
+    component Hazard_unit is
+        port(
+             i_ALU_mem_ex    : in  std_logic;  -- lw
+             i_mem_WE_id     : in  std_logic;  -- sw
+             i_pc_source_ex  : in  std_logic; 
+             i_rd_ex         : in std_logic_vector(4 downto 0);
+             i_rs1_id         : in std_logic_vector(4 downto 0);
+             i_rs2_id         : in std_logic_vector(4 downto 0);
+             i_ALU_src_id     : in std_logic;
+             i_ALU_A_src_id   : in std_logic;
+             o_flush_id    : out  std_logic; 
+             o_stall_id    :  out  std_logic
+             );
+    end component Hazard_unit; 
 
     component Register_file is
         port(CLOCK_IN : in std_logic;                                -- Clock input for registers
@@ -106,10 +122,13 @@ architecture structure of RISCV_Processor is
              i_rs2                : in std_logic_vector(4 downto 0); -- rs2 of the instruction at EX
              i_MEM_rd             : in std_logic_vector(4 downto 0); -- rd of instruction at MEM
              i_WB_rd              : in std_logic_vector(4 downto 0); -- rd of instruction at WB
+             i_MEM_rs2            : in std_logic_vector(4 downto 0); -- rs2 of the instruction at MEM
+             i_WB_ALU_mem         : in std_logic; -- for detecting lw currently in wb, this is 1 only for lw
              i_MEM_reg_WE         : in std_logic; -- does the instruction at MEM write to reg file?
              i_WB_reg_WE          : in std_logic; -- does the instruction at WB  write to reg file?
              o_ALU_A_frwrd_sel    : out std_logic_vector(1 downto 0); -- select one of the paths to ALU_A
-             o_ALU_B_frwrd_sel    : out std_logic_vector(1 downto 0)  -- select one of the paths to ALU_B
+             o_ALU_B_frwrd_sel    : out std_logic_vector(1 downto 0);  -- select one of the paths to ALU_B
+             o_MEM_frwrd_sel      : out std_logic -- select either the data from reg2, or forward from WB (for lw sw)
              ); 
     end component Forwarding_unit;
 
@@ -250,10 +269,12 @@ architecture structure of RISCV_Processor is
     signal s_Imm_select_id             : std_logic_vector(2 downto 0);          -- select wires for chosing which type of immediate to use ID stage 
     signal s_memory_data_mem           : std_logic_vector(31 downto 0);         -- Selected appropraite word/half_word/byte (MEM stage)
     signal s_reg_file_data_to_write_wb : std_logic_vector(31 downto 0);         -- data to write back in register file (WB stage)
+    signal s_MEM_frwrd_sel_mem         : std_logic;                             -- select line for MEM's value. Forward from WB if previous one was lw
     signal s_ALU_A_frwrd_sel_ex        : std_logic_vector(1 downto 0);          -- select line for ALU_A's value before ALU_src mux. Either forward or ID/EX.A
     signal s_ALU_B_frwrd_sel_ex        : std_logic_vector(1 downto 0);          -- select line for ALU_B's value before ALU_src mux. Either forward or ID/EX.B
     signal s_ALU_A_final_data_ex       : std_logic_vector(31 downto 0);         -- ALU_A's final selected value. one of {read1/ (MEM.Alu_out) / (WB.data)}/(pc)  
     signal s_ALU_B_final_data_ex       : std_logic_vector(31 downto 0);         -- ALU_B's final selected value. one of {read2/ (MEM.Alu_out) / (WB.data)}/(imm) 
+    signal s_mem_data_to_write_mem     : std_logic_vector(31 downto 0);         -- DMEM's final value. one of (MEM.reg2_data / WB.data)
     signal s_ALU_op_id       : std_logic_vector(1 downto 0);
     signal s_lui_id     : std_logic;
      
@@ -269,10 +290,10 @@ architecture structure of RISCV_Processor is
     signal s_ALU_flag_ge_ex   : std_logic;
     signal s_ALU_flag_geu_ex  : std_logic;
 
-
+    signal s_flush_id : std_logic; 
+    signal s_stall_id : std_logic; 
 
     -- Pipeline Register input outputs--
-    signal s_stall : std_logic; -- if 1, then should be stalled. For software pipelined allways 0
     -- fetch/decode reg inputs output
     signal s_IF_ID_input  : Fetch_decode_data_t;
     signal s_IF_ID_output : Fetch_decode_data_t;
@@ -290,11 +311,10 @@ architecture structure of RISCV_Processor is
 begin
     s_Halt      <= s_MEM_WB_output.halt;
     s_Ovfl <= '0'; -- RISC-V does not have hardware overflow detection.
-    s_stall <= '0'; -- for software pipelined
 
     s_DMemWr   <= s_EX_MEM_output.mem_WE; -- active high data memory write enable signal
     s_DMemAddr <= s_EX_MEM_output.ALU_out; -- data memory address input
-    s_DMemData <= s_EX_MEM_output.reg_data_2; -- data memory data input
+    s_DMemData <= s_mem_data_to_write_mem; -- data memory data input
     s_DMemOut  <= s_memory_data_mem; -- data memory output
 
     s_RegWr     <= s_MEM_WB_output.reg_WE; -- active high write enable input to the register file
@@ -315,9 +335,8 @@ begin
     IF_ID_reg_inst: Fetch_decode_register 
         port map(i_fetch_decode_register => s_IF_ID_input,
                  o_fetch_decode_register => s_IF_ID_output,
-                 i_stall                 => s_stall,
-            --     i_reset                 => iRST or s_should_branch_ex or s_ID_EX_output.jal or s_ID_EX_output.jalr,  
-                 i_reset                 => iRST,  
+                 i_stall                 => s_stall_id,
+                 i_reset                 => iRST or s_flush_id,  
                  i_clk                   => iCLK   
         );
 
@@ -325,8 +344,8 @@ begin
     ID_EX_reg_inst: Decode_Execute_register
         port map(i_decode_execute_register  => s_ID_EX_input,
                   o_decode_execute_register => s_ID_EX_output,
-                  i_stall                   => s_stall,
-                 i_reset                    => iRST or s_should_branch_ex or s_ID_EX_output.jal or s_ID_EX_output.jalr,  
+                  i_stall                   => s_stall_id,
+                  i_reset                   => iRST or s_flush_id,  
                   i_clk                     => iCLK   
         );
 
@@ -334,7 +353,7 @@ begin
     EX_MEM_reg_inst: Execute_memory_register
         port map(i_execute_memory_register => s_EX_MEM_input,
                  o_execute_memory_register => s_EX_MEM_output,
-                 i_stall                   => s_stall,
+                 i_stall                   => '0', --never stalled
                  i_reset                   => iRST,  
                  i_clk                     => iCLK   
         );
@@ -343,7 +362,7 @@ begin
     MEM_WB_reg_inst: Memory_wback_register
         port map(i_memory_wback_register => s_MEM_WB_input,
                  o_memory_wback_register => s_MEM_WB_output,
-                 i_stall                 => s_stall,
+                 i_stall                 => '0', -- never stalled
                  i_reset                 => iRST,  
                  i_clk                   => iCLK   
         );
@@ -365,6 +384,7 @@ begin
         port map(
                 i_pc_in  => s_Next_pc_if,     -- selected pc, either +4 or jump/branch address
                 o_pc_out => s_IF_ID_input.current_PC, -- PC is saved in pipeline register
+                i_stall  => s_stall_id, -- don't advance the counter
                 i_reset  => iRST,
                 i_clk    => iCLK
         );
@@ -406,6 +426,20 @@ begin
                  o_jalr        => s_ID_EX_input.jalr,
                  o_halt        => s_ID_EX_input.halt
             );
+
+    Hazard_unit_inst: Hazard_unit
+        port map(
+                 i_ALU_mem_ex   => s_ID_EX_output.ALU_mem, -- lw
+                 i_mem_WE_id    => s_ID_EX_input.mem_WE,
+                 i_pc_source_ex => s_should_branch_ex or s_ID_EX_output.jalr or s_ID_EX_output.jal,
+                 i_rd_ex        => s_ID_EX_output.rd,
+                 i_rs1_id       => s_ID_EX_input.rs1,
+                 i_rs2_id       => s_ID_EX_input.rs2,
+                 i_ALU_src_id   => s_ID_EX_input.ALU_src,
+                 i_ALU_A_src_id => s_ID_EX_input.ALU_A_src,
+                 o_flush_id     => s_flush_id, 
+                 o_stall_id     => s_stall_id 
+             ); 
 
     -- Register file
     Register_file_inst: Register_file
@@ -554,10 +588,13 @@ begin
                  i_rs2             => s_ID_EX_output.rs2,
                  i_MEM_rd          => s_EX_MEM_output.rd,
                  i_WB_rd           => s_MEM_WB_output.rd,
+                 i_MEM_rs2         => s_EX_MEM_output.rs2,
+                 i_WB_ALU_mem      => s_MEM_WB_output.ALU_mem,
                  i_MEM_reg_WE      => s_EX_MEM_output.reg_WE, 
                  i_WB_reg_WE       => s_MEM_WB_output.reg_WE,
                  o_ALU_A_frwrd_sel => s_ALU_A_frwrd_sel_ex,
-                 o_ALU_B_frwrd_sel => s_ALU_B_frwrd_sel_ex
+                 o_ALU_B_frwrd_sel => s_ALU_B_frwrd_sel_ex,
+                 o_MEM_frwrd_sel   => s_MEM_frwrd_sel_mem
          ); 
   
 
@@ -567,9 +604,20 @@ begin
     s_EX_MEM_input.func3         <= s_ID_EX_output.func3;
     s_EX_MEM_input.rd            <= s_ID_EX_output.rd;
     s_EX_MEM_input.halt          <= s_ID_EX_output.halt;
+    s_EX_MEM_input.rs2           <= s_ID_EX_output.rs2;
     s_EX_MEM_input.reg_data_2    <= s_frwrded_data_or_read2_ex;
 
 ----------------------------------
+
+    -- Either write reg_data2 to forward from writeback
+    Mux2t1_Mem_frwrd_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_MEM_frwrd_sel_mem, 
+                     i_D0 => s_EX_MEM_output.reg_data_2,
+                     i_D1 => s_reg_file_data_to_write_wb,
+                     o_O  => s_mem_data_to_write_mem 
+            ); 
 
 
     DMem: mem
@@ -577,7 +625,7 @@ begin
                     DATA_WIDTH => 32)
         port map(clk  => iCLK,
                  addr => s_EX_MEM_output.ALU_out(11 downto 2),
-                 data => s_EX_MEM_output.reg_data_2,
+                 data => s_mem_data_to_write_mem,
                  we   => s_EX_MEM_output.mem_WE,
                  q    => s_memory_data_mem
         );

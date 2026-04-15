@@ -60,6 +60,7 @@ package RISCV_types is
         reg_data_2 : std_logic_vector(31 downto 0);
         rd         : std_logic_vector(4 downto 0); -- rd
         func3      : std_logic_vector(2 downto 0);
+        rs2        : std_logic_vector(4 downto 0); -- rs2 (for lw sw use hazard)
     end record Execute_memory_data_t;
 
 

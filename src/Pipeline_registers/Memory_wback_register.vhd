@@ -50,7 +50,7 @@ begin
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                 -- reset the pipeline to 0
-                 i_WE  => not i_stall,             -- always write unless stalled
+                 i_WE  => '1',             -- always write unless stalled
                  i_D   => s_Memory_wback_data_in,  -- all the inputs  are contained in this signal
                  o_Q   => s_Memory_wback_data_out  -- all the outputs are contained in this signal
              );

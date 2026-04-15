@@ -88,8 +88,10 @@ begin
             '0' when OP_JAL,
             '0' when OP_JALR,
             '0' when OP_LUI,   -- LUI writes to reg file from ALU output
-            '-' when OP_BRANCH, -- branch doesn't write to reg file, so doesn't matter
-            '-' when OP_STORE, -- Store doesn't write to reg file. Therefore, don't care
+            -- '-' when OP_BRANCH, -- branch doesn't write to reg file, so doesn't matter
+            -- '-' when OP_STORE, -- Store doesn't write to reg file. Therefore, don't care
+            '0' when OP_BRANCH, -- branch doesn't write to reg file, so doesn't matter
+            '0' when OP_STORE, -- Store doesn't write to reg file. Therefore, don't care
             '0' when others;
 
 

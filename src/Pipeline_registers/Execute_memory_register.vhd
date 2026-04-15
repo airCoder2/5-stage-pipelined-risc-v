@@ -27,9 +27,9 @@ architecture structural of Execute_memory_register is
     end component N_bit_register;   
 
     -- execute/memory stage register
-    -- 76 bits total:
-    signal s_Execute_memory_data_in  : std_logic_vector(75 downto 0);   
-    signal s_Execute_memory_data_out : std_logic_vector(75 downto 0);   
+    -- 81 bits total:
+    signal s_Execute_memory_data_in  : std_logic_vector(80 downto 0);   
+    signal s_Execute_memory_data_out : std_logic_vector(80 downto 0);   
 
 begin
     -- halt       :(0) 
@@ -40,6 +40,7 @@ begin
     -- reg_data_2 :(67 downto 36);
     -- rd         :(72 downto 68); -- rd
     -- func3      :(75 downto 73);
+    -- rs2        :(80 downto 76);
 
 
     s_Execute_memory_data_in(0)              <= i_execute_memory_register.halt;              
@@ -50,14 +51,15 @@ begin
     s_Execute_memory_data_in(67 downto 36)   <= i_execute_memory_register.reg_data_2;
     s_Execute_memory_data_in(72 downto 68)   <= i_execute_memory_register.rd;        
     s_Execute_memory_data_in(75 downto 73)   <= i_execute_memory_register.func3;     
+    s_Execute_memory_data_in(80 downto 76)   <= i_execute_memory_register.rs2;     
 
 
     Execute_memory_register_inst: N_bit_register
-        generic map(N => 76, Reset_value => (75 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 81, Reset_value => (80 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
-                 i_WE  => not i_stall,              -- always write unless stalled
+                 i_WE  => '1',              -- always write unless stalled
                  i_D   => s_Execute_memory_data_in, -- all the inputs  are contained in this signal
                  o_Q   => s_Execute_memory_data_out -- all the outputs are contained in this signal
              );
@@ -69,5 +71,6 @@ begin
     o_execute_memory_register.reg_data_2   <= s_Execute_memory_data_out(67 downto 36);            
     o_execute_memory_register.rd           <= s_Execute_memory_data_out(72 downto 68);            
     o_execute_memory_register.func3        <= s_Execute_memory_data_out(75 downto 73);            
+    o_execute_memory_register.rs2          <= s_Execute_memory_data_out(80 downto 76);            
 
 end architecture structural;
