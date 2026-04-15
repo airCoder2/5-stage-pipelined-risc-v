@@ -24,13 +24,17 @@ end entity Hazard_unit;
 
 architecture behavioral of Hazard_unit is
 begin
+    -- whenver branch is taken just flush, because it is set to predic not taken currently
     o_flush_id <= i_pc_source_ex;
 
+    -- this does not stall lw followed by sw (mem data hazard, if sw's address depends on lw, then it does, because, 
+    -- for address caluclations, we need rs1 in the execute stege), because sw sets i_ALU_src_id to 1. We forard it from WB to MEM_data.
     o_stall_id <=
                '1' when ((i_ALU_mem_ex = '1') and  -- if it is lw
-                                                   -- if that lw is writing to  rs1,                    or       if that lw is writing to rs2,  or if this instruction is sw
-                        ((  (i_rd_ex = i_rs1_id) and (i_ALU_A_src_id = '0')   ) or  (   (i_rd_ex = i_rs2_id) and (i_ALU_src_id = '0')   ) /*or (i_mem_WE_id = '1')*/)) else 
+                       -- if that lw is writing to  rs1 of the current instruction, or if it is writing to rs2 of the current inst, then stall
+                        (     ((i_rd_ex = i_rs1_id) and (i_ALU_A_src_id = '0')) or  ((i_rd_ex = i_rs2_id) and (i_ALU_src_id = '0'))  ) else 
                '0';
+
 
 end architecture;
                                                                                                                                                                                         
