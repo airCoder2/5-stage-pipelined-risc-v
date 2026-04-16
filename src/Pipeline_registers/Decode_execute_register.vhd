@@ -28,8 +28,8 @@ architecture structural of Decode_Execute_register is
 
     -- decode/execute stage register
     -- 162 bits total:
-    signal s_Decode_execute_data_in  : std_logic_vector(162 downto 0);   
-    signal s_Decode_execute_data_out : std_logic_vector(162 downto 0);   
+    signal s_Decode_execute_data_in  : std_logic_vector(161 downto 0);   
+    signal s_Decode_execute_data_out : std_logic_vector(161 downto 0);   
     signal s_reg_WE : std_logic;
     signal s_mem_WE : std_logic;
     signal s_ALU_mem : std_logic;
