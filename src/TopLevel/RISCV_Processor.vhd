@@ -25,7 +25,7 @@ end  RISCV_Processor;
 
 architecture structure of RISCV_Processor is
 
-    ----------------- COMPONENTS ---------------
+----------------- COMPONENTS ---------------
 
     -- mem component is used to infer Memory to store Instructions and Data
     component mem is
@@ -66,16 +66,22 @@ architecture structure of RISCV_Processor is
 
     component Hazard_unit is
         port(
-             i_ALU_mem_ex    : in  std_logic;  -- lw
-             i_mem_WE_id     : in  std_logic;  -- sw
-             i_pc_source_ex  : in  std_logic; 
-             i_rd_ex         : in std_logic_vector(4 downto 0);
-             i_rs1_id         : in std_logic_vector(4 downto 0);
-             i_rs2_id         : in std_logic_vector(4 downto 0);
-             i_ALU_src_id     : in std_logic;
-             i_ALU_A_src_id   : in std_logic;
-             o_flush_id    : out  std_logic; 
-             o_stall_id    :  out  std_logic
+             i_ALU_mem_ex           : in  std_logic;  -- lw
+             i_mem_WE_id            : in  std_logic;  -- sw
+             i_pc_source_ex         : in  std_logic; 
+             i_rd_ex                : in  std_logic_vector(4 downto 0);
+             i_rs1_id               : in  std_logic_vector(4 downto 0);
+             i_rs2_id               : in  std_logic_vector(4 downto 0);
+             i_ALU_src_id           : in  std_logic;
+             i_ALU_A_src_id         : in  std_logic;
+             i_notTaken_taken       : in std_logic;
+             i_predicted_wrong_ex   : in  std_logic; 
+             i_predicted_correct_ex : in std_logic;
+             i_jal_ex               : in std_logic;
+             i_jalr_ex              : in std_logic;
+             o_flush_IF_ID_id       : out std_logic; 
+             o_flush_ID_EX_id       : out std_logic; 
+             o_stall_id             : out std_logic
              );
     end component Hazard_unit; 
 
@@ -200,6 +206,16 @@ architecture structure of RISCV_Processor is
               o_should_branch : out std_logic);
     end component branch_decision;
 
+    component Branch_prediction is
+        port(
+             i_was_branch_wrong : in  std_logic;
+             i_jalr             : in  std_logic; -- if jalr, output not taken
+             o_notTaken_taken   : out std_logic);
+    end component Branch_prediction;
+
+
+
+
     -- IF_ID stage register
     component Fetch_decode_register is
         port(i_fetch_decode_register : in  Fetch_decode_data_t;
@@ -279,8 +295,12 @@ architecture structure of RISCV_Processor is
     signal s_lui_id     : std_logic;
      
     signal s_should_branch_ex : std_logic;
+    signal s_predicted_wrong_ex : std_logic;
+    signal s_predicted_correct_ex : std_logic;
+    signal s_pc_source_ex  : std_logic;
     signal s_frwrded_data_or_read1_ex : std_logic_vector(31 downto 0); 
     signal s_branch_adder_A_ex : std_logic_vector(31 downto 0); 
+    signal s_branch_adder_B_ex : std_logic_vector(31 downto 0); 
     signal s_frwrded_data_or_read2_ex : std_logic_vector(31 downto 0);  
     signal s_branch_pc_ex : std_logic_vector(31 downto 0);
 
@@ -290,8 +310,14 @@ architecture structure of RISCV_Processor is
     signal s_ALU_flag_ge_ex   : std_logic;
     signal s_ALU_flag_geu_ex  : std_logic;
 
-    signal s_flush_id : std_logic; 
+    signal s_flush_IF_ID_id : std_logic;
+    signal s_flush_ID_EX_id : std_logic;
     signal s_stall_id : std_logic; 
+
+    signal s_predicted_branch_pc_id : std_logic_vector(31 downto 0); -- predicted pc branch address
+    signal s_pc_src_A_if : std_logic_vector(31 downto 0); -- predicted pc or pc+4
+    signal s_predicted_jal_actual_same_ex : std_logic;
+    signal s_predicted_correct_taken_ex : std_logic;
 
     -- Pipeline Register input outputs--
     -- fetch/decode reg inputs output
@@ -309,6 +335,8 @@ architecture structure of RISCV_Processor is
 
 
 begin
+
+--------------------- TOOLFLOW SIGNALS ------------------------
     s_Halt      <= s_MEM_WB_output.halt;
     s_Ovfl <= '0'; -- RISC-V does not have hardware overflow detection.
 
@@ -331,12 +359,14 @@ begin
     s_IMemAddr <= s_PC when '0',
       iInstAddr when others;
 
+--------------------- PIPELINE REGISTERS ------------------------
+
     -- IF_ID stage register
     IF_ID_reg_inst: Fetch_decode_register 
         port map(i_fetch_decode_register => s_IF_ID_input,
                  o_fetch_decode_register => s_IF_ID_output,
                  i_stall                 => s_stall_id,
-                 i_reset                 => iRST or s_flush_id,  
+                 i_reset                 => iRST or s_flush_IF_ID_id,  
                  i_clk                   => iCLK   
         );
 
@@ -345,7 +375,7 @@ begin
         port map(i_decode_execute_register  => s_ID_EX_input,
                   o_decode_execute_register => s_ID_EX_output,
                   i_stall                   => s_stall_id,
-                  i_reset                   => iRST or s_flush_id,  
+                  i_reset                   => iRST or s_flush_ID_EX_id,  
                   i_clk                     => iCLK   
         );
 
@@ -367,13 +397,26 @@ begin
                  i_clk                   => iCLK   
         );
 
+--------------------- FETCH STAGE ------------------------
 
-    -- should next pc be pc + 4 or pc+(reg/immediate) selects PC source
+    -- in case previous instruction was jal or branch, should we predict next address or pc+4
+    Mux2t1_predict_or_next_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+--                     i_S  => ((s_ID_EX_input.branch and s_ID_EX_input.notTaken_taken) or s_ID_EX_input.jal) and (not s_ID_EX_output.jal), -- if branch and predict=1 or jal then predicted addr 
+                     i_S  => ((s_ID_EX_input.branch and s_ID_EX_input.notTaken_taken) or s_ID_EX_input.jal) and (not s_predicted_correct_taken_ex), -- if branch and predict=1 or jal then predicted addr 
+
+                     i_D0 => s_pc_plus_4_if,            -- current pc + 4
+                     i_D1 => s_ID_EX_input.jal_predicted_pc,
+                     o_O  => s_pc_src_A_if
+             ); 
+
+    -- should next pc be (predict next address/pc+4) or corrected pc selects PC source
     Mux2t1_pc_source_inst:  mux2t1_N_dataflow
             generic map(N => 32)
             port map(
-                     i_S  => s_should_branch_ex or s_ID_EX_output.jal or s_ID_EX_output.jalr,
-                     i_D0 => s_pc_plus_4_if,            -- current pc + 4
+                     i_S  => s_pc_source_ex,
+                     i_D0 => s_pc_src_A_if,  -- prvious pc + jump or branch offset OR pc+4
                      i_D1 => s_branch_pc_ex, -- final calculated branch/jump value,
                      o_O  => s_Next_pc_if               -- selected next PC
              ); 
@@ -407,7 +450,7 @@ begin
                  q    => s_IF_ID_input.Inst -- Instruction is saved in pipeline register
         );
 
----------------------------------------------------------
+--------------------- ID STAGE ------------------------
 
     -- Main controller unit
     Main_control_inst: Main_control_unit 
@@ -431,15 +474,38 @@ begin
         port map(
                  i_ALU_mem_ex   => s_ID_EX_output.ALU_mem, -- lw
                  i_mem_WE_id    => s_ID_EX_input.mem_WE,
-                 i_pc_source_ex => s_should_branch_ex or s_ID_EX_output.jalr or s_ID_EX_output.jal,
+                 i_pc_source_ex => s_pc_source_ex,
                  i_rd_ex        => s_ID_EX_output.rd,
                  i_rs1_id       => s_ID_EX_input.rs1,
                  i_rs2_id       => s_ID_EX_input.rs2,
                  i_ALU_src_id   => s_ID_EX_input.ALU_src,
                  i_ALU_A_src_id => s_ID_EX_input.ALU_A_src,
-                 o_flush_id     => s_flush_id, 
+                 i_notTaken_taken       => s_ID_EX_input.notTaken_taken,
+                 i_predicted_wrong_ex   => s_predicted_wrong_ex,
+                 i_predicted_correct_ex => s_predicted_correct_ex,
+                 i_jal_ex               => s_ID_EX_output.jal and (not s_predicted_jal_actual_same_ex),
+                 i_jalr_ex              => s_ID_EX_output.jalr,
+                 o_flush_IF_ID_id   => s_flush_IF_ID_id, 
+                 o_flush_ID_EX_id   => s_flush_ID_EX_id, 
                  o_stall_id     => s_stall_id 
              ); 
+
+    Branch_prediction_inst: Branch_prediction
+        port map(
+             i_was_branch_wrong  => '0',
+             i_jalr              => s_ID_EX_input.jalr, -- if jalr, output not taken
+             o_notTaken_taken    => s_ID_EX_input.notTaken_taken
+         );
+
+    Branch_predictor_addr_inst: ripple_carry_N_bit_adder
+        generic map(N => 32)
+        port map(x    => s_ID_EX_input.Extended_imm,
+                 y    => s_IF_ID_output.current_PC,
+                 c_in => '0',
+                 sum  => s_ID_EX_input.jal_predicted_pc -- predicted calculated branch value
+        );
+
+
 
     -- Register file
     Register_file_inst: Register_file
@@ -482,7 +548,7 @@ begin
     s_ID_EX_input.func3 <= s_IF_ID_output.Inst(14 downto 12);
     s_ID_EX_input.current_pc <= s_IF_ID_output.current_PC;
 
-----------------------------------------------------
+--------------------- EX STAGE ------------------------
 
     -- Decision box for deciding if should branch or no
     branch_brain_inst: branch_decision 
@@ -494,8 +560,14 @@ begin
               i_geu        => s_ALU_flag_geu_ex,
               i_is_branch  => s_ID_EX_output.branch,
               i_func3      => s_ID_EX_output.func3,
-              o_should_branch => s_should_branch_ex -- NEW
+              o_should_branch => s_should_branch_ex 
         );
+
+    s_predicted_wrong_ex   <= s_ID_EX_output.branch and (s_ID_EX_output.notTaken_taken xor s_should_branch_ex);
+    s_predicted_correct_ex <= s_ID_EX_output.branch and (not s_predicted_wrong_ex);
+    s_pc_source_ex         <= s_predicted_wrong_ex or s_ID_EX_output.jalr;
+    s_predicted_correct_taken_ex <= '1' when ((s_ID_EX_output.jal =  '1') or (s_predicted_correct_ex = '1' and s_ID_EX_output.notTaken_taken = '1')) else '0';
+    
 
 
     -- Mux for ALU_A's input (Before ALU_A_src) mux. Controlled by the forwarding unit
@@ -530,15 +602,27 @@ begin
                      o_O  => s_branch_adder_A_ex  -- NEW
             );
 
+    -- pass current  extended_imm or 0x00000004
+    Mux2t1_notTaken_taken_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_ID_EX_output.notTaken_taken or s_ID_EX_output.jal,
+                     i_D0 => s_ID_EX_output.Extended_imm,
+                     i_D1 => 32x"00000004",
+                     o_O  => s_branch_adder_B_ex  -- NEW
+            );
+
     -- for calculating final address
     Branch_adder_inst: ripple_carry_N_bit_adder
         generic map(N => 32)
         port map(x    => s_branch_adder_A_ex,
-                 y    => s_ID_EX_output.Extended_imm,
+                 y    => s_branch_adder_B_ex,
                  c_in => '0',
                  sum  => s_branch_pc_ex -- final calculated branch value
         );
 
+
+    s_predicted_jal_actual_same_ex <= '1' when (s_ID_EX_output.jal_predicted_pc = s_branch_pc_ex) else '0';
 
 
     -- Mux for ALU_B's input. Controlled by the forwarding unit
@@ -607,7 +691,7 @@ begin
     s_EX_MEM_input.rs2           <= s_ID_EX_output.rs2;
     s_EX_MEM_input.reg_data_2    <= s_frwrded_data_or_read2_ex;
 
-----------------------------------
+--------------------- MEM STAGE ------------------------
 
     -- Either write reg_data2 to forward from writeback
     Mux2t1_Mem_frwrd_inst:  mux2t1_N_dataflow
@@ -647,7 +731,7 @@ begin
     s_MEM_WB_input.rd      <= s_EX_MEM_output.rd;
     s_MEM_WB_input.halt    <= s_EX_MEM_output.halt;
 
----------------------------------------------
+--------------------- WB STAGE ------------------------
 
     -- Either write ALU_out or Mem_out to register file
     Mux2t1_ALU_or_Mem_data_inst:  mux2t1_N_dataflow

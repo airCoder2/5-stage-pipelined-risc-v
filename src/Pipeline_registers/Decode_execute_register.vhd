@@ -27,9 +27,9 @@ architecture structural of Decode_Execute_register is
     end component N_bit_register;   
 
     -- decode/execute stage register
-    -- 161 bits total:
-    signal s_Decode_execute_data_in  : std_logic_vector(160 downto 0);   
-    signal s_Decode_execute_data_out : std_logic_vector(160 downto 0);   
+    -- 194 bits total:
+    signal s_Decode_execute_data_in  : std_logic_vector(193 downto 0);   
+    signal s_Decode_execute_data_out : std_logic_vector(193 downto 0);   
     signal s_reg_WE : std_logic;
     signal s_mem_WE : std_logic;
     signal s_ALU_mem : std_logic;
@@ -56,12 +56,16 @@ begin
     -- func3           :(150 downto 148)
     -- rs1             :(155 downto 151)
     -- rs2             :(160 downto 156)
+    -- notTaken_taken  :(161)
+    -- jal_predicted_pc: (193 downto 162)
     with i_stall select
         s_reg_WE <= i_decode_execute_register.reg_WE when '0', -- if not stall, then usual, otherwise 0
                     '0' when others; 
     with i_stall select
         s_mem_WE <= i_decode_execute_register.mem_WE when '0', -- if not stall, then usual, otherwise 0
                     '0' when others; 
+
+    -- I forgot why I needed to set this, rethink about it
     with i_stall select
         s_ALU_mem <= i_decode_execute_register.ALU_mem when '0', -- if not stall, then usual, otherwise 0
                     '0' when others; 
@@ -90,9 +94,11 @@ begin
     s_Decode_execute_data_in(150 downto 148) <=  i_decode_execute_register.func3;          
     s_Decode_execute_data_in(155 downto 151) <=  i_decode_execute_register.rs1;            
     s_Decode_execute_data_in(160 downto 156) <=  i_decode_execute_register.rs2;            
+    s_Decode_execute_data_in(161)            <=  i_decode_execute_register.notTaken_taken;            
+    s_Decode_execute_data_in(193 downto 162) <=  i_decode_execute_register.jal_predicted_pc;
 
     Decode_execute_register_inst: N_bit_register
-        generic map(N => 161, Reset_value => (160 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 194, Reset_value => (193 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
@@ -123,5 +129,8 @@ begin
     o_decode_execute_register.func3           <= s_Decode_execute_data_out(150 downto 148);   
     o_decode_execute_register.rs1             <= s_Decode_execute_data_out(155 downto 151);   
     o_decode_execute_register.rs2             <= s_Decode_execute_data_out(160 downto 156);   
+    o_decode_execute_register.notTaken_taken  <= s_Decode_execute_data_out(161);   
+    o_decode_execute_register.jal_predicted_pc<= s_Decode_execute_data_out(193 downto 162);   
+
 
 end architecture structural;

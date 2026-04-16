@@ -49,6 +49,8 @@ package RISCV_types is
         mem_WE          : std_logic; --mem write enable 
         rs1             : std_logic_vector(4 downto 0);
         rs2             : std_logic_vector(4 downto 0);
+        notTaken_taken  : std_logic;
+        jal_predicted_pc: std_logic_vector(31 downto 0);
     end record Decode_execute_data_t;
 
     type Execute_memory_data_t is record

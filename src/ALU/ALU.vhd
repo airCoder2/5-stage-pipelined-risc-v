@@ -26,6 +26,7 @@ end entity ALU;
 
 architecture structural of ALU is
 
+    -- for oring the who bus
     function or_bus(vec : std_logic_vector) return std_logic is
         variable result : std_logic := '0';
         begin
