@@ -20,7 +20,7 @@ begin
 
     with i_jalr select
         o_notTaken_taken <= '0' when '1',    -- when jalr, don't take
-                            '1' when others; -- by default take
+                            '0' when others; -- by default take
 
 end architecture;
 

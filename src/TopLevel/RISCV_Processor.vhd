@@ -316,7 +316,6 @@ architecture structure of RISCV_Processor is
 
     signal s_predicted_branch_pc_id : std_logic_vector(31 downto 0); -- predicted pc branch address
     signal s_pc_src_A_if : std_logic_vector(31 downto 0); -- predicted pc or pc+4
-    signal s_predicted_jal_actual_same_ex : std_logic;
     signal s_predicted_correct_taken_ex : std_logic;
 
     -- Pipeline Register input outputs--
@@ -403,11 +402,10 @@ begin
     Mux2t1_predict_or_next_inst:  mux2t1_N_dataflow
             generic map(N => 32)
             port map(
---                     i_S  => ((s_ID_EX_input.branch and s_ID_EX_input.notTaken_taken) or s_ID_EX_input.jal) and (not s_ID_EX_output.jal), -- if branch and predict=1 or jal then predicted addr 
-                     i_S  => ((s_ID_EX_input.branch and s_ID_EX_input.notTaken_taken) or s_ID_EX_input.jal) and (not s_predicted_correct_taken_ex), -- if branch and predict=1 or jal then predicted addr 
-
+                     -- 1 only when decode instruction is branch and set to taken by default OR jal. SHOULD NOT SLECT THE PREDICTED OF THE INSTRUCTION GETTING FLUSHED
+                     i_S  => ((s_ID_EX_input.branch and s_ID_EX_input.notTaken_taken) or s_ID_EX_input.jal) and (not s_predicted_correct_taken_ex),
                      i_D0 => s_pc_plus_4_if,            -- current pc + 4
-                     i_D1 => s_ID_EX_input.jal_predicted_pc,
+                     i_D1 => s_predicted_branch_pc_id,
                      o_O  => s_pc_src_A_if
              ); 
 
@@ -480,10 +478,10 @@ begin
                  i_rs2_id       => s_ID_EX_input.rs2,
                  i_ALU_src_id   => s_ID_EX_input.ALU_src,
                  i_ALU_A_src_id => s_ID_EX_input.ALU_A_src,
-                 i_notTaken_taken       => s_ID_EX_input.notTaken_taken,
-                 i_predicted_wrong_ex   => s_predicted_wrong_ex,
-                 i_predicted_correct_ex => s_predicted_correct_ex,
-                 i_jal_ex               => s_ID_EX_output.jal and (not s_predicted_jal_actual_same_ex),
+                 i_notTaken_taken       => s_ID_EX_output.notTaken_taken,
+                 i_predicted_wrong_ex   => s_predicted_wrong_ex, -- if branch and (notTaken_taken != predicted)
+                 i_predicted_correct_ex => s_predicted_correct_ex, -- if branch and (not predicted_wrong)
+                 i_jal_ex               => s_ID_EX_output.jal,
                  i_jalr_ex              => s_ID_EX_output.jalr,
                  o_flush_IF_ID_id   => s_flush_IF_ID_id, 
                  o_flush_ID_EX_id   => s_flush_ID_EX_id, 
@@ -502,7 +500,7 @@ begin
         port map(x    => s_ID_EX_input.Extended_imm,
                  y    => s_IF_ID_output.current_PC,
                  c_in => '0',
-                 sum  => s_ID_EX_input.jal_predicted_pc -- predicted calculated branch value
+                 sum  => s_predicted_branch_pc_id -- predicted calculated branch value
         );
 
 
@@ -563,9 +561,19 @@ begin
               o_should_branch => s_should_branch_ex 
         );
 
+    -- if branch and (notTaken_taken != predicted)
     s_predicted_wrong_ex   <= s_ID_EX_output.branch and (s_ID_EX_output.notTaken_taken xor s_should_branch_ex);
+
+    -- if branch and (not predicted_wrong)         
     s_predicted_correct_ex <= s_ID_EX_output.branch and (not s_predicted_wrong_ex);
+
+
+
+    -- correct pc if predicted_wrong or jalr
     s_pc_source_ex         <= s_predicted_wrong_ex or s_ID_EX_output.jalr;
+
+    
+    -- flush only one of them
     s_predicted_correct_taken_ex <= '1' when ((s_ID_EX_output.jal =  '1') or (s_predicted_correct_ex = '1' and s_ID_EX_output.notTaken_taken = '1')) else '0';
     
 
@@ -620,10 +628,6 @@ begin
                  c_in => '0',
                  sum  => s_branch_pc_ex -- final calculated branch value
         );
-
-
-    s_predicted_jal_actual_same_ex <= '1' when (s_ID_EX_output.jal_predicted_pc = s_branch_pc_ex) else '0';
-
 
     -- Mux for ALU_B's input. Controlled by the forwarding unit
     ALU_B_forward_select_mux_inst: mux_3t1_bus

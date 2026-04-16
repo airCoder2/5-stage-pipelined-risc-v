@@ -33,12 +33,17 @@ architecture behavioral of Hazard_unit is
     signal two_cycle_penalty          : std_logic;
 begin
 
+    
+    -- if taken was correct prediction, or jal, then only flush one instruction
     one_cycle_penalty <= '1' when (i_jal_ex =  '1' or (i_predicted_correct_ex = '1' and i_notTaken_taken = '1')) else '0';
+
+    -- if prediction was wrong, or jalr, then flush two instructions
     two_cycle_penalty <= '1' when (i_jalr_ex = '1' or i_predicted_wrong_ex = '1') else '0';
 
-    -- if we get i_pc_source_ex = 1, then flush both IF/ID and ID/EX
-    -- if we get i_crrct_prediction = 1, then only flush ID/EX
+    -- flush IF_ID when wrong prediction or jalr
     o_flush_IF_ID_id <= two_cycle_penalty;
+
+    -- flush ID_EX when both (wrong prediction of jalr) OR (correct but taken or jal)
     o_flush_ID_EX_id <= one_cycle_penalty or two_cycle_penalty;
 
 
