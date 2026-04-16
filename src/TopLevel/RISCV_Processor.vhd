@@ -208,9 +208,12 @@ architecture structure of RISCV_Processor is
 
     component Branch_prediction is
         port(
-             i_was_branch_wrong : in  std_logic;
-             i_jalr             : in  std_logic; -- if jalr, output not taken
-             o_notTaken_taken   : out std_logic);
+             i_clock                : in  std_logic;
+             i_reset                : in  std_logic;
+             i_predicted_wrong_ex   : in  std_logic; 
+             i_predicted_correct_ex : in  std_logic;
+             i_jalr                 : in  std_logic; -- if jalr, output not taken
+             o_notTaken_taken       : out std_logic);
     end component Branch_prediction;
 
 
@@ -490,7 +493,10 @@ begin
 
     Branch_prediction_inst: Branch_prediction
         port map(
-             i_was_branch_wrong  => '0',
+             i_clock                => iCLK,
+             i_reset                => iRST,
+             i_predicted_wrong_ex   => s_predicted_wrong_ex,  
+             i_predicted_correct_ex => s_predicted_correct_ex,
              i_jalr              => s_ID_EX_input.jalr, -- if jalr, output not taken
              o_notTaken_taken    => s_ID_EX_input.notTaken_taken
          );
