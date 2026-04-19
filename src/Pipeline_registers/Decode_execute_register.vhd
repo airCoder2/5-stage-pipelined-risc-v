@@ -28,8 +28,8 @@ architecture structural of Decode_Execute_register is
 
     -- decode/execute stage register
     -- 162 bits total:
-    signal s_Decode_execute_data_in  : std_logic_vector(161 downto 0);   
-    signal s_Decode_execute_data_out : std_logic_vector(161 downto 0);   
+    signal s_Decode_execute_data_in  : std_logic_vector(164 downto 0);   
+    signal s_Decode_execute_data_out : std_logic_vector(164 downto 0);   
     signal s_reg_WE : std_logic;
     signal s_mem_WE : std_logic;
     signal s_ALU_mem : std_logic;
@@ -56,7 +56,7 @@ begin
     -- func3           :(150 downto 148)
     -- rs1             :(155 downto 151)
     -- rs2             :(160 downto 156)
-    -- notTaken_taken  :(161)
+    -- notTaken_taken  :(165)
     with i_stall select
         s_reg_WE <= i_decode_execute_register.reg_WE when '0', -- if not stall, then usual, otherwise 0
                     '0' when others; 
@@ -94,9 +94,10 @@ begin
     s_Decode_execute_data_in(155 downto 151) <=  i_decode_execute_register.rs1;            
     s_Decode_execute_data_in(160 downto 156) <=  i_decode_execute_register.rs2;            
     s_Decode_execute_data_in(161)            <=  i_decode_execute_register.notTaken_taken;            
+    s_Decode_execute_data_in(164 downto 162) <=  i_decode_execute_register.predicted_counter_index;
 
     Decode_execute_register_inst: N_bit_register
-        generic map(N => 162, Reset_value => (161 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 165, Reset_value => (164 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
@@ -128,6 +129,7 @@ begin
     o_decode_execute_register.rs1             <= s_Decode_execute_data_out(155 downto 151);   
     o_decode_execute_register.rs2             <= s_Decode_execute_data_out(160 downto 156);   
     o_decode_execute_register.notTaken_taken  <= s_Decode_execute_data_out(161);   
+    o_decode_execute_register.predicted_counter_index  <= s_Decode_execute_data_out(164 downto 162);   
 
 
 end architecture structural;

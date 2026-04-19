@@ -11,7 +11,6 @@ entity Hazard_unit is
     port(
          i_ALU_mem_ex           : in  std_logic;  -- lw
          i_mem_WE_id            : in  std_logic;  -- sw
-         i_pc_source_ex         : in  std_logic; 
          i_rd_ex                : in  std_logic_vector(4 downto 0);
          i_rs1_id               : in  std_logic_vector(4 downto 0);
          i_rs2_id               : in  std_logic_vector(4 downto 0);

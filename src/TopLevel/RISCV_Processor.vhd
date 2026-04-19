@@ -68,7 +68,6 @@ architecture structure of RISCV_Processor is
         port(
              i_ALU_mem_ex           : in  std_logic;  -- lw
              i_mem_WE_id            : in  std_logic;  -- sw
-             i_pc_source_ex         : in  std_logic; 
              i_rd_ex                : in  std_logic_vector(4 downto 0);
              i_rs1_id               : in  std_logic_vector(4 downto 0);
              i_rs2_id               : in  std_logic_vector(4 downto 0);
@@ -208,12 +207,15 @@ architecture structure of RISCV_Processor is
 
     component Branch_prediction is
         port(
-             i_clock                : in  std_logic;
-             i_reset                : in  std_logic;
-             i_predicted_wrong_ex   : in  std_logic; 
-             i_predicted_correct_ex : in  std_logic;
-             i_jalr                 : in  std_logic; -- if jalr, output not taken
-             o_notTaken_taken       : out std_logic);
+             i_clock                      : in  std_logic;
+             i_reset                      : in  std_logic;
+             i_should_branch_ex           : in std_logic;
+             i_predicted_wrong_ex         : in  std_logic; 
+             i_predicted_correct_ex       : in  std_logic;
+             i_predicted_counter_index_ex : in std_logic_vector(2 downto 0);
+             i_jalr                       : in  std_logic; -- if jalr, output not taken
+             o_predicted_counter_index    : out std_logic_vector(2 downto 0);
+             o_notTaken_taken             : out std_logic);
     end component Branch_prediction;
 
 
@@ -300,7 +302,6 @@ architecture structure of RISCV_Processor is
     signal s_should_branch_ex : std_logic;
     signal s_predicted_wrong_ex : std_logic;
     signal s_predicted_correct_ex : std_logic;
-    signal s_pc_source_ex  : std_logic;
     signal s_frwrded_data_or_read1_ex : std_logic_vector(31 downto 0); 
     signal s_branch_adder_A_ex : std_logic_vector(31 downto 0); 
     signal s_branch_adder_B_ex : std_logic_vector(31 downto 0); 
@@ -416,7 +417,8 @@ begin
     Mux2t1_pc_source_inst:  mux2t1_N_dataflow
             generic map(N => 32)
             port map(
-                     i_S  => s_pc_source_ex,
+                     -- flushing IF_ID means that we have a two cycle penalty and we need to correct the pc (prediction was not correc or jalr)
+                     i_S  => s_flush_IF_ID_id, 
                      i_D0 => s_pc_src_A_if,  -- prvious pc + jump or branch offset OR pc+4
                      i_D1 => s_branch_pc_ex, -- final calculated branch/jump value,
                      o_O  => s_Next_pc_if               -- selected next PC
@@ -475,7 +477,6 @@ begin
         port map(
                  i_ALU_mem_ex   => s_ID_EX_output.ALU_mem, -- lw
                  i_mem_WE_id    => s_ID_EX_input.mem_WE,
-                 i_pc_source_ex => s_pc_source_ex,
                  i_rd_ex        => s_ID_EX_output.rd,
                  i_rs1_id       => s_ID_EX_input.rs1,
                  i_rs2_id       => s_ID_EX_input.rs2,
@@ -495,9 +496,12 @@ begin
         port map(
              i_clock                => iCLK,
              i_reset                => iRST,
+             i_should_branch_ex     => s_should_branch_ex,
              i_predicted_wrong_ex   => s_predicted_wrong_ex,  
              i_predicted_correct_ex => s_predicted_correct_ex,
+             i_predicted_counter_index_ex => s_ID_EX_output.predicted_counter_index, 
              i_jalr              => s_ID_EX_input.jalr, -- if jalr, output not taken
+             o_predicted_counter_index   => s_ID_EX_input.predicted_counter_index,
              o_notTaken_taken    => s_ID_EX_input.notTaken_taken
          );
 
@@ -571,17 +575,18 @@ begin
     s_predicted_wrong_ex   <= s_ID_EX_output.branch and (s_ID_EX_output.notTaken_taken xor s_should_branch_ex);
 
     -- if branch and (not predicted_wrong)         
-    s_predicted_correct_ex <= s_ID_EX_output.branch and (not s_predicted_wrong_ex);
+    s_predicted_correct_ex <= s_ID_EX_output.branch and (not (s_ID_EX_output.notTaken_taken xor s_should_branch_ex));
+    -- old one which was generating delta cycle
+    --s_predicted_correct_ex <= s_ID_EX_output.branch and (not s_predicted_wrong_ex);
 
 
 
-    -- correct pc if predicted_wrong or jalr
-    s_pc_source_ex         <= s_predicted_wrong_ex or s_ID_EX_output.jalr;
+
 
     
-    -- flush only one of them
+    -- flush only one of them ( USED TO MAKE SURE WE DON'T jump to the predicted address of the instructrion getting flusehd after correct taken prediction. Because
+    -- we still have 1 cycle penalty)
     s_predicted_correct_taken_ex <= '1' when ((s_ID_EX_output.jal =  '1') or (s_predicted_correct_ex = '1' and s_ID_EX_output.notTaken_taken = '1')) else '0';
-    
 
 
     -- Mux for ALU_A's input (Before ALU_A_src) mux. Controlled by the forwarding unit
