@@ -34,6 +34,7 @@ architecture structural of Decode_Execute_register is
     signal s_mem_WE : std_logic;
     signal s_ALU_mem : std_logic;
     signal s_halt    : std_logic;
+    signal s_branch : std_logic;
 begin
     -- halt            :(0) 
     -- reg_WE          :(1)
@@ -72,9 +73,13 @@ begin
         s_halt <= i_decode_execute_register.halt when '0', -- if not stall, then usual, otherwise 0
                     '0' when others; 
 
+    with i_stall select
+        s_branch <= i_decode_execute_register.branch when '0', -- if not stall, then usual, otherwise 0
+                    '0' when others; 
+
     s_Decode_execute_data_in(0)              <=  s_halt;           
     s_Decode_execute_data_in(1)              <=  s_reg_WE;         
-    s_Decode_execute_data_in(2)              <=  i_decode_execute_register.branch;         
+    s_Decode_execute_data_in(2)              <=  s_branch;
     s_Decode_execute_data_in(3)              <=  i_decode_execute_register.jal;            
     s_Decode_execute_data_in(4)              <=  i_decode_execute_register.jalr;           
     s_Decode_execute_data_in(5)              <=  s_ALU_mem;        

@@ -24,6 +24,7 @@ entity cla_4bit is
           c_in           : in  std_logic;
           S3, S2, S1, S0 : out std_logic;
           c_out          : out std_logic;
+          c3_out         : out std_logic;   -- carry INTO the sign bit (S3)
           G_grp, P_grp   : out std_logic);
 end entity cla_4bit;
 
@@ -65,6 +66,9 @@ begin
         or (p3 and p2 and p1 and g0)
         or (p3 and p2 and p1 and p0 and c_in);
 
+    -- Expose carry into MSB bit of this block for overflow detection
+    c3_out <= c3;
+
     -- Group generate / propagate (for potential higher-level CLA cascading)
     G_grp <= g3
         or (p3 and g2)
@@ -87,7 +91,7 @@ end architecture behavioral;
 -- Chains NUM_BLOCKS = N/4 cla_4bit instances.
 -- B is XOR-ed with nAdd_Sub for two's complement subtraction.
 -- carry(0) = nAdd_Sub  (+1 when subtracting).
--- overflow = carry into MSB block XOR carry out of MSB block.
+-- overflow = carry into sign bit XOR carry out of sign bit.
 --
 -- Constraint: N must be a multiple of 4.
 -------------------------------------------------------------------------------
@@ -114,13 +118,16 @@ architecture behavioral of carry_lookahead_adder is
               c_in           : in  std_logic;
               S3, S2, S1, S0 : out std_logic;
               c_out          : out std_logic;
+              c3_out         : out std_logic;
               G_grp, P_grp   : out std_logic);
     end component;
 
-    signal B_eff : std_logic_vector(N-1 downto 0);
-    signal carry : std_logic_vector(NUM_BLOCKS downto 0);
-    signal G_blk : std_logic_vector(NUM_BLOCKS-1 downto 0);
-    signal P_blk : std_logic_vector(NUM_BLOCKS-1 downto 0);
+    signal B_eff       : std_logic_vector(N-1 downto 0);
+    signal carry       : std_logic_vector(NUM_BLOCKS downto 0);
+    signal G_blk       : std_logic_vector(NUM_BLOCKS-1 downto 0);
+    signal P_blk       : std_logic_vector(NUM_BLOCKS-1 downto 0);
+    signal c3_blk      : std_logic_vector(NUM_BLOCKS-1 downto 0); -- c3 of each block
+    signal c_into_sign : std_logic;  -- carry into bit N-1 (the sign bit)
 
 begin
 
@@ -134,25 +141,31 @@ begin
     gen_blocks : for blk in 0 to NUM_BLOCKS-1 generate
         u_cla : cla_4bit
             port map (
-                A0    => A(blk*4),
-                A1    => A(blk*4 + 1),
-                A2    => A(blk*4 + 2),
-                A3    => A(blk*4 + 3),
-                B0    => B_eff(blk*4),
-                B1    => B_eff(blk*4 + 1),
-                B2    => B_eff(blk*4 + 2),
-                B3    => B_eff(blk*4 + 3),
-                c_in  => carry(blk),
-                S0    => sum(blk*4),
-                S1    => sum(blk*4 + 1),
-                S2    => sum(blk*4 + 2),
-                S3    => sum(blk*4 + 3),
-                c_out => carry(blk + 1),
-                G_grp => G_blk(blk),
-                P_grp => P_blk(blk));
+                A0     => A(blk*4),
+                A1     => A(blk*4 + 1),
+                A2     => A(blk*4 + 2),
+                A3     => A(blk*4 + 3),
+                B0     => B_eff(blk*4),
+                B1     => B_eff(blk*4 + 1),
+                B2     => B_eff(blk*4 + 2),
+                B3     => B_eff(blk*4 + 3),
+                c_in   => carry(blk),
+                S0     => sum(blk*4),
+                S1     => sum(blk*4 + 1),
+                S2     => sum(blk*4 + 2),
+                S3     => sum(blk*4 + 3),
+                c_out  => carry(blk + 1),
+                c3_out => c3_blk(blk),
+                G_grp  => G_blk(blk),
+                P_grp  => P_blk(blk));
     end generate gen_blocks;
 
+    -- carry into the sign bit is c3 of the most-significant block
+    c_into_sign <= c3_blk(NUM_BLOCKS - 1);
+
     c_out    <= carry(NUM_BLOCKS);
-    overflow <= carry(NUM_BLOCKS - 1) xor carry(NUM_BLOCKS);
+
+    -- Correct signed overflow: carry INTO sign bit XOR carry OUT OF sign bit
+    overflow <= c_into_sign xor carry(NUM_BLOCKS);
 
 end architecture behavioral;

@@ -59,19 +59,17 @@ begin
     o_notTaken_taken <= '0' when i_jalr = '1' else
                         -- '0';
                         -- s_notTaken_taken;
-                        s_FSM_table_output(to_integer(unsigned(s_shift_reg_out)));
+                         s_FSM_table_output(to_integer(unsigned(s_shift_reg_out)));
 
-    Saturating_counter_FSM_inst: Saturating_counter_FSM
-        port map(
-                 i_clock               => i_clock, 
-                 i_reset               => i_reset, 
-                 i_predicted_wrong_ex  => i_predicted_wrong_ex,  
-                 i_predicted_correct_ex=> i_predicted_correct_ex, 
-                 i_FSM_update_en       => '1',
-                 o_notTaken_taken      => s_notTaken_taken
-        );
-
-    
+--    Saturating_counter_FSM_inst: Saturating_counter_FSM
+--        port map(
+--                 i_clock               => i_clock, 
+--                 i_reset               => i_reset, 
+--                 i_predicted_wrong_ex  => i_predicted_wrong_ex,  
+--                 i_predicted_correct_ex=> i_predicted_correct_ex, 
+--                 i_FSM_update_en       => '1',
+--                 o_notTaken_taken      => s_notTaken_taken
+--        );
 
     Decoder_3t8_FSM_update_index_en_inst: Decoder_3_to_8
         port map(i_code    => i_predicted_counter_index_ex,
@@ -98,5 +96,4 @@ begin
                  i_new_val => i_should_branch_ex, 
                  o_reg_out => s_shift_reg_out 
         );
-
 end architecture;

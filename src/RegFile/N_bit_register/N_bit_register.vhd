@@ -7,8 +7,8 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 
 entity N_bit_register is
-	--generic(N : integer; Reset_value : std_logic_vector(N-1 downto 0); Bypass_register : boolean);
-	generic(N : integer; Reset_value : std_logic_vector; Bypass_register : boolean);
+	-- generic(N : integer; Reset_value : std_logic_vector(N-1 downto 0); Bypass_register : boolean);
+	 generic(N : integer; Reset_value : std_logic_vector; Bypass_register : boolean);
 	port(i_CLK  : in std_logic;						   -- Clock input
 	   i_RST    : in std_logic;						   -- Reset input
 	   i_WE     : in std_logic;   					   -- All register connected
