@@ -575,9 +575,9 @@ begin
     s_predicted_wrong_ex   <= s_ID_EX_output.branch and (s_ID_EX_output.notTaken_taken xor s_should_branch_ex);
 
     -- if branch and (not predicted_wrong)         
-    s_predicted_correct_ex <= s_ID_EX_output.branch and (not (s_ID_EX_output.notTaken_taken xor s_should_branch_ex));
+    -- s_predicted_correct_ex <= s_ID_EX_output.branch and (not (s_ID_EX_output.notTaken_taken xor s_should_branch_ex));
     -- old one which was generating delta cycle
-    --s_predicted_correct_ex <= s_ID_EX_output.branch and (not s_predicted_wrong_ex);
+    s_predicted_correct_ex <= s_ID_EX_output.branch and (not s_predicted_wrong_ex);
 
 
 

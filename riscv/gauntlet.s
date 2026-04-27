@@ -276,9 +276,8 @@ _pc_shift_mask:
         j    _pc_shift_mask
 _pc_shift_done:
         and  a0, t4, a0          # a0 = x & mask
-        beq  a0, x0, _pc_bit_zero  # if zero, bit not set
-        addi t2, t2, 1           # bit is set, count++
-_pc_bit_zero:
+        slt  a1, x0, a0          # a1 = (0 < a0), i.e. bit is set
+        add  t2, t2, a1          # count += bit
 
         addi t5, t5, 1
         j    _pc_loop
@@ -340,8 +339,9 @@ _dfs_shift_done:
         la   t2, visited_mask
         lw   t3, 0(t2)
         and  a1, t3, a0
-        beq  a1, x0, _dfs_visit  # if zero → not visited → visit
-        j    _dfs_loop            # nonzero → already visited → skip
+        slt  a1, x0, a1          # already visited?
+        beq  a1, x0, _dfs_visit  # no → visit
+        j    _dfs_loop            # yes → skip
 
 _dfs_visit:
         # mark visited
@@ -373,7 +373,8 @@ _dfs_nbr_shift:
         j    _dfs_nbr_shift
 _dfs_nbr_shift_done:
         and  a0, t5, a0
-        beq  a0, x0, _dfs_nbr_next  # if zero → neighbor not set → skip
+        slt  a1, x0, a0          # is neighbor set?
+        beq  a1, x0, _dfs_nbr_next
 
         # push neighbor t0 onto soft stack
         lw   t3, 0(fp)           # soft_top
