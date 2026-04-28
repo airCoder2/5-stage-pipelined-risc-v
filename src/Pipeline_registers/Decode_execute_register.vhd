@@ -27,9 +27,9 @@ architecture structural of Decode_Execute_register is
     end component N_bit_register;   
 
     -- decode/execute stage register
-    -- 162 bits total:
-    signal s_Decode_execute_data_in  : std_logic_vector(164 downto 0);   
-    signal s_Decode_execute_data_out : std_logic_vector(164 downto 0);   
+    -- 210 bits total:
+    signal s_Decode_execute_data_in  : std_logic_vector(209 downto 0);   
+    signal s_Decode_execute_data_out : std_logic_vector(209 downto 0);   
     signal s_reg_WE : std_logic;
     signal s_mem_WE : std_logic;
     signal s_ALU_mem : std_logic;
@@ -37,28 +37,35 @@ architecture structural of Decode_Execute_register is
     signal s_branch : std_logic;
     signal s_jalr   : std_logic;
 begin
-    -- halt            :(0) 
-    -- reg_WE          :(1)
-    -- branch          :(2)
-    -- jal             :(3)
-    -- jalr            :(4)
-    -- ALU_mem         :(5) 
-    -- ALU_src         :(6) 
-    -- ALU_A_src       :(7) 
-    -- ALU_nAdd_sub    :(8) 
-    -- ALU_logcl_arith :(9) 
-    -- ALU_right_left  :(10) 
-    -- mem_WE          :(11) 
-    -- current_pc      :(43 downto 12)
-    -- read1           :(75 downto 44)
-    -- read2           :(107 downto 76)
-    -- Extended_imm    :(139 downto 108)
-    -- rd              :(144 downto 140) -- rd
-    -- ALU_mux_select  :(147 downto 145)
-    -- func3           :(150 downto 148)
-    -- rs1             :(155 downto 151)
-    -- rs2             :(160 downto 156)
-    -- notTaken_taken  :(165)
+    -- halt                    :(0) 
+    -- reg_WE                  :(1)
+    -- branch                  :(2)
+    -- jal                     :(3)
+    -- jalr                    :(4)
+    -- ALU_mem                 :(5) 
+    -- ALU_src                 :(6) 
+    -- ALU_A_src               :(7) 
+    -- ALU_nAdd_sub            :(8) 
+    -- ALU_logcl_arith         :(9) 
+    -- ALU_right_left          :(10) 
+    -- mem_WE                  :(11) 
+    -- current_pc              :(43 downto 12)
+    -- read1                   :(75 downto 44)
+    -- read2                   :(107 downto 76)
+    -- Extended_imm            :(139 downto 108)
+    -- rd                      :(144 downto 140) -- rd
+    -- ALU_mux_select          :(147 downto 145)
+    -- func3                   :(150 downto 148)
+    -- rs1                     :(155 downto 151)
+    -- rs2                     :(160 downto 156)
+    -- notTaken_taken          :(161)
+    -- predicted_counter_index :(164 downto 162)
+    -- csr                     :(165); -- control flag to indicate a CSR instruction
+    -- csr_data                :(197 downto 166)
+    -- csr_write_addr          :(209 downto 198)
+
+
+
     with i_stall select
         s_reg_WE <= i_decode_execute_register.reg_WE when '0', -- if not stall, then usual, otherwise 0
                     '0' when others; 
@@ -105,9 +112,12 @@ begin
     s_Decode_execute_data_in(160 downto 156) <=  i_decode_execute_register.rs2;            
     s_Decode_execute_data_in(161)            <=  i_decode_execute_register.notTaken_taken;            
     s_Decode_execute_data_in(164 downto 162) <=  i_decode_execute_register.predicted_counter_index;
+    s_Decode_execute_data_in(165)            <=  i_decode_execute_register.csr;                     
+    s_Decode_execute_data_in(197 downto 166) <=  i_decode_execute_register.csr_data;                
+    s_Decode_execute_data_in(209 downto 198) <=  i_decode_execute_register.csr_write_addr;          
 
     Decode_execute_register_inst: N_bit_register
-        generic map(N => 165, Reset_value => (164 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 210, Reset_value => (209 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
@@ -117,29 +127,32 @@ begin
              );
 
     -- fill the output wires with the appropriate slices of the N_bit_register output
-    o_decode_execute_register.halt            <= s_Decode_execute_data_out(0);             
-    o_decode_execute_register.reg_WE          <= s_Decode_execute_data_out(1);              
-    o_decode_execute_register.branch          <= s_Decode_execute_data_out(2);                
-    o_decode_execute_register.jal             <= s_Decode_execute_data_out(3);                    
-    o_decode_execute_register.jalr            <= s_Decode_execute_data_out(4);             
-    o_decode_execute_register.ALU_mem         <= s_Decode_execute_data_out(5);                      
-    o_decode_execute_register.ALU_src         <= s_Decode_execute_data_out(6);                         
-    o_decode_execute_register.ALU_A_src       <= s_Decode_execute_data_out(7);                          
-    o_decode_execute_register.ALU_nAdd_sub    <= s_Decode_execute_data_out(8);                       
-    o_decode_execute_register.ALU_logcl_arith <= s_Decode_execute_data_out(9);                       
-    o_decode_execute_register.ALU_right_left  <= s_Decode_execute_data_out(10);                      
-    o_decode_execute_register.mem_WE          <= s_Decode_execute_data_out(11);                      
-    o_decode_execute_register.current_pc      <= s_Decode_execute_data_out(43 downto 12);            
-    o_decode_execute_register.read1           <= s_Decode_execute_data_out(75 downto 44);              
-    o_decode_execute_register.read2           <= s_Decode_execute_data_out(107 downto 76);            
-    o_decode_execute_register.Extended_imm    <= s_Decode_execute_data_out(139 downto 108);                
-    o_decode_execute_register.rd              <= s_Decode_execute_data_out(144 downto 140);   
-    o_decode_execute_register.ALU_mux_select  <= s_Decode_execute_data_out(147 downto 145);  
-    o_decode_execute_register.func3           <= s_Decode_execute_data_out(150 downto 148);   
-    o_decode_execute_register.rs1             <= s_Decode_execute_data_out(155 downto 151);   
-    o_decode_execute_register.rs2             <= s_Decode_execute_data_out(160 downto 156);   
-    o_decode_execute_register.notTaken_taken  <= s_Decode_execute_data_out(161);   
+    o_decode_execute_register.halt                     <= s_Decode_execute_data_out(0);             
+    o_decode_execute_register.reg_WE                   <= s_Decode_execute_data_out(1);              
+    o_decode_execute_register.branch                   <= s_Decode_execute_data_out(2);                
+    o_decode_execute_register.jal                      <= s_Decode_execute_data_out(3);                    
+    o_decode_execute_register.jalr                     <= s_Decode_execute_data_out(4);             
+    o_decode_execute_register.ALU_mem                  <= s_Decode_execute_data_out(5);                      
+    o_decode_execute_register.ALU_src                  <= s_Decode_execute_data_out(6);                         
+    o_decode_execute_register.ALU_A_src                <= s_Decode_execute_data_out(7);                          
+    o_decode_execute_register.ALU_nAdd_sub             <= s_Decode_execute_data_out(8);                       
+    o_decode_execute_register.ALU_logcl_arith          <= s_Decode_execute_data_out(9);                       
+    o_decode_execute_register.ALU_right_left           <= s_Decode_execute_data_out(10);                      
+    o_decode_execute_register.mem_WE                   <= s_Decode_execute_data_out(11);                      
+    o_decode_execute_register.current_pc               <= s_Decode_execute_data_out(43 downto 12);            
+    o_decode_execute_register.read1                    <= s_Decode_execute_data_out(75 downto 44);              
+    o_decode_execute_register.read2                    <= s_Decode_execute_data_out(107 downto 76);            
+    o_decode_execute_register.Extended_imm             <= s_Decode_execute_data_out(139 downto 108);                
+    o_decode_execute_register.rd                       <= s_Decode_execute_data_out(144 downto 140);   
+    o_decode_execute_register.ALU_mux_select           <= s_Decode_execute_data_out(147 downto 145);  
+    o_decode_execute_register.func3                    <= s_Decode_execute_data_out(150 downto 148);   
+    o_decode_execute_register.rs1                      <= s_Decode_execute_data_out(155 downto 151);   
+    o_decode_execute_register.rs2                      <= s_Decode_execute_data_out(160 downto 156);   
+    o_decode_execute_register.notTaken_taken           <= s_Decode_execute_data_out(161);   
     o_decode_execute_register.predicted_counter_index  <= s_Decode_execute_data_out(164 downto 162);   
+    o_decode_execute_register.csr                      <= s_Decode_execute_data_out(165);                  
+    o_decode_execute_register.csr_data                 <= s_Decode_execute_data_out(197 downto 166);       
+    o_decode_execute_register.csr_write_addr           <= s_Decode_execute_data_out(209 downto 198);       
 
 
 end architecture structural;
