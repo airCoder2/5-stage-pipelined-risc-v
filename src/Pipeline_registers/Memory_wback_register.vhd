@@ -34,7 +34,7 @@ architecture structural of Memory_wback_register is
 begin
     -- REG_WE          :(0)
     -- ALU/Mem         :(1)
-    -- ALU_out         :(33 downto 2)
+    -- ALU_out_or_csr         :(33 downto 2)
     -- MEM_out         :(65 downto 34)
     -- reg_write_sel   :(70 downto 66)
     -- halt            :(71)
@@ -44,7 +44,7 @@ begin
 
     s_Memory_wback_data_in(0)              <= i_memory_wback_register.reg_WE;
     s_Memory_wback_data_in(1)              <= i_memory_wback_register.ALU_mem;
-    s_Memory_wback_data_in(33 downto 2)    <= i_memory_wback_register.ALU_out;
+    s_Memory_wback_data_in(33 downto 2)    <= i_memory_wback_register.ALU_out_or_csr;
     s_Memory_wback_data_in(65 downto 34)   <= i_memory_wback_register.dmem_out;
     s_Memory_wback_data_in(70 downto 66)   <= i_memory_wback_register.rd;
     s_Memory_wback_data_in(71)             <= i_memory_wback_register.halt;
@@ -64,7 +64,7 @@ begin
 
     o_memory_wback_register.reg_WE          <= s_Memory_wback_data_out(0);             
     o_memory_wback_register.ALU_mem         <= s_Memory_wback_data_out(1);             
-    o_memory_wback_register.ALU_out         <= s_Memory_wback_data_out(33 downto 2);   
+    o_memory_wback_register.ALU_out_or_csr         <= s_Memory_wback_data_out(33 downto 2);   
     o_memory_wback_register.dmem_out        <= s_Memory_wback_data_out(65 downto 34);  
     o_memory_wback_register.rd              <= s_Memory_wback_data_out(70 downto 66);
     o_memory_wback_register.halt            <= s_Memory_wback_data_out(71);

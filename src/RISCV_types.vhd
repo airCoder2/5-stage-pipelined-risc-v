@@ -79,7 +79,7 @@ package RISCV_types is
     type Memory_wback_data_t is record
         reg_WE         : std_logic;  -- reg write enable
         ALU_mem        : std_logic;
-        ALU_out        : std_logic_vector(31 downto 0);
+        ALU_out_or_csr        : std_logic_vector(31 downto 0);
         rd             : std_logic_vector(4 downto 0); -- rd
         dmem_out       : std_logic_vector(31 downto 0);
         halt           : std_logic;

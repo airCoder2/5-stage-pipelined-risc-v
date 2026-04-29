@@ -8,14 +8,12 @@ use IEEE.std_logic_1164.all;
 use work.RISCV_types.all;
 
 entity CSR_write_data_gen is
-
     port(
          i_func3_mem                 : in  std_logic_vector(2 downto 0);  -- Function 3 for determening what type of csr instruction it is
          i_csr_data_mem              : in  std_logic_vector(31 downto 0); -- CSR data to generate a masked output incase it is csrrs or csrrc
          i_extended_rs1_or_read1_mem : in  std_logic_vector(31 downto 0); -- Extended rs1 or reg1_data as new vaue incase csrrw or csrrwi
          o_csr_new_data_mem          : out std_logic_vector(31 downto 0)  -- New csr value to be written
         );
-
 end entity CSR_write_data_gen;
 
 architecture structural of CSR_write_data_gen is

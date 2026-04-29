@@ -159,7 +159,7 @@ architecture structure of RISCV_Processor is
             o_branch  : out std_logic; -- should branch or no
             o_jal     : out std_logic;
             o_jalr    : out std_logic;
-            o_halt : out std_logic --used as wfi
+            o_sys     : out std_logic 
         );
     end component Main_control_unit;
 
@@ -218,6 +218,29 @@ architecture structure of RISCV_Processor is
              o_notTaken_taken             : out std_logic);
     end component Branch_prediction;
 
+    -- CSR registers
+    component CSR_registers is
+        port(i_clock        : in std_logic;                       -- clock input
+             i_reset        : in std_logic;                       -- reset input
+             i_we           : in std_logic;                       -- CSR RegFile WE
+             i_csr          : in std_logic;                       -- current instruction is csr flag
+             i_read_addr    : in std_logic_vector(11 downto 0);   -- 12 bit address of CSR we want to read from
+             i_write_addr   : in std_logic_vector(11 downto 0);   -- 12 bit address of CSR we want to write to
+             i_write_data   : in std_logic_vector(31 downto 0);   -- 32 bit data we would like to write
+             o_csr_data     : out std_logic_vector(31 downto 0);  -- 32 bit data we would like to read
+             o_illegal_read : out std_logic                       -- reading from unimplemented CSR 
+            );
+    end component CSR_registers;
+    
+    -- Block in mem that decides what data to write to CSR
+    component CSR_write_data_gen is
+        port(
+             i_func3_mem                 : in  std_logic_vector(2 downto 0);  -- Function 3 for determening what type of csr instruction it is
+             i_csr_data_mem              : in  std_logic_vector(31 downto 0); -- CSR data to generate a masked output incase it is csrrs or csrrc
+             i_extended_rs1_or_read1_mem : in  std_logic_vector(31 downto 0); -- Extended rs1 or reg1_data as new vaue incase csrrw or csrrwi
+             o_csr_new_data_mem          : out std_logic_vector(31 downto 0)  -- New csr value to be written
+            );
+    end component CSR_write_data_gen;
 
 
 
@@ -298,6 +321,7 @@ architecture structure of RISCV_Processor is
     signal s_mem_data_to_write_mem     : std_logic_vector(31 downto 0);         -- DMEM's final value. one of (MEM.reg2_data / WB.data)
     signal s_ALU_op_id       : std_logic_vector(1 downto 0);
     signal s_lui_id     : std_logic;
+    signal s_sys_id     : std_logic; -- system instruciton. Look at func3 and func7
      
     signal s_should_branch_ex : std_logic;
     signal s_predicted_wrong_ex : std_logic;
@@ -322,6 +346,9 @@ architecture structure of RISCV_Processor is
     signal s_pc_src_A_if : std_logic_vector(31 downto 0); -- predicted pc or pc+4
     signal s_predicted_correct_taken_ex : std_logic;
 
+    signal s_illegal_instruction_id : std_logic; -- signal for illegal instructions
+
+
     -- Pipeline Register input outputs--
     -- fetch/decode reg inputs output
     signal s_IF_ID_input  : Fetch_decode_data_t;
@@ -344,7 +371,7 @@ begin
     s_Ovfl <= '0'; -- RISC-V does not have hardware overflow detection.
 
     s_DMemWr   <= s_EX_MEM_output.mem_WE; -- active high data memory write enable signal
-    s_DMemAddr <= s_EX_MEM_output.ALU_out; -- data memory address input
+    s_DMemAddr <= s_MEM_WB_input.ALU_out_or_csr; -- data memory address input
     s_DMemData <= s_mem_data_to_write_mem; -- data memory data input
     s_DMemOut  <= s_memory_data_mem; -- data memory output
 
@@ -470,7 +497,7 @@ begin
                  o_branch      => s_ID_EX_input.branch, 
                  o_jal         => s_ID_EX_input.jal, 
                  o_jalr        => s_ID_EX_input.jalr,
-                 o_halt        => s_ID_EX_input.halt
+                 o_sys         => s_sys_id
             );
 
     Hazard_unit_inst: Hazard_unit
@@ -512,6 +539,19 @@ begin
                  c_in => '0',
                  sum  => s_predicted_branch_pc_id -- predicted calculated branch value
         );
+
+    CSR_registers_inst: CSR_registers
+        port map(
+             i_clock        => iCLK, 
+             i_reset        => iRST, 
+             i_we           => s_MEM_WB_output.csr, 
+             i_csr          => s_ID_EX_input.csr, 
+             i_read_addr    => s_IF_ID_output.Inst(31 downto 20),
+             i_write_addr   => s_MEM_WB_output.csr_write_addr,
+             i_write_data   => s_MEM_WB_output.csr_new_data,
+             o_csr_data     => s_ID_EX_input.csr_data,
+             o_illegal_read => s_illegal_instruction_id
+            );
 
 
 
@@ -556,6 +596,13 @@ begin
     s_ID_EX_input.func3 <= s_IF_ID_output.Inst(14 downto 12);
     s_ID_EX_input.current_pc <= s_IF_ID_output.current_PC;
 
+    -- if system instruction = 1 AND func3 = 0 AND func7 (Imm) = 0x105 then it is a halt instruction
+    s_ID_EX_input.halt <= '1' when (s_sys_id = '1' and s_ID_EX_input.func3 = 3b"000" and s_IF_ID_output.Inst(31 downto 20) = 12x"105") else '0';
+    -- if system instruction AND (non zero func3) then it is a csr instruction
+    s_ID_EX_input.csr  <= s_sys_id and (or s_ID_EX_input.func3);
+    s_ID_EX_input.csr_write_addr <= s_IF_ID_output.Inst(31 downto 20); -- read address is the same as the write address
+
+
 --------------------- EX STAGE ------------------------
 
     -- Decision box for deciding if should branch or no
@@ -593,7 +640,7 @@ begin
     ALU_A_forward_select_mux_inst: mux_3t1_bus
         port map(
                  i_x0   => s_ID_EX_output.read1,    -- read1 
-                 i_x1   => s_EX_MEM_output.ALU_out,     -- (M.ALU_out)
+                 i_x1   => s_MEM_WB_input.ALU_out_or_csr,     -- (M.ALU_out)
                  i_x2   => s_reg_file_data_to_write_wb, -- (WB.data)
                  i_sel  => s_ALU_A_frwrd_sel_ex,        -- forwarding unit's control 
                  o_out  => s_frwrded_data_or_read1_ex   -- NEW
@@ -640,11 +687,22 @@ begin
                  sum  => s_branch_pc_ex -- final calculated branch value
         );
 
+    Mux2t1_CSR_operand_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_ID_EX_output.func3(2),
+                     i_D0 => s_frwrded_data_or_read1_ex,
+                     i_D1 => 27x"0" & s_ID_EX_output.rs1,
+                     o_O  => s_EX_MEM_input.rs1_or_fread1
+            ); 
+
+
+
     -- Mux for ALU_B's input. Controlled by the forwarding unit
     ALU_B_forward_select_mux_inst: mux_3t1_bus
         port map(
                  i_x0   => s_ID_EX_output.read2,    --        -- (read2 / imm)
-                 i_x1   => s_EX_MEM_output.ALU_out,        -- (M.ALU_out)
+                 i_x1   => s_MEM_WB_input.ALU_out_or_csr,        -- (M.ALU_out)
                  i_x2   => s_reg_file_data_to_write_wb, -- (WB.data)
                  i_sel  => s_ALU_B_frwrd_sel_ex,              -- forwarding unit's control
                  o_out  => s_frwrded_data_or_read2_ex   -- NEW 
@@ -697,16 +755,29 @@ begin
          ); 
   
 
-    s_EX_MEM_input.reg_WE        <= s_ID_EX_output.reg_WE;
-    s_EX_MEM_input.mem_WE        <= s_ID_EX_output.mem_WE;
-    s_EX_MEM_input.ALU_mem       <= s_ID_EX_output.ALU_mem;
-    s_EX_MEM_input.func3         <= s_ID_EX_output.func3;
-    s_EX_MEM_input.rd            <= s_ID_EX_output.rd;
-    s_EX_MEM_input.halt          <= s_ID_EX_output.halt;
-    s_EX_MEM_input.rs2           <= s_ID_EX_output.rs2;
-    s_EX_MEM_input.reg_data_2    <= s_frwrded_data_or_read2_ex;
+    s_EX_MEM_input.reg_WE         <= s_ID_EX_output.reg_WE;
+    s_EX_MEM_input.mem_WE         <= s_ID_EX_output.mem_WE;
+    s_EX_MEM_input.ALU_mem        <= s_ID_EX_output.ALU_mem;
+    s_EX_MEM_input.func3          <= s_ID_EX_output.func3;
+    s_EX_MEM_input.rd             <= s_ID_EX_output.rd;
+    s_EX_MEM_input.halt           <= s_ID_EX_output.halt;
+    s_EX_MEM_input.rs2            <= s_ID_EX_output.rs2;
+    s_EX_MEM_input.reg_data_2     <= s_frwrded_data_or_read2_ex;
+    s_EX_MEM_input.csr            <= s_ID_EX_output.csr;
+    s_EX_MEM_input.csr_data       <= s_ID_EX_output.csr_data;
+    s_EX_MEM_input.csr_write_addr <= s_ID_EX_output.csr_write_addr;
 
 --------------------- MEM STAGE ------------------------
+
+    CSR_write_data_gen_inst: CSR_write_data_gen
+        port map(
+             i_func3_mem                 => s_EX_MEM_output.func3, 
+             i_csr_data_mem              => s_EX_MEM_output.csr_data, 
+             i_extended_rs1_or_read1_mem => s_EX_MEM_output.rs1_or_fread1, 
+             o_csr_new_data_mem          => s_MEM_WB_input.csr_new_data
+            );
+
+
 
     -- Either write reg_data2 to forward from writeback
     Mux2t1_Mem_frwrd_inst:  mux2t1_N_dataflow
@@ -718,12 +789,21 @@ begin
                      o_O  => s_mem_data_to_write_mem 
             ); 
 
+    Mux2t1_ALU_or_CSR:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_EX_MEM_output.csr, 
+                     i_D0 => s_EX_MEM_output.ALU_out, 
+                     i_D1 => s_EX_MEM_output.csr_data, 
+                     o_O  => s_MEM_WB_input.ALU_out_or_csr
+            ); 
+
 
     DMem: mem
         generic map(ADDR_WIDTH => 10,
                     DATA_WIDTH => 32)
         port map(clk  => iCLK,
-                 addr => s_EX_MEM_output.ALU_out(11 downto 2),
+                 addr => s_MEM_WB_input.ALU_out_or_csr(11 downto 2),
                  data => s_mem_data_to_write_mem,
                  we   => s_EX_MEM_output.mem_WE,
                  q    => s_memory_data_mem
@@ -735,16 +815,18 @@ begin
     Selector_inst: Byte_half_word_selector
         port map(
               i_mem_out_word  => s_memory_data_mem,
-              i_mem_b_hw_addr => s_EX_MEM_output.ALU_out(1 downto 0),
+              i_mem_b_hw_addr => s_MEM_WB_input.ALU_out_or_csr(1 downto 0),
               i_func3         => s_EX_MEM_output.func3,
               o_selected_data => s_MEM_WB_input.dmem_out
           );
 
-    s_MEM_WB_input.ALU_out <= s_EX_MEM_output.ALU_out;
     s_MEM_WB_input.ALU_mem <= s_EX_MEM_output.ALU_mem;
     s_MEM_WB_input.reg_WE  <= s_EX_MEM_output.reg_WE;
     s_MEM_WB_input.rd      <= s_EX_MEM_output.rd;
     s_MEM_WB_input.halt    <= s_EX_MEM_output.halt;
+    s_MEM_WB_input.csr     <= s_EX_MEM_output.csr;
+    s_MEM_WB_input.csr_write_addr <= s_EX_MEM_output.csr_write_addr;
+
 
 --------------------- WB STAGE ------------------------
 
@@ -753,9 +835,8 @@ begin
             generic map(N => 32)
             port map(
                      i_S  => s_MEM_WB_output.ALU_mem,
-                     i_D0 => s_MEM_WB_output.ALU_out,
+                     i_D0 => s_MEM_WB_output.ALU_out_or_csr,
                      i_D1 => s_MEM_WB_output.dmem_out,
                      o_O  => s_reg_file_data_to_write_wb
             ); 
-
 end structure;
