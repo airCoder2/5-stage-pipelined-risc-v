@@ -55,6 +55,9 @@ architecture dataflow of CSR_registers is
 
     signal s_csr_reg_implemented : std_logic;
 
+    signal s_masked_mstatus_data : std_logic_vector(31 downto 0);
+    signal s_what_is_going_on : std_logic_vector(31 downto 0);
+
 
 
 begin
@@ -93,14 +96,13 @@ begin
         
 
 
-
 	MSTATUS_REG_INST: N_bit_register
         generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
         port map(
                  i_CLK => i_clock, 
                  i_RST => i_reset, 
                  i_WE  => s_mstatus_we, 
-                 i_D   => i_write_data and 32b"10000001111111111111111111101010", 
+                 i_D   => i_write_data, 
                  o_Q   => s_mstatus_out
         ); 
 

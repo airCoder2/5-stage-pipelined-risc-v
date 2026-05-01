@@ -235,10 +235,11 @@ architecture structure of RISCV_Processor is
     -- Block in mem that decides what data to write to CSR
     component CSR_write_data_gen is
         port(
-             i_func3_mem                 : in  std_logic_vector(2 downto 0);  -- Function 3 for determening what type of csr instruction it is
-             i_csr_data_mem              : in  std_logic_vector(31 downto 0); -- CSR data to generate a masked output incase it is csrrs or csrrc
-             i_extended_rs1_or_read1_mem : in  std_logic_vector(31 downto 0); -- Extended rs1 or reg1_data as new vaue incase csrrw or csrrwi
-             o_csr_new_data_mem          : out std_logic_vector(31 downto 0)  -- New csr value to be written
+             i_func3                 : in  std_logic_vector(1 downto 0);  -- Function 3 for determening what type of csr instruction it is
+             i_csr_data              : in  std_logic_vector(31 downto 0); -- CSR data to generate a masked output incase it is csrrs or csrrc
+             i_csr_addr              : in  std_logic_vector(11 downto 0); -- for masking the non writible bits if csr reg bits has WRPI
+             i_extended_rs1_or_read1 : in  std_logic_vector(31 downto 0); -- Extended rs1 or reg1_data as new vaue incase csrrw or csrrwi
+             o_csr_new_data          : out std_logic_vector(31 downto 0)  -- New csr value to be written
             );
     end component CSR_write_data_gen;
 
@@ -345,8 +346,11 @@ architecture structure of RISCV_Processor is
     signal s_predicted_branch_pc_id : std_logic_vector(31 downto 0); -- predicted pc branch address
     signal s_pc_src_A_if : std_logic_vector(31 downto 0); -- predicted pc or pc+4
     signal s_predicted_correct_taken_ex : std_logic;
-
+    signal s_rs1_or_fread1_ex : std_logic_vector(31 downto 0);
     signal s_illegal_instruction_id : std_logic; -- signal for illegal instructions
+
+    signal s_csr_frwrd_sel_ex : std_logic_vector(1 downto 0); -- csr forward select
+    signal s_csr_frwrded_data_ex: std_logic_vector(31 downto 0);
 
 
     -- Pipeline Register input outputs--
@@ -693,8 +697,34 @@ begin
                      i_S  => s_ID_EX_output.func3(2),
                      i_D0 => s_frwrded_data_or_read1_ex,
                      i_D1 => 27x"0" & s_ID_EX_output.rs1,
-                     o_O  => s_EX_MEM_input.rs1_or_fread1
+                     o_O  => s_rs1_or_fread1_ex
             ); 
+
+    CSR_write_data_gen_A_forward_select_mux_inst: mux_3t1_bus
+        port map(
+                 i_x0   => s_ID_EX_output.csr_data,  
+                 i_x1   => s_EX_MEM_output.csr_new_data,
+                 i_x2   => s_MEM_WB_output.csr_new_data,
+                 i_sel  => s_csr_frwrd_sel_ex,
+                 o_out  => s_csr_frwrded_data_ex 
+         );
+
+    -- This is the little forwarding we need for CSRs. Basically if we are writing to a CSR in MEM
+    -- or in WB, the forward that value to EX
+    s_csr_frwrd_sel_ex <= 2b"01" when (s_ID_EX_output.csr_write_addr = s_EX_MEM_output.csr_write_addr) else
+                          2b"10" when (s_ID_EX_output.csr_write_addr = s_MEM_WB_output.csr_write_addr) else 
+                          2b"00";
+
+
+
+    CSR_write_data_gen_inst: CSR_write_data_gen
+        port map(
+             i_func3                 => s_ID_EX_output.func3(1 downto 0), 
+             i_csr_data              => s_csr_frwrded_data_ex, 
+             i_csr_addr              => s_ID_EX_output.csr_write_addr,
+             i_extended_rs1_or_read1 => s_rs1_or_fread1_ex, 
+             o_csr_new_data          => s_EX_MEM_input.csr_new_data
+            );
 
 
 
@@ -764,18 +794,11 @@ begin
     s_EX_MEM_input.rs2            <= s_ID_EX_output.rs2;
     s_EX_MEM_input.reg_data_2     <= s_frwrded_data_or_read2_ex;
     s_EX_MEM_input.csr            <= s_ID_EX_output.csr;
-    s_EX_MEM_input.csr_data       <= s_ID_EX_output.csr_data;
     s_EX_MEM_input.csr_write_addr <= s_ID_EX_output.csr_write_addr;
+    s_EX_MEM_input.csr_data       <= s_csr_frwrded_data_ex;
 
 --------------------- MEM STAGE ------------------------
 
-    CSR_write_data_gen_inst: CSR_write_data_gen
-        port map(
-             i_func3_mem                 => s_EX_MEM_output.func3, 
-             i_csr_data_mem              => s_EX_MEM_output.csr_data, 
-             i_extended_rs1_or_read1_mem => s_EX_MEM_output.rs1_or_fread1, 
-             o_csr_new_data_mem          => s_MEM_WB_input.csr_new_data
-            );
 
 
 
@@ -826,6 +849,7 @@ begin
     s_MEM_WB_input.halt    <= s_EX_MEM_output.halt;
     s_MEM_WB_input.csr     <= s_EX_MEM_output.csr;
     s_MEM_WB_input.csr_write_addr <= s_EX_MEM_output.csr_write_addr;
+    s_MEM_WB_input.csr_new_data <= s_EX_MEM_output.csr_new_data;
 
 
 --------------------- WB STAGE ------------------------

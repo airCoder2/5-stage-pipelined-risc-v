@@ -42,9 +42,9 @@ begin
     -- func3          :(75 downto 73);
     -- rs2            :(80 downto 76);
     -- csr            :(81) 
-    -- csr_data       :(113 downto 82) 
+    -- csr_new_data   :(113 downto 82) 
     -- csr_write_addr :(125 downto 114)
-    -- rs1_or_fread1  :(157 downto 126)
+    -- csr_data       :(157 downto 126)
 
 
     s_Execute_memory_data_in(0)              <= i_execute_memory_register.halt;              
@@ -57,9 +57,9 @@ begin
     s_Execute_memory_data_in(75 downto 73)   <= i_execute_memory_register.func3;     
     s_Execute_memory_data_in(80 downto 76)   <= i_execute_memory_register.rs2;     
     s_Execute_memory_data_in(81)             <= i_execute_memory_register.csr;             
-    s_Execute_memory_data_in(113 downto 82)  <= i_execute_memory_register.csr_data;      
+    s_Execute_memory_data_in(113 downto 82)  <= i_execute_memory_register.csr_new_data;      
     s_Execute_memory_data_in(125 downto 114) <= i_execute_memory_register.csr_write_addr;  
-    s_Execute_memory_data_in(157 downto 126) <= i_execute_memory_register.rs1_or_fread1;  
+    s_Execute_memory_data_in(157 downto 126) <= i_execute_memory_register.csr_data;  
 
 
 
@@ -82,8 +82,8 @@ begin
     o_execute_memory_register.func3          <= s_Execute_memory_data_out(75 downto 73);            
     o_execute_memory_register.rs2            <= s_Execute_memory_data_out(80 downto 76);            
     o_execute_memory_register.csr            <= s_Execute_memory_data_out(81); 
-    o_execute_memory_register.csr_data       <= s_Execute_memory_data_out(113 downto 82); 
+    o_execute_memory_register.csr_new_data   <= s_Execute_memory_data_out(113 downto 82); 
     o_execute_memory_register.csr_write_addr <= s_Execute_memory_data_out(125 downto 114);
-    o_execute_memory_register.rs1_or_fread1  <= s_Execute_memory_data_out(157 downto 126);
+    o_execute_memory_register.csr_data       <= s_Execute_memory_data_out(157 downto 126);
 
 end architecture structural;

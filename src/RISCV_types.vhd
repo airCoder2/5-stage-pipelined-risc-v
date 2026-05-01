@@ -70,9 +70,9 @@ package RISCV_types is
         rs2            : std_logic_vector(4 downto 0); -- rs2 (for lw sw use hazard)
         --CSRs
         csr            : std_logic;  -- control flag to indicate a CSR instruction
-        csr_data       : std_logic_vector(31 downto 0); -- the data CSR reg had
+        csr_new_data   : std_logic_vector(31 downto 0); -- the new CSR reg data
         csr_write_addr : std_logic_vector(11 downto 0); -- the address of the CSR reg to be written (same as read)
-        rs1_or_fread1  : std_logic_vector(31 downto 0); -- Extended rs1 or Forwarded read 1
+        csr_data       : std_logic_vector(31 downto 0); -- old csr value to be written into a reg
     end record Execute_memory_data_t;
 
 

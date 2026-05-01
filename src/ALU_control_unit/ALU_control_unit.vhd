@@ -38,7 +38,7 @@ architecture behavioral of ALU_control_unit is
 
 begin
 
-    process(i_alu_op, i_func3, i_func7_5)
+    process(i_alu_op, i_func3, i_func7_5, i_lui)
     begin
         if(i_lui = '1') then
            o_alu_select <= LUI;
