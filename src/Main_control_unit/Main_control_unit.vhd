@@ -21,7 +21,7 @@ entity Main_control_unit is
             o_branch  : out std_logic; -- should branch or no
             o_jal     : out std_logic;
             o_jalr    : out std_logic;
-            o_halt : out std_logic --used as wfi
+            o_sys     : out std_logic --used as wfi
         );
 	
 end entity Main_control_unit;
@@ -37,7 +37,7 @@ architecture behavioral of Main_control_unit is
     constant OP_JALR   : std_logic_vector(6 downto 0) := "1100111";
     constant OP_LUI    : std_logic_vector(6 downto 0) := "0110111";
     constant OP_AUIPC  : std_logic_vector(6 downto 0) := "0010111";
-    constant OP_HALT   : std_logic_vector(6 downto 0) := "1110011";
+    constant OP_SYS    : std_logic_vector(6 downto 0) := "1110011";
 
 begin
     with i_Opcode select
@@ -51,6 +51,7 @@ begin
             2b"00" when OP_JAL,
             2b"00" when OP_JALR,
             2b"--" when OP_LUI,   -- LUI doesn't use any of the components
+            2b"--" when OP_SYS,   -- SYS doesn't use any of the components
             2b"00" when others; 
             
     with i_Opcode select
@@ -64,6 +65,7 @@ begin
             '1' when OP_JAL,
             '1' when OP_JALR,
             '1' when OP_LUI,   -- LUI writes to RegFile imm << 12
+            '1' when OP_SYS,   -- CSRRW{*} uses reg write
             '0' when others;
 
     with i_Opcode select
@@ -77,6 +79,7 @@ begin
             '0' when OP_JALR,
             '1' when OP_STORE, -- Store writes to ram 
             '0' when OP_LUI,   -- LUI doesn't write to memory
+            '0' when OP_SYS,   -- none of the SYS instructions write to memory
             '0' when others;
 
     with i_Opcode select
@@ -88,8 +91,11 @@ begin
             '0' when OP_JAL,
             '0' when OP_JALR,
             '0' when OP_LUI,   -- LUI writes to reg file from ALU output
-            '-' when OP_BRANCH, -- branch doesn't write to reg file, so doesn't matter
-            '-' when OP_STORE, -- Store doesn't write to reg file. Therefore, don't care
+            -- '-' when OP_BRANCH, -- branch doesn't write to reg file, so doesn't matter
+            -- '-' when OP_STORE, -- Store doesn't write to reg file. Therefore, don't care
+            '0' when OP_BRANCH, -- branch doesn't write to reg file, so doesn't matter
+            '0' when OP_STORE, -- Store doesn't write to reg file. Therefore, don't care
+            '0' when OP_SYS,   -- ALu output is muxed with CSR data, so for csr to be written chose ALU
             '0' when others;
 
 
@@ -104,6 +110,7 @@ begin
             '-' when OP_JALR,
             '1' when OP_LUI,   -- LUI uses immediate and routes it to reg file through ALU
             '0' when OP_BRANCH, -- branch subtracts rs1 - rs2
+            '-' when OP_SYS,    -- SYS instructions don't use the ALU at all
             '0' when others;
 
     with i_Opcode select
@@ -117,6 +124,7 @@ begin
             '0' when OP_STORE, -- Store takes operands from regFile and extended imm
             '0' when OP_BRANCH, -- branch subtracts rs1 - rs2
             '-' when OP_LUI,   -- LUI uses immediate and routes it to reg file through ALU
+            '-' when OP_SYS,    -- SYS instructions don't use the ALU at all
             '0' when others;
 
 
@@ -129,6 +137,7 @@ begin
             3b"011" when OP_AUIPC,   -- LUI has a uniquie opcode, but both AUIPC and LUI use the same imm
             3b"010" when OP_BRANCH, -- Has a unique immedaite
             3b"100" when OP_JAL,
+            3b"---" when OP_SYS,    -- SYS instructions don't care about extended Immediates
             3b"000" when others;
 
     -- consider branching for any branch type instructions
@@ -150,11 +159,12 @@ begin
     with i_Opcode select
         o_lui <=
             '1' when OP_LUI, 
+            '-' when OP_SYS, -- SYS instructions don't care about ALU_output, CSR data is chosen
             '0' when others;
 
     with i_Opcode select
-        o_halt <=
-            '1' when OP_HALT, 
+        o_sys <=
+            '1' when OP_SYS, 
             '0' when others;
 
 end behavioral;

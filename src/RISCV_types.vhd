@@ -23,61 +23,70 @@ package RISCV_types is
 
 
     type Fetch_decode_data_t is record 
-        PC   : std_logic_vector(31 downto 0); -- PC value for auipc, branch, jal, jalr
+        current_PC   : std_logic_vector(31 downto 0); -- PC value for auipc, branch, jal, jalr
         Inst : std_logic_vector(31 downto 0); -- Instruction to decode
     end record Fetch_decode_data_t;
 
     type Decode_execute_data_t is record
-        reg_WE         : std_logic; -- reg write enable
-        branch         : std_logic;
-        jal_or_jalr    : std_logic;     
-        mem_WE         : std_logic; --mem write enable 
-        ALU_mem        : std_logic;
-        ALU_nAdd_sub   : std_logic;
-        ALU_logcl_arith    : std_logic;
-        ALU_right_left     : std_logic;
-        ALU_mux_select : std_logic_vector(2 downto 0);
-        branch_adder_A : std_logic_vector(31 downto 0);
-        ALU_A          : std_logic_vector(31 downto 0);
-        ALU_B          : std_logic_vector(31 downto 0);
-        reg_write_sel  : std_logic_vector(4 downto 0); -- rd
-        reg_data_2     : std_logic_vector(31 downto 0);
-        Extended_imm   : std_logic_vector(31 downto 0);
-        func3          : std_logic_vector(2 downto 0);
-        ALU_src        : std_logic;
-        ALU_A_src      : std_logic;
-        rs1            : std_logic_vector(4 downto 0);
-        rs2            : std_logic_vector(4 downto 0);
-        halt           : std_logic;
+        halt                    : std_logic;
+        reg_WE                  : std_logic; -- reg write enable
+        branch                  : std_logic;
+        jal                     : std_logic;     
+        jalr                    : std_logic;
+        current_pc              : std_logic_vector(31 downto 0);
+        ALU_mem                 : std_logic;
+        ALU_src                 : std_logic;
+        ALU_A_src               : std_logic;
+        read1                   : std_logic_vector(31 downto 0);
+        read2                   : std_logic_vector(31 downto 0);
+        Extended_imm            : std_logic_vector(31 downto 0);
+        rd                      : std_logic_vector(4 downto 0); -- rd
+        ALU_mux_select          : std_logic_vector(2 downto 0);
+        ALU_nAdd_sub            : std_logic;
+        ALU_logcl_arith         : std_logic;
+        ALU_right_left          : std_logic;
+        func3                   : std_logic_vector(2 downto 0);
+        mem_WE                  : std_logic; --mem write enable 
+        rs1                     : std_logic_vector(4 downto 0);
+        rs2                     : std_logic_vector(4 downto 0);
+        notTaken_taken          : std_logic;
+        predicted_counter_index : std_logic_vector(2 downto 0);
+        --CSRs
+        csr                     : std_logic; -- control flag to indicate a CSR instruction
+        csr_data                : std_logic_vector(31 downto 0); -- the data CSR reg had
+        csr_write_addr          : std_logic_vector(11 downto 0); -- the address of the CSR reg to be written (same as read)
+
     end record Decode_execute_data_t;
 
     type Execute_memory_data_t is record
+        halt           : std_logic;
         reg_WE         : std_logic;  -- reg write enabl
-        branch         : std_logic;
-        jal_or_jalr    : std_logic;     
         ALU_mem        : std_logic;
-        mem_WE         : std_logic;  -- mem write enable
-        Alu_eq         : std_logic; 
-        Alu_lt         : std_logic; 
-        Alu_ltu        : std_logic; 
-        Alu_ge         : std_logic; 
-        Alu_geu        : std_logic; 
-        branch_PC      : std_logic_vector(31 downto 0);
         ALU_out        : std_logic_vector(31 downto 0);
-        reg_write_sel : std_logic_vector(4 downto 0); -- rd
+        mem_WE         : std_logic;  -- mem write enable
         reg_data_2     : std_logic_vector(31 downto 0);
+        rd             : std_logic_vector(4 downto 0); -- rd
         func3          : std_logic_vector(2 downto 0);
-        halt          : std_logic;
+        rs2            : std_logic_vector(4 downto 0); -- rs2 (for lw sw use hazard)
+        --CSRs
+        csr            : std_logic;  -- control flag to indicate a CSR instruction
+        csr_new_data   : std_logic_vector(31 downto 0); -- the new CSR reg data
+        csr_write_addr : std_logic_vector(11 downto 0); -- the address of the CSR reg to be written (same as read)
+        csr_data       : std_logic_vector(31 downto 0); -- old csr value to be written into a reg
     end record Execute_memory_data_t;
 
 
     type Memory_wback_data_t is record
         reg_WE         : std_logic;  -- reg write enable
         ALU_mem        : std_logic;
-        ALU_out        : std_logic_vector(31 downto 0);
-        reg_write_sel : std_logic_vector(4 downto 0); -- rd
+        ALU_out_or_csr        : std_logic_vector(31 downto 0);
+        rd             : std_logic_vector(4 downto 0); -- rd
         dmem_out       : std_logic_vector(31 downto 0);
-        halt          : std_logic;
+        halt           : std_logic;
+        --CSRs
+        csr            : std_logic; -- control flag to indicate a CSR instruction
+        csr_new_data   : std_logic_vector(31 downto 0); -- value of the data to be written to the CSR reg
+        csr_write_addr : std_logic_vector(11 downto 0); -- the address of the CSR reg to be written (same as read)
     end record Memory_wback_data_t;
 
 end package RISCV_types;
