@@ -74,8 +74,6 @@ main:
     # expect: t1 & 1 == 1, t2 & 1 == 0
 
 done:
-    nop
-    wfi
 
 trap_handler:
     csrrw t3, uepc,   zero       # read faulting PC

@@ -55,6 +55,8 @@ package RISCV_types is
         csr                     : std_logic; -- control flag to indicate a CSR instruction
         csr_data                : std_logic_vector(31 downto 0); -- the data CSR reg had
         csr_write_addr          : std_logic_vector(11 downto 0); -- the address of the CSR reg to be written (same as read)
+        --Traps
+        ecall                   : std_logic;  -- ecall signal, so trap can be taken
 
     end record Decode_execute_data_t;
 
@@ -73,6 +75,9 @@ package RISCV_types is
         csr_new_data   : std_logic_vector(31 downto 0); -- the new CSR reg data
         csr_write_addr : std_logic_vector(11 downto 0); -- the address of the CSR reg to be written (same as read)
         csr_data       : std_logic_vector(31 downto 0); -- old csr value to be written into a reg
+        --Traps
+        ecall          : std_logic;  -- ecall signal, so trap can be taken
+        current_pc     : std_logic_vector(31 downto 0);
     end record Execute_memory_data_t;
 
 
@@ -87,6 +92,9 @@ package RISCV_types is
         csr            : std_logic; -- control flag to indicate a CSR instruction
         csr_new_data   : std_logic_vector(31 downto 0); -- value of the data to be written to the CSR reg
         csr_write_addr : std_logic_vector(11 downto 0); -- the address of the CSR reg to be written (same as read)
+        --Traps
+        ecall                   : std_logic;  -- ecall signal, so trap can be taken
+        current_pc     : std_logic_vector(31 downto 0);
     end record Memory_wback_data_t;
 
 end package RISCV_types;

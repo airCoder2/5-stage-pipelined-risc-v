@@ -27,15 +27,16 @@ architecture structural of Decode_Execute_register is
     end component N_bit_register;   
 
     -- decode/execute stage register
-    -- 210 bits total:
-    signal s_Decode_execute_data_in  : std_logic_vector(209 downto 0);   
-    signal s_Decode_execute_data_out : std_logic_vector(209 downto 0);   
+    -- 211 bits total:
+    signal s_Decode_execute_data_in  : std_logic_vector(210 downto 0);   
+    signal s_Decode_execute_data_out : std_logic_vector(210 downto 0);   
     signal s_reg_WE : std_logic;
     signal s_mem_WE : std_logic;
     signal s_ALU_mem : std_logic;
     signal s_halt    : std_logic;
     signal s_branch : std_logic;
     signal s_jalr   : std_logic;
+    signal s_ecall : std_logic;
 begin
     -- halt                    :(0) 
     -- reg_WE                  :(1)
@@ -63,6 +64,8 @@ begin
     -- csr                     :(165); -- control flag to indicate a CSR instruction
     -- csr_data                :(197 downto 166)
     -- csr_write_addr          :(209 downto 198)
+    -- ecall                   :(210)
+
 
 
 
@@ -87,6 +90,10 @@ begin
 
     with i_stall select
         s_jalr <= i_decode_execute_register.jalr when '0', -- if not stall, then usual, otherwise 0
+                    '0' when others; 
+
+    with i_stall select
+        s_ecall <= i_decode_execute_register.ecall when '0', -- if not stall, then usual, otherwise 0
                     '0' when others; 
 
     s_Decode_execute_data_in(0)              <=  s_halt;           
@@ -115,9 +122,10 @@ begin
     s_Decode_execute_data_in(165)            <=  i_decode_execute_register.csr;                     
     s_Decode_execute_data_in(197 downto 166) <=  i_decode_execute_register.csr_data;                
     s_Decode_execute_data_in(209 downto 198) <=  i_decode_execute_register.csr_write_addr;          
+    s_Decode_execute_data_in(210)            <=  s_ecall;
 
     Decode_execute_register_inst: N_bit_register
-        generic map(N => 210, Reset_value => (209 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 211, Reset_value => (210 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
@@ -153,6 +161,7 @@ begin
     o_decode_execute_register.csr                      <= s_Decode_execute_data_out(165);                  
     o_decode_execute_register.csr_data                 <= s_Decode_execute_data_out(197 downto 166);       
     o_decode_execute_register.csr_write_addr           <= s_Decode_execute_data_out(209 downto 198);       
+    o_decode_execute_register.ecall                    <= s_Decode_execute_data_out(210);       
 
 
 end architecture structural;

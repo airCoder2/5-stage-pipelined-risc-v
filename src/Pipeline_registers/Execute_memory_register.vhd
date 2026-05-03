@@ -27,9 +27,9 @@ architecture structural of Execute_memory_register is
     end component N_bit_register;   
 
     -- execute/memory stage register
-    -- 158 bits total:
-    signal s_Execute_memory_data_in  : std_logic_vector(157 downto 0);   
-    signal s_Execute_memory_data_out : std_logic_vector(157 downto 0);   
+    -- 191 bits total:
+    signal s_Execute_memory_data_in  : std_logic_vector(190 downto 0);   
+    signal s_Execute_memory_data_out : std_logic_vector(190 downto 0);   
 
 begin
     -- halt           :(0) 
@@ -45,6 +45,8 @@ begin
     -- csr_new_data   :(113 downto 82) 
     -- csr_write_addr :(125 downto 114)
     -- csr_data       :(157 downto 126)
+    -- ecall          :(158)
+    -- current_pc     :(190 downto 159)
 
 
     s_Execute_memory_data_in(0)              <= i_execute_memory_register.halt;              
@@ -60,11 +62,13 @@ begin
     s_Execute_memory_data_in(113 downto 82)  <= i_execute_memory_register.csr_new_data;      
     s_Execute_memory_data_in(125 downto 114) <= i_execute_memory_register.csr_write_addr;  
     s_Execute_memory_data_in(157 downto 126) <= i_execute_memory_register.csr_data;  
+    s_Execute_memory_data_in(158)            <= i_execute_memory_register.ecall;  
+    s_Execute_memory_data_in(190 downto 159) <= i_execute_memory_register.current_pc;  
 
 
 
     Execute_memory_register_inst: N_bit_register
-        generic map(N => 158, Reset_value => (157 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 191, Reset_value => (190 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
@@ -85,5 +89,8 @@ begin
     o_execute_memory_register.csr_new_data   <= s_Execute_memory_data_out(113 downto 82); 
     o_execute_memory_register.csr_write_addr <= s_Execute_memory_data_out(125 downto 114);
     o_execute_memory_register.csr_data       <= s_Execute_memory_data_out(157 downto 126);
-
+    o_execute_memory_register.ecall          <= s_Execute_memory_data_out(158);
+    o_execute_memory_register.current_pc     <= s_Execute_memory_data_out(190 downto 159);
 end architecture structural;
+
+

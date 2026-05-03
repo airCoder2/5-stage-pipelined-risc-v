@@ -27,9 +27,9 @@ architecture structural of Memory_wback_register is
     end component N_bit_register;   
 
     -- memory/write-back stage register
-    -- 117 bits total:
-    signal s_Memory_wback_data_in  : std_logic_vector(116 downto 0);     
-    signal s_Memory_wback_data_out : std_logic_vector(116 downto 0);     
+    -- 150 bits total:
+    signal s_Memory_wback_data_in  : std_logic_vector(149 downto 0);     
+    signal s_Memory_wback_data_out : std_logic_vector(149 downto 0);     
 
 begin
     -- REG_WE          :(0)
@@ -41,6 +41,8 @@ begin
     -- csr             :(72) 
     -- csr_new_data    :(104 downto 73) 
     -- csr_write_addr  :(116 downto 105) 
+    -- ecall           :(117)
+    -- current_pc      :(149 downto 118) 
 
     s_Memory_wback_data_in(0)              <= i_memory_wback_register.reg_WE;
     s_Memory_wback_data_in(1)              <= i_memory_wback_register.ALU_mem;
@@ -51,9 +53,11 @@ begin
     s_Memory_wback_data_in(72)             <= i_memory_wback_register.csr;             
     s_Memory_wback_data_in(104 downto 73)  <= i_memory_wback_register.csr_new_data;   
     s_Memory_wback_data_in(116 downto 105) <= i_memory_wback_register.csr_write_addr; 
+    s_Memory_wback_data_in(117)            <= i_memory_wback_register.ecall;
+    s_Memory_wback_data_in(149 downto 118) <= i_memory_wback_register.current_pc;
 
     Memory_wback_register_inst: N_bit_register
-        generic map(N => 117, Reset_value => (116 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 150, Reset_value => (149 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                 -- reset the pipeline to 0
@@ -71,6 +75,8 @@ begin
     o_memory_wback_register.csr             <= s_Memory_wback_data_out(72);             
     o_memory_wback_register.csr_new_data    <= s_Memory_wback_data_out(104 downto 73);  
     o_memory_wback_register.csr_write_addr  <= s_Memory_wback_data_out(116 downto 105); 
+    o_memory_wback_register.ecall           <= s_Memory_wback_data_out(117);
+    o_memory_wback_register.current_pc      <= s_Memory_wback_data_out(149 downto 118);
 
 end architecture structural;
 

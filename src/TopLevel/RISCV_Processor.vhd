@@ -228,7 +228,16 @@ architecture structure of RISCV_Processor is
              i_write_addr   : in std_logic_vector(11 downto 0);   -- 12 bit address of CSR we want to write to
              i_write_data   : in std_logic_vector(31 downto 0);   -- 32 bit data we would like to write
              o_csr_data     : out std_logic_vector(31 downto 0);  -- 32 bit data we would like to read
-             o_illegal_read : out std_logic                       -- reading from unimplemented CSR 
+             o_illegal_read : out std_logic;                      -- reading from unimplemented CSR 
+             -- Ports neded for trap handling
+             i_trap_occured : in std_logic;                      -- signal indicates that trap occured, start the procedure
+             i_trap_cause   : in std_logic_vector(31 downto 0);  -- the reason why trap occured. MSB indicates Exception/!trap
+             i_pc_wb        : in std_logic_vector(31 downto 0);  -- pc to put into mepc if exception
+             i_pc_mem       : in std_logic_vector(31 downto 0);  -- pc to put into mepc if interrupt
+             o_mtvec        : out std_logic_vector(31 downto 0); -- mtvec that is loaded as next pc when trap happened
+             o_mstatus      : out std_logic_vector(31 downto 0); -- mstatus needed to be read by event controller
+             o_mie          : out std_logic_vector(31 downto 0); -- mie needs to be read by event controller
+             o_mip          : out std_logic_vector(31 downto 0)  -- mip needs to be read by event controller
             );
     end component CSR_registers;
     
@@ -243,6 +252,16 @@ architecture structure of RISCV_Processor is
             );
     end component CSR_write_data_gen;
 
+    component Exception_interrupt_controller is
+        port(
+             i_ecall        : in std_logic; -- if this instruction is an ecall
+             i_mip          : in std_logic_vector(31 downto 0); -- mip to see if any hardware interrupts pending
+             i_mie          : in std_logic_vector(31 downto 0); -- mie to see if any hadware interrupts enabled
+             i_mstatus      : in std_logic_vector(31 downto 0); -- mstatus to see if global interrupt bit is enabled
+             o_trap_cause   : out std_logic_vector(31 downto 0); -- cause why this trap happened
+             o_trap_occured : out std_logic -- signal to indicate that trap (interrupt/exception) happened. Used for flushing as well
+            );
+    end component;
 
 
     -- IF_ID stage register
@@ -311,6 +330,7 @@ architecture structure of RISCV_Processor is
 
     signal s_pc_plus_4_if              : std_logic_vector(31 downto 0);         -- the output of the pc+4 IF stage
     signal s_Next_pc_if                : std_logic_vector(31 downto 0);         -- either from pc+4 or branch IF stage
+    signal s_final_pc_if               : std_logic_vector(31 downto 0);         -- either correct pc or the trap handler address
     signal s_Imm_select_id             : std_logic_vector(2 downto 0);          -- select wires for chosing which type of immediate to use ID stage 
     signal s_memory_data_mem           : std_logic_vector(31 downto 0);         -- Selected appropraite word/half_word/byte (MEM stage)
     signal s_reg_file_data_to_write_wb : std_logic_vector(31 downto 0);         -- data to write back in register file (WB stage)
@@ -352,6 +372,12 @@ architecture structure of RISCV_Processor is
     signal s_csr_frwrd_sel_ex : std_logic_vector(1 downto 0); -- csr forward select
     signal s_csr_frwrded_data_ex: std_logic_vector(31 downto 0);
 
+    signal s_trap_occured_wb : std_logic;                    -- signal indicating that trap happened  
+    signal s_CSR_mip_id      : std_logic_vector(31 downto 0); -- mip register dataa
+    signal s_CSR_mie_id      : std_logic_vector(31 downto 0); -- mie register data
+    signal s_CSR_mstatus_id  : std_logic_vector(31 downto 0); -- mstatus register data
+    signal s_trap_cause_wb   : std_logic_vector(31 downto 0); -- trap cause to be written to mcause
+    signal s_CSR_mtvec_id    : std_logic_vector(31 downto 0); -- trap address, to be written as next PC
 
     -- Pipeline Register input outputs--
     -- fetch/decode reg inputs output
@@ -400,7 +426,7 @@ begin
         port map(i_fetch_decode_register => s_IF_ID_input,
                  o_fetch_decode_register => s_IF_ID_output,
                  i_stall                 => s_stall_id,
-                 i_reset                 => iRST or s_flush_IF_ID_id,  
+                 i_reset                 => iRST or s_flush_IF_ID_id or s_trap_occured_wb,  
                  i_clk                   => iCLK   
         );
 
@@ -409,7 +435,7 @@ begin
         port map(i_decode_execute_register  => s_ID_EX_input,
                   o_decode_execute_register => s_ID_EX_output,
                   i_stall                   => s_stall_id,
-                  i_reset                   => iRST or s_flush_ID_EX_id,  
+                  i_reset                   => iRST or s_flush_ID_EX_id or s_trap_occured_wb,  
                   i_clk                     => iCLK   
         );
 
@@ -418,7 +444,7 @@ begin
         port map(i_execute_memory_register => s_EX_MEM_input,
                  o_execute_memory_register => s_EX_MEM_output,
                  i_stall                   => '0', --never stalled
-                 i_reset                   => iRST,  
+                 i_reset                   => iRST or s_trap_occured_wb,  
                  i_clk                     => iCLK   
         );
 
@@ -427,7 +453,7 @@ begin
         port map(i_memory_wback_register => s_MEM_WB_input,
                  o_memory_wback_register => s_MEM_WB_output,
                  i_stall                 => '0', -- never stalled
-                 i_reset                 => iRST,  
+                 i_reset                 => iRST or s_trap_occured_wb,  
                  i_clk                   => iCLK   
         );
 
@@ -455,11 +481,24 @@ begin
                      o_O  => s_Next_pc_if               -- selected next PC
              ); 
 
+
+    Mux2t1_TRAP_PC_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_trap_occured_wb,
+                     i_D0 => s_Next_pc_if,
+                     i_D1 => s_CSR_mtvec_id,
+                     o_O  => s_final_pc_if
+             ); 
+
+
+
+
     -- 32 bit register for holding PC
     PC_inst: PC
         generic map(Reset_value => 32x"00400000")
         port map(
-                i_pc_in  => s_Next_pc_if,     -- selected pc, either +4 or jump/branch address
+                i_pc_in  => s_final_pc_if,     -- selected pc, either +4 or jump/branch address
                 o_pc_out => s_IF_ID_input.current_PC, -- PC is saved in pipeline register
                 i_stall  => s_stall_id, -- don't advance the counter
                 i_reset  => iRST,
@@ -554,10 +593,17 @@ begin
              i_write_addr   => s_MEM_WB_output.csr_write_addr,
              i_write_data   => s_MEM_WB_output.csr_new_data,
              o_csr_data     => s_ID_EX_input.csr_data,
-             o_illegal_read => s_illegal_instruction_id
+             o_illegal_read => s_illegal_instruction_id,
+             -- Trap handling ports
+             i_trap_occured => s_trap_occured_wb, 
+             i_trap_cause   => s_trap_cause_wb, 
+             i_pc_wb        => s_MEM_WB_output.current_pc, 
+             i_pc_mem       => s_EX_MEM_output.current_pc, 
+             o_mtvec        => s_CSR_mtvec_id, 
+             o_mstatus      => s_CSR_mstatus_id, 
+             o_mie          => s_CSR_mie_id, 
+             o_mip          => s_CSR_mip_id 
             );
-
-
 
     -- Register file
     Register_file_inst: Register_file
@@ -799,9 +845,6 @@ begin
 
 --------------------- MEM STAGE ------------------------
 
-
-
-
     -- Either write reg_data2 to forward from writeback
     Mux2t1_Mem_frwrd_inst:  mux2t1_N_dataflow
             generic map(N => 32)
@@ -828,11 +871,9 @@ begin
         port map(clk  => iCLK,
                  addr => s_MEM_WB_input.ALU_out_or_csr(11 downto 2),
                  data => s_mem_data_to_write_mem,
-                 we   => s_EX_MEM_output.mem_WE,
+                 we   => s_EX_MEM_output.mem_WE and (not s_trap_occured_wb), -- if instruction is getting flushed, don't write
                  q    => s_memory_data_mem
         );
-
-
 
     -- selects the appropriate slice or all of the word depending on lb, lh or lw
     Selector_inst: Byte_half_word_selector
@@ -853,6 +894,15 @@ begin
 
 
 --------------------- WB STAGE ------------------------
+    Trap_controller_inst: Exception_interrupt_controller
+        port map(
+                 i_ecall        => s_MEM_WB_output.ecall, 
+                 i_mip          => s_CSR_mip_id, 
+                 i_mie          => s_CSR_mie_id, 
+                 i_mstatus      => s_CSR_mstatus_id, 
+                 o_trap_cause   => s_trap_cause_wb, 
+                 o_trap_occured => s_trap_occured_wb
+                );
 
     -- Either write ALU_out or Mem_out to register file
     Mux2t1_ALU_or_Mem_data_inst:  mux2t1_N_dataflow
@@ -863,4 +913,6 @@ begin
                      i_D1 => s_MEM_WB_output.dmem_out,
                      o_O  => s_reg_file_data_to_write_wb
             ); 
+
+
 end structure;

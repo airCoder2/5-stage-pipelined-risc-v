@@ -18,7 +18,16 @@ entity CSR_registers is
          i_write_addr   : in std_logic_vector(11 downto 0);   -- 12 bit address of CSR we want to write to
          i_write_data   : in std_logic_vector(31 downto 0);   -- 32 bit data we would like to write
          o_csr_data     : out std_logic_vector(31 downto 0);  -- 32 bit data we would like to read
-         o_illegal_read : out std_logic                       -- reading from unimplemented CSR 
+         o_illegal_read : out std_logic;                      -- reading from unimplemented CSR 
+         -- Ports neded for trap handling
+         i_trap_occured : in std_logic;                      -- signal indicates that trap occured, start the procedure
+         i_trap_cause   : in std_logic_vector(31 downto 0);  -- the reason why trap occured. MSB indicates Exception/!trap
+         i_pc_wb        : in std_logic_vector(31 downto 0);  -- pc to put into mepc if exception
+         i_pc_mem       : in std_logic_vector(31 downto 0);  -- pc to put into mepc if interrupt
+         o_mtvec        : out std_logic_vector(31 downto 0); -- mtvec that is loaded as next pc when trap happened
+         o_mstatus      : out std_logic_vector(31 downto 0); -- mstatus needed to be read by event controller
+         o_mie          : out std_logic_vector(31 downto 0); -- mie needs to be read by event controller
+         o_mip          : out std_logic_vector(31 downto 0)  -- mip needs to be read by event controller
 		);
 end entity CSR_registers;
 
@@ -29,6 +38,16 @@ architecture dataflow of CSR_registers is
     constant REG_mscratch_addr : std_logic_vector(11 downto 0) := 12x"340";
     constant REG_mepc_addr     : std_logic_vector(11 downto 0) := 12x"341";
     constant REG_mcause_addr   : std_logic_vector(11 downto 0) := 12x"342";
+    constant REG_mie_addr      : std_logic_vector(11 downto 0) := 12x"304";
+    constant REG_mip_addr      : std_logic_vector(11 downto 0) := 12x"344";
+    
+    component mux2t1_N_dataflow is
+        generic(N : integer); -- Generic of type integer for input/output data width. Default value is 32.
+        port(i_S          : in std_logic;
+           i_D0         : in std_logic_vector(N-1 downto 0);
+           i_D1         : in std_logic_vector(N-1 downto 0);
+           o_O          : out std_logic_vector(N-1 downto 0));
+    end component mux2t1_N_dataflow;
 
 
 	component N_bit_register is -- N_bit_register that takes a generic, in this case it is 32 fixed.
@@ -45,18 +64,23 @@ architecture dataflow of CSR_registers is
     signal s_mscratch_we : std_logic;
     signal s_mepc_we     : std_logic;
     signal s_mcause_we   : std_logic;
-
+    signal s_mie_we      : std_logic;
 
     signal s_mstatus_out  : std_logic_vector(31 downto 0);
     signal s_mtvec_out    : std_logic_vector(31 downto 0);
     signal s_mscratch_out : std_logic_vector(31 downto 0);
     signal s_mepc_out     : std_logic_vector(31 downto 0);
     signal s_mcause_out   : std_logic_vector(31 downto 0);
+    signal s_mie_out      : std_logic_vector(31 downto 0);
+    signal s_mip_out      : std_logic_vector(31 downto 0);
 
     signal s_csr_reg_implemented : std_logic;
 
-    signal s_masked_mstatus_data : std_logic_vector(31 downto 0);
-    signal s_what_is_going_on : std_logic_vector(31 downto 0);
+    signal s_mstatus_in  : std_logic_vector(31 downto 0);
+    signal s_mcause_in   : std_logic_vector(31 downto 0);
+    signal s_mepc_in     : std_logic_vector(31 downto 0);
+    
+    signal s_failing_pc  : std_logic_vector(31 downto 0);
 
 
 
@@ -68,6 +92,7 @@ begin
     s_mscratch_we <= '1' when (i_write_addr(7 downto 0) = REG_mscratch_addr(7 downto 0) and i_we = '1') else '0';
     s_mepc_we     <= '1' when (i_write_addr(7 downto 0) = REG_mepc_addr(7 downto 0)     and i_we = '1') else '0';
     s_mcause_we   <= '1' when (i_write_addr(7 downto 0) = REG_mcause_addr(7 downto 0)   and i_we = '1') else '0';
+    s_mie_we      <= '1' when (i_write_addr(7 downto 0) = REG_mie_addr(7 downto 0)      and i_we = '1') else '0';
     
 ----------------------------------------
     -- Route the correct data to output
@@ -78,6 +103,8 @@ begin
                        s_mscratch_out when REG_mscratch_addr(7 downto 0),
                        s_mepc_out     when REG_mepc_addr(7 downto 0),    
                        s_mcause_out   when REG_mcause_addr(7 downto 0),  
+                       s_mie_out      when REG_mie_addr(7 downto 0),
+                       s_mip_out      when REG_mip_addr(7 downto 0),
                        32x"00000000"  when others;
 
 
@@ -89,11 +116,51 @@ begin
                        '1' when REG_mscratch_addr(7 downto 0),
                        '1' when REG_mepc_addr(7 downto 0),    
                        '1' when REG_mcause_addr(7 downto 0),  
+                       '1' when REG_mie_addr(7 downto 0),    
+                       '1' when REG_mip_addr(7 downto 0),  
                        '0' when others;
 
 
     o_illegal_read <= i_csr and (not s_csr_reg_implemented);
-        
+
+
+    Mux2t1_mstatus_data_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => i_trap_occured,
+                     i_D0 => i_write_data,
+                     i_D1 => s_mstatus_out(31 downto 8) & s_mstatus_out(3) & s_mstatus_out(6 downto 4) & '0' & s_mstatus_out(2 downto 0),
+                     o_O  => s_mstatus_in
+            ); 
+
+
+    Mux2t1_mcause_data_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => i_trap_occured,
+                     i_D0 => i_write_data,
+                     i_D1 => i_trap_cause,
+                     o_O  => s_mcause_in
+            ); 
+
+
+    Mux2t1_mepc_data_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => i_trap_occured,
+                     i_D0 => i_write_data,
+                     i_D1 => s_failing_pc,
+                     o_O  => s_mepc_in
+            ); 
+
+    Mux2t1_failing_pc_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => i_trap_cause(31),
+                     i_D0 => i_pc_wb,
+                     i_D1 => i_pc_mem,
+                     o_O  => s_failing_pc
+            ); 
 
 
 	MSTATUS_REG_INST: N_bit_register
@@ -101,9 +168,29 @@ begin
         port map(
                  i_CLK => i_clock, 
                  i_RST => i_reset, 
-                 i_WE  => s_mstatus_we, 
-                 i_D   => i_write_data, 
+                 i_WE  => s_mstatus_we or i_trap_occured, 
+                 i_D   => s_mstatus_in, 
                  o_Q   => s_mstatus_out
+        ); 
+
+	MEPC_REG_INST: N_bit_register
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
+        port map(
+                 i_CLK => i_clock, 
+                 i_RST => i_reset, 
+                 i_WE  => s_mepc_we or i_trap_occured, 
+                 i_D   => s_mepc_in, 
+                 o_Q   => s_mepc_out
+        ); 
+
+	MCAUSE_REG_INST: N_bit_register
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
+        port map(
+                 i_CLK => i_clock, 
+                 i_RST => i_reset, 
+                 i_WE  => s_mcause_we or i_trap_occured, 
+                 i_D   => s_mcause_in, 
+                 o_Q   => s_mcause_out
         ); 
 
 	MTVEC_REG_INST: N_bit_register
@@ -126,24 +213,24 @@ begin
                  o_Q   => s_mscratch_out
         ); 
 
-	MEPC_REG_INST: N_bit_register
+
+
+	MIE_REG_INST: N_bit_register
         generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
         port map(
                  i_CLK => i_clock, 
                  i_RST => i_reset, 
-                 i_WE  => s_mepc_we, 
+                 i_WE  => s_mie_we, 
                  i_D   => i_write_data, 
-                 o_Q   => s_mepc_out
+                 o_Q   => s_mie_out
         ); 
 
-	MCAUSE_REG_INST: N_bit_register
-        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
-        port map(
-                 i_CLK => i_clock, 
-                 i_RST => i_reset, 
-                 i_WE  => s_mcause_we, 
-                 i_D   => i_write_data, 
-                 o_Q   => s_mcause_out
-        ); 
+        s_mip_out <= 32x"00000000";
+
+         o_mtvec     <= s_mtvec_out; 
+         o_mstatus   <= s_mstatus_out; 
+         o_mie       <= s_mie_out; 
+         o_mip       <= s_mip_out; 
+
 
 end architecture;
