@@ -132,7 +132,7 @@ begin
                      i_D0 => i_write_data,
                      -- i_D1 => s_mstatus_out(31 downto 8) & s_mstatus_out(3) & s_mstatus_out(6 downto 4) & '0' & s_mstatus_out(2 downto 0),
                      -- EMULATING RARS
-                     i_D1 => s_mstatus_copy_out(31 downto 5) & s_mstatus_copy_out(0) & s_mstatus_copy_out(3 downto 1) & '0',
+                     i_D1 => s_mstatus_out(31 downto 5) & s_mstatus_out(0) & s_mstatus_out(3 downto 1) & '0',
                      o_O  => s_mstatus_in
             ); 
 
@@ -165,19 +165,11 @@ begin
                      o_O  => s_failing_pc
             ); 
 
-    -- a non bypass reg instance for mstatus so there is no infinicte loop when writing to pc
-	MSTATUS_COPY_REG_INST: N_bit_register
-        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
-        port map(
-                 i_CLK => i_clock, 
-                 i_RST => i_reset, 
-                 i_WE  => s_mstatus_we or i_trap_occured, 
-                 i_D   => s_mstatus_in, 
-                 o_Q   => s_mstatus_copy_out
-        ); 
 
+    -- CAN'T USE BYPASS. Otherwise becoming an infite loop.
+    -- Added forwarding
 	MSTATUS_REG_INST: N_bit_register
-        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
         port map(
                  i_CLK => i_clock, 
                  i_RST => i_reset, 
@@ -187,7 +179,7 @@ begin
         ); 
 
 	MEPC_REG_INST: N_bit_register
-        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
         port map(
                  i_CLK => i_clock, 
                  i_RST => i_reset, 
@@ -197,7 +189,7 @@ begin
         ); 
 
 	MCAUSE_REG_INST: N_bit_register
-        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
         port map(
                  i_CLK => i_clock, 
                  i_RST => i_reset, 
@@ -207,7 +199,7 @@ begin
         ); 
 
 	MTVEC_REG_INST: N_bit_register
-        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
         port map(
                  i_CLK => i_clock, 
                  i_RST => i_reset, 
@@ -217,7 +209,7 @@ begin
         ); 
 
 	MSCRATCH_REG_INST: N_bit_register
-        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
         port map(
                  i_CLK => i_clock, 
                  i_RST => i_reset, 
@@ -229,7 +221,7 @@ begin
 
 
 	MIE_REG_INST: N_bit_register
-        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
         port map(
                  i_CLK => i_clock, 
                  i_RST => i_reset, 

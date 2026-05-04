@@ -378,6 +378,9 @@ architecture structure of RISCV_Processor is
     signal s_CSR_mstatus_id  : std_logic_vector(31 downto 0); -- mstatus register data
     signal s_trap_cause_wb   : std_logic_vector(31 downto 0); -- trap cause to be written to mcause
     signal s_CSR_mtvec_id    : std_logic_vector(31 downto 0); -- trap address, to be written as next PC
+    signal s_csr_frwrd_sel_id : std_logic;                    -- forward from WB to CSR REG file. can't use bypass
+    signal s_csr_read_data_id : std_logic_vector(31 downto 0); -- data out from CSR REG file
+
 
     -- Pipeline Register input outputs--
     -- fetch/decode reg inputs output
@@ -583,6 +586,24 @@ begin
                  sum  => s_predicted_branch_pc_id -- predicted calculated branch value
         );
 
+
+
+    Mux2t1_CSR_REG_frwrd_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_csr_frwrd_sel_id,
+                     i_D0 => s_csr_read_data_id,
+                     i_D1 => s_MEM_WB_output.csr_new_data,
+                     o_O  => s_ID_EX_input.csr_data
+            ); 
+
+
+    -- This is the little forwarding we need for CSR REG FILE. Basically if we are writing to a CSR in WB
+    -- and reading in ID then forward. Because, I can't use bypass, otherwise becoming an infinite loop
+    s_csr_frwrd_sel_id <= '1' when (s_ID_EX_input.csr_write_addr = s_MEM_WB_output.csr_write_addr) else
+                          '0';
+
+
     CSR_registers_inst: CSR_registers
         port map(
              i_clock        => iCLK, 
@@ -592,7 +613,7 @@ begin
              i_read_addr    => s_IF_ID_output.Inst(31 downto 20),
              i_write_addr   => s_MEM_WB_output.csr_write_addr,
              i_write_data   => s_MEM_WB_output.csr_new_data,
-             o_csr_data     => s_ID_EX_input.csr_data,
+             o_csr_data     => s_csr_read_data_id,
              o_illegal_read => s_illegal_instruction_id,
              -- Trap handling ports
              i_trap_occured => s_trap_occured_wb, 
@@ -604,6 +625,7 @@ begin
              o_mie          => s_CSR_mie_id, 
              o_mip          => s_CSR_mip_id 
             );
+
 
     -- Register file
     Register_file_inst: Register_file
@@ -679,11 +701,9 @@ begin
 
 
 
-
-
     
-    -- flush only one of them ( USED TO MAKE SURE WE DON'T jump to the predicted address of the instructrion getting flusehd after correct taken prediction. Because
-    -- we still have 1 cycle penalty)
+    -- flush only one of them ( USED TO MAKE SURE WE DON'T jump to the predicted address of the instructrion getting flusehd
+    -- after correct taken prediction. Because we still have 1 cycle penalty)
     s_predicted_correct_taken_ex <= '1' when ((s_ID_EX_output.jal =  '1') or (s_predicted_correct_ex = '1' and s_ID_EX_output.notTaken_taken = '1')) else '0';
 
 
@@ -918,6 +938,5 @@ begin
                      i_D1 => s_MEM_WB_output.dmem_out,
                      o_O  => s_reg_file_data_to_write_wb
             ); 
-
 
 end structure;
