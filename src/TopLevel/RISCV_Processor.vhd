@@ -500,7 +500,7 @@ begin
         port map(
                 i_pc_in  => s_final_pc_if,     -- selected pc, either +4 or jump/branch address
                 o_pc_out => s_IF_ID_input.current_PC, -- PC is saved in pipeline register
-                i_stall  => s_stall_id, -- don't advance the counter
+                i_stall  => s_stall_id and (not s_trap_occured_wb), -- don't advance the counter
                 i_reset  => iRST,
                 i_clk    => iCLK
         );
@@ -651,6 +651,7 @@ begin
     -- if system instruction AND (non zero func3) then it is a csr instruction
     s_ID_EX_input.csr  <= s_sys_id and (or s_ID_EX_input.func3);
     s_ID_EX_input.csr_write_addr <= s_IF_ID_output.Inst(31 downto 20); -- read address is the same as the write address
+    s_ID_EX_input.ecall <= '1' when (s_sys_id = '1' and s_ID_EX_input.func3 = 3b"000" and s_IF_ID_output.Inst(31 downto 20) = 12x"000") else '0';
 
 
 --------------------- EX STAGE ------------------------
@@ -842,6 +843,8 @@ begin
     s_EX_MEM_input.csr            <= s_ID_EX_output.csr;
     s_EX_MEM_input.csr_write_addr <= s_ID_EX_output.csr_write_addr;
     s_EX_MEM_input.csr_data       <= s_csr_frwrded_data_ex;
+    s_EX_MEM_input.current_pc     <= s_ID_EX_output.current_pc;
+    s_EX_MEM_input.ecall          <= s_ID_EX_output.ecall;
 
 --------------------- MEM STAGE ------------------------
 
@@ -891,6 +894,8 @@ begin
     s_MEM_WB_input.csr     <= s_EX_MEM_output.csr;
     s_MEM_WB_input.csr_write_addr <= s_EX_MEM_output.csr_write_addr;
     s_MEM_WB_input.csr_new_data <= s_EX_MEM_output.csr_new_data;
+    s_MEM_WB_input.current_pc  <= s_EX_MEM_output.current_pc;
+    s_MEM_WB_input.ecall      <= s_EX_MEM_output.ecall;
 
 
 --------------------- WB STAGE ------------------------

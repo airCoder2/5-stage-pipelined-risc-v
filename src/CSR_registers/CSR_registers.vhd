@@ -66,13 +66,14 @@ architecture dataflow of CSR_registers is
     signal s_mcause_we   : std_logic;
     signal s_mie_we      : std_logic;
 
-    signal s_mstatus_out  : std_logic_vector(31 downto 0);
-    signal s_mtvec_out    : std_logic_vector(31 downto 0);
-    signal s_mscratch_out : std_logic_vector(31 downto 0);
-    signal s_mepc_out     : std_logic_vector(31 downto 0);
-    signal s_mcause_out   : std_logic_vector(31 downto 0);
-    signal s_mie_out      : std_logic_vector(31 downto 0);
-    signal s_mip_out      : std_logic_vector(31 downto 0);
+    signal s_mstatus_out       : std_logic_vector(31 downto 0);
+    signal s_mstatus_copy_out  : std_logic_vector(31 downto 0);
+    signal s_mtvec_out         : std_logic_vector(31 downto 0);
+    signal s_mscratch_out      : std_logic_vector(31 downto 0);
+    signal s_mepc_out          : std_logic_vector(31 downto 0);
+    signal s_mcause_out        : std_logic_vector(31 downto 0);
+    signal s_mie_out           : std_logic_vector(31 downto 0);
+    signal s_mip_out           : std_logic_vector(31 downto 0);
 
     signal s_csr_reg_implemented : std_logic;
 
@@ -129,7 +130,9 @@ begin
             port map(
                      i_S  => i_trap_occured,
                      i_D0 => i_write_data,
-                     i_D1 => s_mstatus_out(31 downto 8) & s_mstatus_out(3) & s_mstatus_out(6 downto 4) & '0' & s_mstatus_out(2 downto 0),
+                     -- i_D1 => s_mstatus_out(31 downto 8) & s_mstatus_out(3) & s_mstatus_out(6 downto 4) & '0' & s_mstatus_out(2 downto 0),
+                     -- EMULATING RARS
+                     i_D1 => s_mstatus_copy_out(31 downto 5) & s_mstatus_copy_out(0) & s_mstatus_copy_out(3 downto 1) & '0',
                      o_O  => s_mstatus_in
             ); 
 
@@ -162,6 +165,16 @@ begin
                      o_O  => s_failing_pc
             ); 
 
+    -- a non bypass reg instance for mstatus so there is no infinicte loop when writing to pc
+	MSTATUS_COPY_REG_INST: N_bit_register
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
+        port map(
+                 i_CLK => i_clock, 
+                 i_RST => i_reset, 
+                 i_WE  => s_mstatus_we or i_trap_occured, 
+                 i_D   => s_mstatus_in, 
+                 o_Q   => s_mstatus_copy_out
+        ); 
 
 	MSTATUS_REG_INST: N_bit_register
         generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => true)

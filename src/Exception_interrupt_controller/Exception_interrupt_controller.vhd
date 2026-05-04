@@ -20,14 +20,31 @@ end entity;
 architecture dataflow of Exception_interrupt_controller is
 
 begin
+
+    ---- MSB of trap cause tells if it is an exception or an interrupt
+    -- o_trap_cause <=
+    --                32x"0000000B" when (i_ecall = '1') else -- trap due to ecall
+    --                32x"8000000B" when (i_mstatus(3) = '1' and i_mie(11) = '1' and i_mip(11) = '1') else -- trap due to hardware
+    --                32x"00000000";
+
+
+    --o_trap_occured <=
+    --               '1' when ((i_ecall = '1') or (i_mstatus(3) = '1' and i_mie(11) = '1' and i_mip(11) = '1')) else
+    --               '0';
+
+
+    -- EMULATING RARS, so I so supervisor mode
     -- MSB of trap cause tells if it is an exception or an interrupt
-    o_trap_cause <=
-                   32x"0000000B" when (i_ecall = '1') else -- trap due to ecall
-                   32x"8000000B" when (i_mstatus(3) = '1' and i_mie(11) = '1' and i_mip(11) = '1') else -- trap due to hardware
-                   32x"00000000";
+     o_trap_cause <=
+                    32x"0000000B" when (i_ecall = '1' and i_mstatus(0) = '1') else -- trap due to ecall
+                    32x"8000000B" when (i_mstatus(0) = '1' and i_mie(11) = '1' and i_mip(11) = '1') else -- trap due to hardware
+                    32x"00000000";
+
 
     o_trap_occured <=
-                   '1' when ((i_ecall = '1') or (i_mstatus(3) = '1' and i_mie(11) = '1' and i_mip(11) = '1')) else
+                   '1' when ((i_ecall = '1' and i_mstatus(0) = '1') or (i_mstatus(0) = '1' and i_mie(11) = '1' and i_mip(11) = '1')) else
                    '0';
+
+
 
 end architecture;
