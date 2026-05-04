@@ -231,10 +231,12 @@ architecture structure of RISCV_Processor is
              o_illegal_read : out std_logic;                      -- reading from unimplemented CSR 
              -- Ports neded for trap handling
              i_trap_occured : in std_logic;                      -- signal indicates that trap occured, start the procedure
+             i_mret         : in std_logic;
              i_trap_cause   : in std_logic_vector(31 downto 0);  -- the reason why trap occured. MSB indicates Exception/!trap
              i_pc_wb        : in std_logic_vector(31 downto 0);  -- pc to put into mepc if exception
              i_pc_mem       : in std_logic_vector(31 downto 0);  -- pc to put into mepc if interrupt
-             o_mtvec        : out std_logic_vector(31 downto 0); -- mtvec that is loaded as next pc when trap happened
+             i_mtval        : in std_logic_vector(31 downto 0);  -- The instruction that made the processor fail
+             o_trap_ret_pc  : out std_logic_vector(31 downto 0); -- mtvec that is loaded as next pc when trap happened
              o_mstatus      : out std_logic_vector(31 downto 0); -- mstatus needed to be read by event controller
              o_mie          : out std_logic_vector(31 downto 0); -- mie needs to be read by event controller
              o_mip          : out std_logic_vector(31 downto 0)  -- mip needs to be read by event controller
@@ -255,6 +257,7 @@ architecture structure of RISCV_Processor is
     component Exception_interrupt_controller is
         port(
              i_ecall        : in std_logic; -- if this instruction is an ecall
+             i_illegal_instruction : in std_logic;
              i_mip          : in std_logic_vector(31 downto 0); -- mip to see if any hardware interrupts pending
              i_mie          : in std_logic_vector(31 downto 0); -- mie to see if any hadware interrupts enabled
              i_mstatus      : in std_logic_vector(31 downto 0); -- mstatus to see if global interrupt bit is enabled
@@ -367,7 +370,7 @@ architecture structure of RISCV_Processor is
     signal s_pc_src_A_if : std_logic_vector(31 downto 0); -- predicted pc or pc+4
     signal s_predicted_correct_taken_ex : std_logic;
     signal s_rs1_or_fread1_ex : std_logic_vector(31 downto 0);
-    signal s_illegal_instruction_id : std_logic; -- signal for illegal instructions
+    signal s_illegal_instruction_csr_id : std_logic; -- signal for illegal instructions, reading non existant csr
 
     signal s_csr_frwrd_sel_ex : std_logic_vector(1 downto 0); -- csr forward select
     signal s_csr_frwrded_data_ex: std_logic_vector(31 downto 0);
@@ -429,7 +432,7 @@ begin
         port map(i_fetch_decode_register => s_IF_ID_input,
                  o_fetch_decode_register => s_IF_ID_output,
                  i_stall                 => s_stall_id,
-                 i_reset                 => iRST or s_flush_IF_ID_id or s_trap_occured_wb,  
+                 i_reset                 => iRST or s_flush_IF_ID_id or s_trap_occured_wb or s_MEM_WB_output.mret,  
                  i_clk                   => iCLK   
         );
 
@@ -438,7 +441,7 @@ begin
         port map(i_decode_execute_register  => s_ID_EX_input,
                   o_decode_execute_register => s_ID_EX_output,
                   i_stall                   => s_stall_id,
-                  i_reset                   => iRST or s_flush_ID_EX_id or s_trap_occured_wb,  
+                  i_reset                   => iRST or s_flush_ID_EX_id or s_trap_occured_wb or s_MEM_WB_output.mret,  
                   i_clk                     => iCLK   
         );
 
@@ -447,7 +450,7 @@ begin
         port map(i_execute_memory_register => s_EX_MEM_input,
                  o_execute_memory_register => s_EX_MEM_output,
                  i_stall                   => '0', --never stalled
-                 i_reset                   => iRST or s_trap_occured_wb,  
+                 i_reset                   => iRST or s_trap_occured_wb or s_MEM_WB_output.mret,  
                  i_clk                     => iCLK   
         );
 
@@ -456,7 +459,7 @@ begin
         port map(i_memory_wback_register => s_MEM_WB_input,
                  o_memory_wback_register => s_MEM_WB_output,
                  i_stall                 => '0', -- never stalled
-                 i_reset                 => iRST or s_trap_occured_wb,  
+                 i_reset                 => iRST or s_trap_occured_wb or s_MEM_WB_output.mret,  
                  i_clk                   => iCLK   
         );
 
@@ -488,7 +491,7 @@ begin
     Mux2t1_TRAP_PC_inst:  mux2t1_N_dataflow
             generic map(N => 32)
             port map(
-                     i_S  => s_trap_occured_wb,
+                     i_S  => s_trap_occured_wb or s_MEM_WB_output.mret,
                      i_D0 => s_Next_pc_if,
                      i_D1 => s_CSR_mtvec_id,
                      o_O  => s_final_pc_if
@@ -503,7 +506,7 @@ begin
         port map(
                 i_pc_in  => s_final_pc_if,     -- selected pc, either +4 or jump/branch address
                 o_pc_out => s_IF_ID_input.current_PC, -- PC is saved in pipeline register
-                i_stall  => s_stall_id and (not s_trap_occured_wb), -- don't advance the counter
+                i_stall  => s_stall_id and (not (s_trap_occured_wb or s_MEM_WB_output.mret)), -- don't advance the counter
                 i_reset  => iRST,
                 i_clk    => iCLK
         );
@@ -614,13 +617,15 @@ begin
              i_write_addr   => s_MEM_WB_output.csr_write_addr,
              i_write_data   => s_MEM_WB_output.csr_new_data,
              o_csr_data     => s_csr_read_data_id,
-             o_illegal_read => s_illegal_instruction_id,
+             o_illegal_read => s_illegal_instruction_csr_id,
              -- Trap handling ports
              i_trap_occured => s_trap_occured_wb, 
+             i_mret         => s_MEM_WB_output.mret,
              i_trap_cause   => s_trap_cause_wb, 
              i_pc_wb        => s_MEM_WB_output.current_pc, 
              i_pc_mem       => s_EX_MEM_output.current_pc, 
-             o_mtvec        => s_CSR_mtvec_id, 
+             i_mtval        => s_EX_MEM_output.Inst,
+             o_trap_ret_pc  => s_CSR_mtvec_id, 
              o_mstatus      => s_CSR_mstatus_id, 
              o_mie          => s_CSR_mie_id, 
              o_mip          => s_CSR_mip_id 
@@ -674,6 +679,17 @@ begin
     s_ID_EX_input.csr  <= s_sys_id and (or s_ID_EX_input.func3);
     s_ID_EX_input.csr_write_addr <= s_IF_ID_output.Inst(31 downto 20); -- read address is the same as the write address
     s_ID_EX_input.ecall <= '1' when (s_sys_id = '1' and s_ID_EX_input.func3 = 3b"000" and s_IF_ID_output.Inst(31 downto 20) = 12x"000") else '0';
+
+    -- URET that RARS uses is 0x002 (func7)
+    -- MRET that I    use  is 0x302 (func7)
+    s_ID_EX_input.mret  <= '1' when (s_sys_id = '1' and s_ID_EX_input.func3 = 3b"000" and s_IF_ID_output.Inst(23 downto 20) = 4x"2") else '0';
+
+    s_ID_EX_input.Inst <= s_IF_ID_output.Inst;
+
+    -- THIS ONLY DETECTS M-TYPE INSTRUCTIONS. SHOULD FIND A WAY TO MAKE IT RECOGNIZE ANY UNIMPLEMENTED
+    s_ID_EX_input.illegal_instruction <= '1' when s_illegal_instruction_csr_id = '1' or 
+                                         (s_IF_ID_output.Inst(31 downto 25) = 7x"01" and s_IF_ID_output.Inst(6 downto 0) = 7b"0110011") else '0';
+
 
 
 --------------------- EX STAGE ------------------------
@@ -778,8 +794,10 @@ begin
 
     -- This is the little forwarding we need for CSRs. Basically if we are writing to a CSR in MEM
     -- or in WB, the forward that value to EX
-    s_csr_frwrd_sel_ex <= 2b"01" when (s_ID_EX_output.csr_write_addr = s_EX_MEM_output.csr_write_addr) else
-                          2b"10" when (s_ID_EX_output.csr_write_addr = s_MEM_WB_output.csr_write_addr) else 
+    s_csr_frwrd_sel_ex <= 2b"01" when (s_ID_EX_output.csr_write_addr = s_EX_MEM_output.csr_write_addr and
+                                       s_EX_MEM_output.csr = '1') else
+                          2b"10" when (s_ID_EX_output.csr_write_addr = s_MEM_WB_output.csr_write_addr and
+                                       s_MEM_WB_output.csr = '1') else 
                           2b"00";
 
 
@@ -865,6 +883,9 @@ begin
     s_EX_MEM_input.csr_data       <= s_csr_frwrded_data_ex;
     s_EX_MEM_input.current_pc     <= s_ID_EX_output.current_pc;
     s_EX_MEM_input.ecall          <= s_ID_EX_output.ecall;
+    s_EX_MEM_input.mret           <= s_ID_EX_output.mret;
+    s_EX_MEM_input.illegal_instruction <= s_ID_EX_output.illegal_instruction;
+    s_EX_MEM_input.Inst          <= s_ID_EX_output.Inst;
 
 --------------------- MEM STAGE ------------------------
 
@@ -916,12 +937,16 @@ begin
     s_MEM_WB_input.csr_new_data <= s_EX_MEM_output.csr_new_data;
     s_MEM_WB_input.current_pc  <= s_EX_MEM_output.current_pc;
     s_MEM_WB_input.ecall      <= s_EX_MEM_output.ecall;
+    s_MEM_WB_input.mret       <= s_EX_MEM_output.mret;
+    s_MEM_WB_input.illegal_instruction <= s_EX_MEM_output.illegal_instruction;
+    s_MEM_WB_input.Inst          <= s_EX_MEM_output.Inst;
 
 
 --------------------- WB STAGE ------------------------
     Trap_controller_inst: Exception_interrupt_controller
         port map(
                  i_ecall        => s_MEM_WB_output.ecall, 
+                 i_illegal_instruction => s_MEM_WB_output.illegal_instruction,
                  i_mip          => s_CSR_mip_id, 
                  i_mie          => s_CSR_mie_id, 
                  i_mstatus      => s_CSR_mstatus_id, 

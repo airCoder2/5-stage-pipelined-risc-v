@@ -27,9 +27,9 @@ architecture structural of Memory_wback_register is
     end component N_bit_register;   
 
     -- memory/write-back stage register
-    -- 150 bits total:
-    signal s_Memory_wback_data_in  : std_logic_vector(149 downto 0);     
-    signal s_Memory_wback_data_out : std_logic_vector(149 downto 0);     
+    -- 184 bits total:
+    signal s_Memory_wback_data_in  : std_logic_vector(183 downto 0);     
+    signal s_Memory_wback_data_out : std_logic_vector(183 downto 0);     
 
 begin
     -- REG_WE          :(0)
@@ -43,6 +43,9 @@ begin
     -- csr_write_addr  :(116 downto 105) 
     -- ecall           :(117)
     -- current_pc      :(149 downto 118) 
+    -- mret            :(150)
+    -- illegal_instruction : (151)
+    -- Inst                :(183 downto 152)
 
     s_Memory_wback_data_in(0)              <= i_memory_wback_register.reg_WE;
     s_Memory_wback_data_in(1)              <= i_memory_wback_register.ALU_mem;
@@ -55,9 +58,13 @@ begin
     s_Memory_wback_data_in(116 downto 105) <= i_memory_wback_register.csr_write_addr; 
     s_Memory_wback_data_in(117)            <= i_memory_wback_register.ecall;
     s_Memory_wback_data_in(149 downto 118) <= i_memory_wback_register.current_pc;
+    s_Memory_wback_data_in(150)            <= i_memory_wback_register.mret;
+    s_Memory_wback_data_in(151)            <= i_memory_wback_register.illegal_instruction;
+    s_Memory_wback_data_in(183 downto 152) <= i_memory_wback_register.Inst;
+
 
     Memory_wback_register_inst: N_bit_register
-        generic map(N => 150, Reset_value => (149 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 184, Reset_value => (183 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                 -- reset the pipeline to 0
@@ -66,17 +73,20 @@ begin
                  o_Q   => s_Memory_wback_data_out  -- all the outputs are contained in this signal
              );
 
-    o_memory_wback_register.reg_WE          <= s_Memory_wback_data_out(0);             
-    o_memory_wback_register.ALU_mem         <= s_Memory_wback_data_out(1);             
-    o_memory_wback_register.ALU_out_or_csr         <= s_Memory_wback_data_out(33 downto 2);   
-    o_memory_wback_register.dmem_out        <= s_Memory_wback_data_out(65 downto 34);  
-    o_memory_wback_register.rd              <= s_Memory_wback_data_out(70 downto 66);
-    o_memory_wback_register.halt            <= s_Memory_wback_data_out(71);
-    o_memory_wback_register.csr             <= s_Memory_wback_data_out(72);             
-    o_memory_wback_register.csr_new_data    <= s_Memory_wback_data_out(104 downto 73);  
-    o_memory_wback_register.csr_write_addr  <= s_Memory_wback_data_out(116 downto 105); 
-    o_memory_wback_register.ecall           <= s_Memory_wback_data_out(117);
-    o_memory_wback_register.current_pc      <= s_Memory_wback_data_out(149 downto 118);
+    o_memory_wback_register.reg_WE              <= s_Memory_wback_data_out(0);             
+    o_memory_wback_register.ALU_mem             <= s_Memory_wback_data_out(1);             
+    o_memory_wback_register.ALU_out_or_csr      <= s_Memory_wback_data_out(33 downto 2);   
+    o_memory_wback_register.dmem_out            <= s_Memory_wback_data_out(65 downto 34);  
+    o_memory_wback_register.rd                  <= s_Memory_wback_data_out(70 downto 66);
+    o_memory_wback_register.halt                <= s_Memory_wback_data_out(71);
+    o_memory_wback_register.csr                 <= s_Memory_wback_data_out(72);             
+    o_memory_wback_register.csr_new_data        <= s_Memory_wback_data_out(104 downto 73);  
+    o_memory_wback_register.csr_write_addr      <= s_Memory_wback_data_out(116 downto 105); 
+    o_memory_wback_register.ecall               <= s_Memory_wback_data_out(117);
+    o_memory_wback_register.current_pc          <= s_Memory_wback_data_out(149 downto 118);
+    o_memory_wback_register.mret                <= s_Memory_wback_data_out(150);
+    o_memory_wback_register.illegal_instruction <= s_Memory_wback_data_out(151);
+    o_memory_wback_register.Inst                <= s_Memory_wback_data_out(183 downto 152);
 
 end architecture structural;
 

@@ -28,8 +28,8 @@ architecture structural of Execute_memory_register is
 
     -- execute/memory stage register
     -- 191 bits total:
-    signal s_Execute_memory_data_in  : std_logic_vector(190 downto 0);   
-    signal s_Execute_memory_data_out : std_logic_vector(190 downto 0);   
+    signal s_Execute_memory_data_in  : std_logic_vector(224 downto 0);   
+    signal s_Execute_memory_data_out : std_logic_vector(224 downto 0);   
 
 begin
     -- halt           :(0) 
@@ -47,6 +47,9 @@ begin
     -- csr_data       :(157 downto 126)
     -- ecall          :(158)
     -- current_pc     :(190 downto 159)
+    -- mret           :(191)
+    -- illegal_instruction : (192)
+    -- Inst           :(224 downto 193)
 
 
     s_Execute_memory_data_in(0)              <= i_execute_memory_register.halt;              
@@ -64,11 +67,15 @@ begin
     s_Execute_memory_data_in(157 downto 126) <= i_execute_memory_register.csr_data;  
     s_Execute_memory_data_in(158)            <= i_execute_memory_register.ecall;  
     s_Execute_memory_data_in(190 downto 159) <= i_execute_memory_register.current_pc;  
+    s_Execute_memory_data_in(191)            <= i_execute_memory_register.mret;  
+    s_Execute_memory_data_in(192)            <= i_execute_memory_register.illegal_instruction;  
+    s_Execute_memory_data_in(224 downto 193) <= i_execute_memory_register.Inst;  
+
 
 
 
     Execute_memory_register_inst: N_bit_register
-        generic map(N => 191, Reset_value => (190 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 225, Reset_value => (224 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
@@ -91,6 +98,9 @@ begin
     o_execute_memory_register.csr_data       <= s_Execute_memory_data_out(157 downto 126);
     o_execute_memory_register.ecall          <= s_Execute_memory_data_out(158);
     o_execute_memory_register.current_pc     <= s_Execute_memory_data_out(190 downto 159);
+    o_execute_memory_register.mret           <= s_Execute_memory_data_out(191);
+    o_execute_memory_register.illegal_instruction <= s_Execute_memory_data_out(192);
+    o_execute_memory_register.Inst          <= s_Execute_memory_data_out(224 downto 193);
 end architecture structural;
 
 
