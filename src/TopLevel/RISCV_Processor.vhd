@@ -711,8 +711,10 @@ begin
 
     -- This is the little forwarding we need for CSRs. Basically if we are writing to a CSR in MEM
     -- or in WB, the forward that value to EX
-    s_csr_frwrd_sel_ex <= 2b"01" when (s_ID_EX_output.csr_write_addr = s_EX_MEM_output.csr_write_addr) else
-                          2b"10" when (s_ID_EX_output.csr_write_addr = s_MEM_WB_output.csr_write_addr) else 
+    s_csr_frwrd_sel_ex <= 2b"01" when (s_ID_EX_output.csr_write_addr = s_EX_MEM_output.csr_write_addr and
+                                       s_EX_MEM_output.csr = '1') else
+                          2b"10" when (s_ID_EX_output.csr_write_addr = s_MEM_WB_output.csr_write_addr and
+                                       s_MEM_WB_output.csr = '1') else 
                           2b"00";
 
 
