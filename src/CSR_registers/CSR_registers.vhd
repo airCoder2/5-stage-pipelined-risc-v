@@ -155,7 +155,7 @@ begin
                      -- i_D1 => s_mstatus_out(31 downto 8) & s_mstatus_out(3) & s_mstatus_out(6 downto 4) & '0' & s_mstatus_out(2 downto 0),
                      -- EMULATING RARS
                      i_D0 => s_mstatus_out(31 downto 5) & s_mstatus_out(0) & s_mstatus_out(3 downto 1) & '0',
-                     i_D1 => s_mstatus_out(31 downto 5) & '1' & s_mstatus_out(3 downto 1) & s_prev_mie, 
+                     i_D1 => s_mstatus_out(31 downto 5) & '0' & s_mstatus_out(3 downto 1) & s_prev_mie, 
                      o_O  => s_mstatus_mux_A_in
             ); 
 

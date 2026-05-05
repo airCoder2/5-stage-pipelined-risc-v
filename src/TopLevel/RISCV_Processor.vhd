@@ -601,7 +601,9 @@ begin
 
     -- This is the little forwarding we need for CSR REG FILE. Basically if we are writing to a CSR in WB
     -- and reading in ID then forward. Because, I can't use bypass, otherwise becoming an infinite loop
-    s_csr_frwrd_sel_id <= '1' when (s_ID_EX_input.csr_write_addr = s_MEM_WB_output.csr_write_addr) else
+    -- make sure the instruction that we are forwarding from is also a csr
+    s_csr_frwrd_sel_id <= '1' when ((s_ID_EX_input.csr_write_addr = s_MEM_WB_output.csr_write_addr)  and
+                          (s_MEM_WB_output.csr = '1')) else
                           '0';
 
 
@@ -783,7 +785,7 @@ begin
          );
 
     -- This is the little forwarding we need for CSRs. Basically if we are writing to a CSR in MEM
-    -- or in WB, the forward that value to EX
+    -- or in WB, the forward that value to EX. Make sure the Place we are forwarding from is a csr
     s_csr_frwrd_sel_ex <= 2b"01" when (s_ID_EX_output.csr_write_addr = s_EX_MEM_output.csr_write_addr and
                                        s_EX_MEM_output.csr = '1') else
                           2b"10" when (s_ID_EX_output.csr_write_addr = s_MEM_WB_output.csr_write_addr and
