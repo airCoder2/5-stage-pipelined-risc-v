@@ -25,6 +25,18 @@ end  RISCV_Processor;
 
 architecture structure of RISCV_Processor is
 
+    -- for oring the who bus
+    function or_bus(vec : std_logic_vector) return std_logic is
+        variable result : std_logic := '0';
+        begin
+            for i in vec'range loop
+                result := result or vec(i);
+            end loop;
+        return result;
+    end function;
+
+
+
 ----------------- COMPONENTS ---------------
 
     -- mem component is used to infer Memory to store Instructions and Data
@@ -63,6 +75,17 @@ architecture structure of RISCV_Processor is
               c_out    : out std_logic;
               overflow : out std_logic);
     end component ripple_carry_N_bit_adder;
+
+
+    component carry_lookahead_adder is
+        generic (N : integer := 32);
+        port (A        : in  std_logic_vector(N-1 downto 0);
+              B        : in  std_logic_vector(N-1 downto 0);
+              nAdd_Sub : in  std_logic;
+              sum      : out std_logic_vector(N-1 downto 0);
+              c_out    : out std_logic;
+              overflow : out std_logic);
+    end component;
 
     component Hazard_unit is
         port(
@@ -264,6 +287,17 @@ architecture structure of RISCV_Processor is
             );
     end component;
 
+    component N_bit_register is
+        generic(N : integer; Reset_value : std_logic_vector; Bypass_register : boolean);
+        port(i_CLK  : in std_logic;						   -- Clock input
+           i_RST    : in std_logic;						   -- Reset input
+           i_WE     : in std_logic;   					   -- All register connected
+           i_D      : in std_logic_vector(N-1 downto 0);   -- Data value input
+           o_Q      : out std_logic_vector(N-1 downto 0)); -- Data value output
+    end component N_bit_register;   
+
+
+
 
     -- IF_ID stage register
     component Fetch_decode_register is
@@ -383,6 +417,13 @@ architecture structure of RISCV_Processor is
     signal s_csr_read_data_id : std_logic_vector(31 downto 0); -- data out from CSR REG file
 
 
+    signal s_periphiral_we_mem        : std_logic;     
+    signal s_selected_mem_data_mem    : std_logic_vector(31 downto 0);
+    signal s_periphiral_data_mem      : std_logic_vector(31 downto 0);
+
+
+
+
     -- Pipeline Register input outputs--
     -- fetch/decode reg inputs output
     signal s_IF_ID_input  : Fetch_decode_data_t;
@@ -404,7 +445,7 @@ begin
     s_Halt      <= s_MEM_WB_output.halt;
     s_Ovfl <= '0'; -- RISC-V does not have hardware overflow detection.
 
-    s_DMemWr   <= s_EX_MEM_output.mem_WE; -- active high data memory write enable signal
+    s_DMemWr   <= s_EX_MEM_output.mem_WE and (not s_trap_occured_wb); -- active high data memory write enable signal
     s_DMemAddr <= s_MEM_WB_input.ALU_out_or_csr; -- data memory address input
     s_DMemData <= s_mem_data_to_write_mem; -- data memory data input
     s_DMemOut  <= s_memory_data_mem; -- data memory output
@@ -675,7 +716,7 @@ begin
     -- if system instruction = 1 AND func3 = 0 AND func7 (Imm) = 0x105 then it is a halt instruction
     s_ID_EX_input.halt <= '1' when (s_sys_id = '1' and s_ID_EX_input.func3 = 3b"000" and s_IF_ID_output.Inst(31 downto 20) = 12x"105") else '0';
     -- if system instruction AND (non zero func3) then it is a csr instruction
-    s_ID_EX_input.csr  <= s_sys_id and (or s_ID_EX_input.func3);
+    s_ID_EX_input.csr  <= s_sys_id and or_bus(s_ID_EX_input.func3);
     s_ID_EX_input.csr_write_addr <= s_IF_ID_output.Inst(31 downto 20); -- read address is the same as the write address
     s_ID_EX_input.ecall <= '1' when (s_sys_id = '1' and s_ID_EX_input.func3 = 3b"000" and s_IF_ID_output.Inst(31 downto 20) = 12x"000") else '0';
 
@@ -757,14 +798,17 @@ begin
                      o_O  => s_branch_adder_B_ex  -- NEW
             );
 
-    -- for calculating final address
-    Branch_adder_inst: ripple_carry_N_bit_adder
+    Branch_cla_adder_inst: carry_lookahead_adder
         generic map(N => 32)
-        port map(x    => s_branch_adder_A_ex,
-                 y    => s_branch_adder_B_ex,
-                 c_in => '0',
-                 sum  => s_branch_pc_ex -- final calculated branch value
+        port map(A        => s_branch_adder_A_ex, 
+                 B        => s_branch_adder_B_ex, 
+                 nAdd_Sub => '0', 
+                 sum      => s_branch_pc_ex, 
+                 c_out    => open, 
+                 overflow => open 
         );
+
+
 
     Mux2t1_CSR_operand_inst:  mux2t1_N_dataflow
             generic map(N => 32)
@@ -905,7 +949,7 @@ begin
         port map(clk  => iCLK,
                  addr => s_MEM_WB_input.ALU_out_or_csr(11 downto 2),
                  data => s_mem_data_to_write_mem,
-                 we   => s_EX_MEM_output.mem_WE and (not s_trap_occured_wb), -- if instruction is getting flushed, don't write
+                 we   => s_EX_MEM_output.mem_WE and (not s_trap_occured_wb) and (not s_periphiral_we_mem), -- if instruction is getting flushed, don't write
                  q    => s_memory_data_mem
         );
 
@@ -915,8 +959,32 @@ begin
               i_mem_out_word  => s_memory_data_mem,
               i_mem_b_hw_addr => s_MEM_WB_input.ALU_out_or_csr(1 downto 0),
               i_func3         => s_EX_MEM_output.func3,
-              o_selected_data => s_MEM_WB_input.dmem_out
+              o_selected_data => s_selected_mem_data_mem
           );
+
+    with s_MEM_WB_input.ALU_out_or_csr(11 downto 2) select
+        s_periphiral_we_mem <= '1' when 10b"1111111111",
+                               '0' when others;
+
+	Periphiral_reg_inst: N_bit_register
+        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
+        port map(
+                 i_CLK => iCLK, 
+                 i_RST => iRST, 
+                 i_WE  => s_EX_MEM_output.mem_WE and (not s_trap_occured_wb) and s_periphiral_we_mem, 
+                 i_D   => s_mem_data_to_write_mem, 
+                 o_Q   => s_periphiral_data_mem 
+        ); 
+
+    Mux2t1_final_mem_data_inst:  mux2t1_N_dataflow
+            generic map(N => 32)
+            port map(
+                     i_S  => s_periphiral_we_mem,
+                     i_D0 => s_selected_mem_data_mem,
+                     i_D1 => s_periphiral_data_mem,
+                     o_O  => s_MEM_WB_input.dmem_out
+            ); 
+
 
     s_MEM_WB_input.ALU_mem <= s_EX_MEM_output.ALU_mem;
     s_MEM_WB_input.reg_WE  <= s_EX_MEM_output.reg_WE;
