@@ -18,8 +18,11 @@ entity RISCV_Processor is
        iInstLd         : in std_logic;
        iInstAddr       : in std_logic_vector(31 downto 0);
        iInstExt        : in std_logic_vector(31 downto 0);
-       oALUOut         : out std_logic_vector(31 downto 0)); -- Hook this up to the output of the ALU
-
+       oALUOut         : out std_logic_vector(31 downto 0);
+       -- MY OWN
+       i_interrupt     : in std_logic;
+       o_periphiral    : out std_logic_vector(31 downto 0)
+   );
 end  RISCV_Processor;
 
 
@@ -258,6 +261,7 @@ architecture structure of RISCV_Processor is
              i_trap_cause   : in std_logic_vector(31 downto 0);  -- the reason why trap occured. MSB indicates Exception/!trap
              i_pc_wb        : in std_logic_vector(31 downto 0);  -- pc to put into mepc if exception
              i_pc_mem       : in std_logic_vector(31 downto 0);  -- pc to put into mepc if interrupt
+             i_mip_bit      : in std_logic;
              o_trap_ret_pc  : out std_logic_vector(31 downto 0); -- mtvec that is loaded as next pc when trap happened
              o_mstatus      : out std_logic_vector(31 downto 0); -- mstatus needed to be read by event controller
              o_mie          : out std_logic_vector(31 downto 0); -- mie needs to be read by event controller
@@ -445,7 +449,7 @@ begin
     s_Halt      <= s_MEM_WB_output.halt;
     s_Ovfl <= '0'; -- RISC-V does not have hardware overflow detection.
 
-    s_DMemWr   <= s_EX_MEM_output.mem_WE and (not s_trap_occured_wb); -- active high data memory write enable signal
+    s_DMemWr   <= s_EX_MEM_output.mem_WE and (not s_trap_occured_wb) and (not s_periphiral_we_mem); -- active high data memory write enable signal
     s_DMemAddr <= s_MEM_WB_input.ALU_out_or_csr; -- data memory address input
     s_DMemData <= s_mem_data_to_write_mem; -- data memory data input
     s_DMemOut  <= s_memory_data_mem; -- data memory output
@@ -457,6 +461,9 @@ begin
     s_PC        <= s_IF_ID_input.current_PC; -- instruction memory address input.
     s_Inst      <= s_IF_ID_input.Inst; -- instruction signal 
     oALUOut     <= s_EX_MEM_input.ALU_out;
+
+
+    o_periphiral <=  s_periphiral_data_mem;
 
     -- multiplex the instruction mem address. if instructon memeory is being written then connect
     -- the address that toolflow controls, otherwise coneect the s_PC, which is current pc
@@ -665,6 +672,7 @@ begin
              i_trap_cause   => s_trap_cause_wb, 
              i_pc_wb        => s_MEM_WB_output.current_pc, 
              i_pc_mem       => s_EX_MEM_output.current_pc, 
+             i_mip_bit      => i_interrupt,
              o_trap_ret_pc  => s_CSR_mtvec_id, 
              o_mstatus      => s_CSR_mstatus_id, 
              o_mie          => s_CSR_mie_id, 
@@ -975,6 +983,8 @@ begin
                  i_D   => s_mem_data_to_write_mem, 
                  o_Q   => s_periphiral_data_mem 
         ); 
+
+
 
     Mux2t1_final_mem_data_inst:  mux2t1_N_dataflow
             generic map(N => 32)

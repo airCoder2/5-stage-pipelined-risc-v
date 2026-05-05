@@ -10,21 +10,20 @@ main:
      la     t0, handler
      csrrw  zero, utvec, t0
      csrrsi zero, ustatus, 0x1
+     li t0, 0x800
+     csrrw zero, uie, t0
 
-     addi x10, zero, 1
-     addi x11, zero, 2
-     ecall                    # trap 1
+     addi x10, zero, 0x8 
+     addi x11, zero, 0x9
 
-     addi x10, zero, 3
-     addi x11, zero, 4
-     ecall                    # trap 2
-
-     addi x10, zero, 5
-     addi x11, zero, 6
-     ecall                    # trap 3
-
-     addi x10, zero, 7
-     addi x11, zero, 8
+     addi x10, zero, 0xA
+     addi x11, zero, 0xB
+                        
+     addi x10, zero, 0xC
+     addi x11, zero, 0xD
+                        
+     addi x10, zero, 0xE
+     addi x11, zero, 0xF
 
 end:
      wfi

@@ -25,6 +25,7 @@ entity CSR_registers is
          i_trap_cause   : in std_logic_vector(31 downto 0);  -- the reason why trap occured. MSB indicates Exception/!trap
          i_pc_wb        : in std_logic_vector(31 downto 0);  -- pc to put into mepc if exception
          i_pc_mem       : in std_logic_vector(31 downto 0);  -- pc to put into mepc if interrupt
+         i_mip_bit      : in std_logic;
          o_trap_ret_pc  : out std_logic_vector(31 downto 0); -- mtvec that is loaded as next pc when trap happened
          o_mstatus      : out std_logic_vector(31 downto 0); -- mstatus needed to be read by event controller
          o_mie          : out std_logic_vector(31 downto 0); -- mie needs to be read by event controller
@@ -267,7 +268,7 @@ begin
                  o_Q   => s_mie_out
         ); 
 
-        s_mip_out <= 32x"CAFE0000";
+        s_mip_out <= 20x"0" & i_mip_bit & 11x"0";
 
         with i_mret select
             o_trap_ret_pc <= s_mepc_out when '1',
