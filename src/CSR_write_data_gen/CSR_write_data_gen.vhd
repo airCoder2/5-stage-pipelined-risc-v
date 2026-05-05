@@ -39,11 +39,12 @@ begin
     with i_csr_addr(7 downto 0) select
         o_csr_new_data <= 
                        (s_csr_new_data_before_WRPI_masking and 32x"00000011")when REG_mstatus_addr(7 downto 0),
-                       (s_csr_new_data_before_WRPI_masking)when REG_mtvec_addr(7 downto 0),   
-                       (s_csr_new_data_before_WRPI_masking)when REG_mscratch_addr(7 downto 0),
-                       (s_csr_new_data_before_WRPI_masking)when REG_mepc_addr(7 downto 0),    
-                       (s_csr_new_data_before_WRPI_masking)when REG_mcause_addr(7 downto 0),  
-                       32x"00000000"  when others;
+                       s_csr_new_data_before_WRPI_masking  when others;
+                       -- (s_csr_new_data_before_WRPI_masking)when REG_mtvec_addr(7 downto 0),   
+                       -- (s_csr_new_data_before_WRPI_masking)when REG_mscratch_addr(7 downto 0),
+                       -- (s_csr_new_data_before_WRPI_masking)when REG_mepc_addr(7 downto 0),    
+                       -- (s_csr_new_data_before_WRPI_masking)when REG_mcause_addr(7 downto 0),  
+                       -- (s_csr_new_data_before_WRPI_masking)when REG_mie_addr(7 downto 0),  
 end architecture;
 
 

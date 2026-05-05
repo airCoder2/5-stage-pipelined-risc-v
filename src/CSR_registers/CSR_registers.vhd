@@ -267,7 +267,7 @@ begin
                  o_Q   => s_mie_out
         ); 
 
-        s_mip_out <= 32x"00000000";
+        s_mip_out <= 32x"CAFE0000";
 
         with i_mret select
             o_trap_ret_pc <= s_mepc_out when '1',
