@@ -25,7 +25,6 @@ entity CSR_registers is
          i_trap_cause   : in std_logic_vector(31 downto 0);  -- the reason why trap occured. MSB indicates Exception/!trap
          i_pc_wb        : in std_logic_vector(31 downto 0);  -- pc to put into mepc if exception
          i_pc_mem       : in std_logic_vector(31 downto 0);  -- pc to put into mepc if interrupt
-         i_mtval        : in std_logic_vector(31 downto 0);  -- The instruction that made the processor fail
          o_trap_ret_pc  : out std_logic_vector(31 downto 0); -- mtvec that is loaded as next pc when trap happened
          o_mstatus      : out std_logic_vector(31 downto 0); -- mstatus needed to be read by event controller
          o_mie          : out std_logic_vector(31 downto 0); -- mie needs to be read by event controller
@@ -40,7 +39,6 @@ architecture dataflow of CSR_registers is
     constant REG_mscratch_addr : std_logic_vector(11 downto 0) := 12x"340";
     constant REG_mepc_addr     : std_logic_vector(11 downto 0) := 12x"341";
     constant REG_mcause_addr   : std_logic_vector(11 downto 0) := 12x"342";
-    constant REG_mtval_addr    : std_logic_vector(11 downto 0) := 12x"343";
     constant REG_mie_addr      : std_logic_vector(11 downto 0) := 12x"304";
     constant REG_mip_addr      : std_logic_vector(11 downto 0) := 12x"344";
     
@@ -76,7 +74,6 @@ architecture dataflow of CSR_registers is
     signal s_mscratch_we : std_logic;
     signal s_mepc_we     : std_logic;
     signal s_mcause_we   : std_logic;
-    signal s_mtval_we    : std_logic;
     signal s_mie_we      : std_logic;
 
     signal s_mstatus_out       : std_logic_vector(31 downto 0);
@@ -85,7 +82,6 @@ architecture dataflow of CSR_registers is
     signal s_mscratch_out      : std_logic_vector(31 downto 0);
     signal s_mepc_out          : std_logic_vector(31 downto 0);
     signal s_mcause_out        : std_logic_vector(31 downto 0);
-    signal s_mtval_out         : std_logic_vector(31 downto 0);
     signal s_mie_out           : std_logic_vector(31 downto 0);
     signal s_mip_out           : std_logic_vector(31 downto 0);
 
@@ -109,7 +105,6 @@ begin
     s_mscratch_we <= '1' when (i_write_addr(7 downto 0) = REG_mscratch_addr(7 downto 0) and i_we = '1') else '0';
     s_mepc_we     <= '1' when (i_write_addr(7 downto 0) = REG_mepc_addr(7 downto 0)     and i_we = '1') else '0';
     s_mcause_we   <= '1' when (i_write_addr(7 downto 0) = REG_mcause_addr(7 downto 0)   and i_we = '1') else '0';
-    s_mtval_we    <= '1' when (i_write_addr(7 downto 0) = REG_mtval_addr(7 downto 0)   and i_we = '1') else '0';
     s_mie_we      <= '1' when (i_write_addr(7 downto 0) = REG_mie_addr(7 downto 0)      and i_we = '1') else '0';
     
 ----------------------------------------
@@ -121,7 +116,6 @@ begin
                        s_mscratch_out when REG_mscratch_addr(7 downto 0),
                        s_mepc_out     when REG_mepc_addr(7 downto 0),    
                        s_mcause_out   when REG_mcause_addr(7 downto 0),  
-                       s_mtval_out    when REG_mtval_addr(7 downto 0),  
                        s_mie_out      when REG_mie_addr(7 downto 0),
                        s_mip_out      when REG_mip_addr(7 downto 0),
                        32x"00000000"  when others;
@@ -135,7 +129,6 @@ begin
                        '1' when REG_mscratch_addr(7 downto 0),
                        '1' when REG_mepc_addr(7 downto 0),    
                        '1' when REG_mcause_addr(7 downto 0),  
-                       '1' when REG_mtval_addr(7 downto 0),  
                        '1' when REG_mie_addr(7 downto 0),    
                        '1' when REG_mip_addr(7 downto 0),  
                        '0' when others;
@@ -210,16 +203,6 @@ begin
 -- CAN'T USE BYPASS. Otherwise becoming an infite loop.
 -- Added forwarding
 ------------------------------- CSR REGISTERS ------------------------
-
-	MTVAL_REG_INST: N_bit_register
-        generic map(N => 32, Reset_value => 32x"00000000", Bypass_register => false)
-        port map(
-                 i_CLK => i_clock, 
-                 i_RST => i_reset, 
-                 i_WE  => s_mtval_we or i_trap_occured, 
-                 i_D   => i_mtval, 
-                 o_Q   => s_mtval_out
-        ); 
 
 
 	MSTATUS_REG_INST: N_bit_register

@@ -27,9 +27,9 @@ architecture structural of Decode_Execute_register is
     end component N_bit_register;   
 
     -- decode/execute stage register
-    -- 245 bits total:
-    signal s_Decode_execute_data_in  : std_logic_vector(244 downto 0);   
-    signal s_Decode_execute_data_out : std_logic_vector(244 downto 0);   
+    -- 212 bits total:
+    signal s_Decode_execute_data_in  : std_logic_vector(211 downto 0);   
+    signal s_Decode_execute_data_out : std_logic_vector(211 downto 0);   
     signal s_reg_WE : std_logic;
     signal s_mem_WE : std_logic;
     signal s_ALU_mem : std_logic;
@@ -68,8 +68,6 @@ begin
     -- csr_write_addr          :(209 downto 198)
     -- ecall                   :(210)
     -- mret                    :(211)
-    -- illegal_instruction     :(212)
-    -- Inst                    :(244 downto 213)
 
 
 
@@ -105,9 +103,6 @@ begin
         s_mret <= i_decode_execute_register.mret when '0', -- if not stall, then usual, otherwise 0
                     '0' when others; 
 
-    with i_stall select
-        s_illegal_instruction <= i_decode_execute_register.illegal_instruction when '0', -- if not stall, then usual, otherwise 0
-                              '0' when others; 
 
     s_Decode_execute_data_in(0)              <=  s_halt;           
     s_Decode_execute_data_in(1)              <=  s_reg_WE;         
@@ -137,11 +132,9 @@ begin
     s_Decode_execute_data_in(209 downto 198) <=  i_decode_execute_register.csr_write_addr;          
     s_Decode_execute_data_in(210)            <=  s_ecall;
     s_Decode_execute_data_in(211)            <=  s_mret;
-    s_Decode_execute_data_in(212)            <=  s_illegal_instruction;
-    s_Decode_execute_data_in(244 downto 213) <=  i_decode_execute_register.Inst;          
 
     Decode_execute_register_inst: N_bit_register
-        generic map(N => 245, Reset_value => (244 downto 0 => '0'), Bypass_register => false)
+        generic map(N => 212, Reset_value => (211 downto 0 => '0'), Bypass_register => false)
         port map(
                  i_CLK => i_clk,
                  i_RST => i_reset,                  -- reset the pipeline to 0
@@ -179,8 +172,6 @@ begin
     o_decode_execute_register.csr_write_addr           <= s_Decode_execute_data_out(209 downto 198);       
     o_decode_execute_register.ecall                    <= s_Decode_execute_data_out(210);       
     o_decode_execute_register.mret                     <= s_Decode_execute_data_out(211);
-    o_decode_execute_register.illegal_instruction      <= s_Decode_execute_data_out(212);
-    o_decode_execute_register.Inst                     <= s_Decode_execute_data_out(244 downto 213);       
 
 
 end architecture structural;

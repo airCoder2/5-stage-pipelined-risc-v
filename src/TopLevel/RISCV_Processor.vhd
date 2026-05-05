@@ -235,7 +235,6 @@ architecture structure of RISCV_Processor is
              i_trap_cause   : in std_logic_vector(31 downto 0);  -- the reason why trap occured. MSB indicates Exception/!trap
              i_pc_wb        : in std_logic_vector(31 downto 0);  -- pc to put into mepc if exception
              i_pc_mem       : in std_logic_vector(31 downto 0);  -- pc to put into mepc if interrupt
-             i_mtval        : in std_logic_vector(31 downto 0);  -- The instruction that made the processor fail
              o_trap_ret_pc  : out std_logic_vector(31 downto 0); -- mtvec that is loaded as next pc when trap happened
              o_mstatus      : out std_logic_vector(31 downto 0); -- mstatus needed to be read by event controller
              o_mie          : out std_logic_vector(31 downto 0); -- mie needs to be read by event controller
@@ -257,7 +256,6 @@ architecture structure of RISCV_Processor is
     component Exception_interrupt_controller is
         port(
              i_ecall        : in std_logic; -- if this instruction is an ecall
-             i_illegal_instruction : in std_logic;
              i_mip          : in std_logic_vector(31 downto 0); -- mip to see if any hardware interrupts pending
              i_mie          : in std_logic_vector(31 downto 0); -- mie to see if any hadware interrupts enabled
              i_mstatus      : in std_logic_vector(31 downto 0); -- mstatus to see if global interrupt bit is enabled
@@ -624,7 +622,6 @@ begin
              i_trap_cause   => s_trap_cause_wb, 
              i_pc_wb        => s_MEM_WB_output.current_pc, 
              i_pc_mem       => s_EX_MEM_output.current_pc, 
-             i_mtval        => s_EX_MEM_output.Inst,
              o_trap_ret_pc  => s_CSR_mtvec_id, 
              o_mstatus      => s_CSR_mstatus_id, 
              o_mie          => s_CSR_mie_id, 
@@ -683,13 +680,6 @@ begin
     -- URET that RARS uses is 0x002 (func7)
     -- MRET that I    use  is 0x302 (func7)
     s_ID_EX_input.mret  <= '1' when (s_sys_id = '1' and s_ID_EX_input.func3 = 3b"000" and s_IF_ID_output.Inst(23 downto 20) = 4x"2") else '0';
-
-    s_ID_EX_input.Inst <= s_IF_ID_output.Inst;
-
-    -- THIS ONLY DETECTS M-TYPE INSTRUCTIONS. SHOULD FIND A WAY TO MAKE IT RECOGNIZE ANY UNIMPLEMENTED
-    s_ID_EX_input.illegal_instruction <= '1' when s_illegal_instruction_csr_id = '1' or 
-                                         (s_IF_ID_output.Inst(31 downto 25) = 7x"01" and s_IF_ID_output.Inst(6 downto 0) = 7b"0110011") else '0';
-
 
 
 --------------------- EX STAGE ------------------------
@@ -884,8 +874,6 @@ begin
     s_EX_MEM_input.current_pc     <= s_ID_EX_output.current_pc;
     s_EX_MEM_input.ecall          <= s_ID_EX_output.ecall;
     s_EX_MEM_input.mret           <= s_ID_EX_output.mret;
-    s_EX_MEM_input.illegal_instruction <= s_ID_EX_output.illegal_instruction;
-    s_EX_MEM_input.Inst          <= s_ID_EX_output.Inst;
 
 --------------------- MEM STAGE ------------------------
 
@@ -938,15 +926,12 @@ begin
     s_MEM_WB_input.current_pc  <= s_EX_MEM_output.current_pc;
     s_MEM_WB_input.ecall      <= s_EX_MEM_output.ecall;
     s_MEM_WB_input.mret       <= s_EX_MEM_output.mret;
-    s_MEM_WB_input.illegal_instruction <= s_EX_MEM_output.illegal_instruction;
-    s_MEM_WB_input.Inst          <= s_EX_MEM_output.Inst;
 
 
 --------------------- WB STAGE ------------------------
     Trap_controller_inst: Exception_interrupt_controller
         port map(
                  i_ecall        => s_MEM_WB_output.ecall, 
-                 i_illegal_instruction => s_MEM_WB_output.illegal_instruction,
                  i_mip          => s_CSR_mip_id, 
                  i_mie          => s_CSR_mie_id, 
                  i_mstatus      => s_CSR_mstatus_id, 

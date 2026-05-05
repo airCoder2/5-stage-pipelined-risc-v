@@ -58,8 +58,6 @@ package RISCV_types is
         --Traps
         ecall                   : std_logic;  -- ecall signal, so trap can be taken
         mret                    : std_logic;
-        illegal_instruction     : std_logic;
-        Inst : std_logic_vector(31 downto 0); -- Instruction to put to mtval
 
     end record Decode_execute_data_t;
 
@@ -82,8 +80,6 @@ package RISCV_types is
         ecall          : std_logic;  -- ecall signal, so trap can be taken
         current_pc     : std_logic_vector(31 downto 0);
         mret           : std_logic;
-        illegal_instruction     : std_logic;
-        Inst : std_logic_vector(31 downto 0); -- Instruction to put to mtval
     end record Execute_memory_data_t;
 
 
@@ -102,9 +98,6 @@ package RISCV_types is
         ecall          : std_logic;  -- ecall signal, so trap can be taken
         current_pc     : std_logic_vector(31 downto 0);
         mret           : std_logic;
-        illegal_instruction     : std_logic;
-        Inst : std_logic_vector(31 downto 0); -- Instruction to put to mtval
     end record Memory_wback_data_t;
-
 end package RISCV_types;
 
