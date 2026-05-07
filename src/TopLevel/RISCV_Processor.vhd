@@ -25,6 +25,18 @@ end  RISCV_Processor;
 
 architecture structure of RISCV_Processor is
 
+    -- for oring the who bus
+    function or_bus(vec : std_logic_vector) return std_logic is
+        variable result : std_logic := '0';
+        begin
+            for i in vec'range loop
+                result := result or vec(i);
+            end loop;
+        return result;
+    end function;
+
+
+
 ----------------- COMPONENTS ---------------
 
     -- mem component is used to infer Memory to store Instructions and Data
@@ -603,7 +615,7 @@ begin
     -- if system instruction = 1 AND func3 = 0 AND func7 (Imm) = 0x105 then it is a halt instruction
     s_ID_EX_input.halt <= '1' when (s_sys_id = '1' and s_ID_EX_input.func3 = 3b"000" and s_IF_ID_output.Inst(31 downto 20) = 12x"105") else '0';
     -- if system instruction AND (non zero func3) then it is a csr instruction
-    s_ID_EX_input.csr  <= s_sys_id and (or s_ID_EX_input.func3);
+    s_ID_EX_input.csr  <= s_sys_id and or_bus(s_ID_EX_input.func3);
     s_ID_EX_input.csr_write_addr <= s_IF_ID_output.Inst(31 downto 20); -- read address is the same as the write address
 
 
