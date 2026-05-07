@@ -1,0 +1,25 @@
+[N
+4
+4
+1 N
+3
+10 behavioral
+2
+21 carry_lookahead_adder
+1
+69 /home/umhaihl/cpre_381/Labs/lab3/hardware-pipelined/proj/src/ALU/work
+]
+[G
+1
+2
+3
+1
+4
+1
+0
+32
+0
+0 0
+0
+0
+]

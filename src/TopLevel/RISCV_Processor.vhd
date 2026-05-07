@@ -18,10 +18,10 @@ entity RISCV_Processor is
        iInstLd         : in std_logic;
        iInstAddr       : in std_logic_vector(31 downto 0);
        iInstExt        : in std_logic_vector(31 downto 0);
-       oALUOut         : out std_logic_vector(31 downto 0);
+       oALUOut         : out std_logic_vector(31 downto 0)
        -- MY OWN
-       i_interrupt     : in std_logic;
-       o_periphiral    : out std_logic_vector(31 downto 0)
+       --i_interrupt     : in std_logic;
+       --o_periphiral    : out std_logic_vector(31 downto 0)
    );
 end  RISCV_Processor;
 
@@ -365,6 +365,11 @@ architecture structure of RISCV_Processor is
     -- Required overflow signal -- for overflow exception detection
     signal s_Ovfl         : std_logic;                     -- overflow exception would have been initiated
 
+
+
+
+    signal o_periphiral : std_logic_vector(31 downto 0);
+    signal i_interrupt : std_logic := '0';
     ----------------- MY OWN SIGNALS ---------------
 
     signal s_pc_plus_4_if              : std_logic_vector(31 downto 0);         -- the output of the pc+4 IF stage
