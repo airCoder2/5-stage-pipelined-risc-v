@@ -1,4 +1,3 @@
 **Alhamdulillah**
 
-This repo implements a pipelined risc-v processor.
-# 5-stage-pipelined-risc-v
+This is also stable, but has CSR registers, but doesn't implement have support for interrupts or exceptions
