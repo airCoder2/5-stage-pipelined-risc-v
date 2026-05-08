@@ -28,9 +28,8 @@ main:
     li   a2, 31             # a2 = right index (N-1 = 31)
     jal  ra, merge_sort     # call merge_sort(array, 0, 31)
 
-    li   a7, 10             # exit syscall
-    ecall
 
+    j end
 
 # merge_sort(a0=arr, a1=left, a2=right)
 
@@ -197,3 +196,5 @@ merge_done:
     lw   s5,   0(sp)
     addi sp, sp, 28
     jalr zero, ra, 0
+end:
+    wfi

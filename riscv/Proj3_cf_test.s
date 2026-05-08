@@ -39,8 +39,10 @@ skip5:
 skip6:
 
     jal ra, level1
-    li a7, 10
-    ecall
+
+    #li a7, 10
+    #ecall
+    j end
 
 level1:
     addi sp, sp, -4
@@ -81,3 +83,8 @@ level4:
 level5:
     addi x14, x0, 5
     jalr zero, ra, 0
+
+
+end:
+
+    wfi
