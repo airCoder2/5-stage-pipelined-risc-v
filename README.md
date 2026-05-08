@@ -1,4 +1,3 @@
 **Alhamdulillah**
 
-This repo implements a pipelined risc-v processor.
-# 5-stage-pipelined-risc-v
+This is THE STABLE BRANCH with dynamic branch prediction. There is no CSR or Interrupts
