@@ -40,3 +40,9 @@ output_files/
 # Testbench-generated junk (optional but common)
 tb_*~
 *.bak
+
+## project report
+Proj*.pdf
+
+#synthesis reports
+*.log
